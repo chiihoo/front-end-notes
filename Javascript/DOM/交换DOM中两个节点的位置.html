@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>实现一个函数function swap(node1, node2) {}交换dom中的两个结点的位置。</title>
+</head>
+<body>
+</body>
+<script>
+  //isInside要自己实现，看两个节点是否是祖先后代或父子关系
+  function isInside(node1,node2){
+
+  }
+  
+  function swap(node1,node2){
+    if(isInside(node1,node2)||isInside(node2,node1)){
+      throw new Error('nodes is contained each other,operation not allowed');
+    }
+    let p1=node1.parentNode;
+    let p2=node2.parentNode;
+
+    //flag是一个标记位
+    let flag1=document.createTextNode('');
+    let flag2=document.createTextNode('');
+
+    p1.insertBefore(flag1,node1);
+    p2.insertBefore(flag2,node2);
+
+    p1.insertBefore(node2,flag1);
+    p2.insertBefore(node1,flag2);
+
+    p1.removeChild(flag1);
+    p2.removeChild(flag2);
+
+  }
+</script>
+</html>

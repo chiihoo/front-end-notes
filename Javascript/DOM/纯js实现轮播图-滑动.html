@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1239632_1d95ig7qc1c.css">
+  <title>Document</title>
+  <style>
+    html,body{
+      margin: 0;
+      position: relative;
+    }
+    .slider{
+      background-color: skyblue;
+      width: 1000px;
+      height: 375px;
+      position: absolute;
+      left: 250px;
+      top: 100px;
+      display: block;
+    }
+    .slider .slider-images{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+
+      white-space: nowrap;
+      font-size: 0; 
+
+      overflow: hidden;
+    }
+    .slider .slider-images img {
+      width: 100%;
+      height: 100%;
+      transition: 1s;
+
+      display: inline-block;
+    }
+    ul.slider-buttons{
+      padding: 0;
+      margin:0;
+      position: absolute;
+      bottom:50px;
+      left:50%;
+      transform: translateX(-50%);
+      display:flex;
+      border-radius: 15px;
+      height: 25px;
+      background-color: rgba(255, 255 ,255, 0.3)
+
+    }
+    .slider-buttons li{
+      list-style-type: none;
+      width: 15px;
+      height: 15px;
+      background-color: #ffffff;
+      border-radius: 100px;
+      z-index: 100;
+      cursor: pointer;
+
+      margin: 5px 10px;
+      /* margin: 0 10px;
+      position: relative;
+      top:50%;
+      transform: translateY(-50%); */
+
+    }
+    .slider-arrows a.slider-arrow{
+      position: absolute;
+      top:50%;
+      transform: translateY(-50%);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .slider-arrows a.slider-arrow:hover{
+      background-color: rgba(255,255,255,0.3);
+     }
+    .slider-arrows a.slider-left-arrow{
+      left:0;
+    }
+    .slider-arrows a.slider-right-arrow{
+      right:0;
+    }
+    .slider-arrows i.icon-left-arrow{
+      color: whitesmoke;
+      font-size: 38px;
+    }
+    .slider-arrows i.icon-right-arrow{
+      color: whitesmoke;
+      font-size: 38px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="slider">
+    <div class="slider-images">
+      <a href=""><img
+          src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/dd4eeeda1772431e72b22090df2ccda8.jpg?w=2452&h=920"
+          alt=""></a>
+      <a href=""><img
+          src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/16b60ea00a15f079b6d71d60bf8dbb2c.jpg?thumb=1&w=1533&h=575&f=webp&q=90"
+          alt=""></a>
+      <a href=""><img
+          src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/8cd73402f792141366762796439b12f1.jpg?thumb=1&w=1533&h=575&f=webp&q=90"
+          alt=""></a>
+      <a href=""><img
+          src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/866dc0fc77bc09c0e67835034b302072.jpg?thumb=1&w=1533&h=575&f=webp&q=90"
+          alt=""></a>
+      <a href=""><img
+          src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/2dd7a8c37337c81b02c3afc699e37318.jpg?thumb=1&w=1533&h=575&f=webp&q=90"
+          alt=""></a>
+    </div>
+    <ul class="slider-buttons">
+      <li class="slider-button"></li>
+      <li class="slider-button"></li>
+      <li class="slider-button"></li>
+      <li class="slider-button"></li>
+      <li class="slider-button"></li>
+    </ul>
+    <div class="slider-arrows">
+      <a class="slider-arrow slider-left-arrow">
+        <i class="iconfont icon-left-arrow"></i>
+      </a>
+      <a class="slider-arrow slider-right-arrow">
+        <i class="iconfont icon-right-arrow"></i>
+      </a>
+    </div>
+  </div>
+</body>
+<script>
+  //手动滑动透明度
+  sliderImgManual();
+  function sliderImgManual(){
+    let sliderImages=document.querySelectorAll('.slider-images img');
+    let sliderButtons=document.querySelectorAll('ul.slider-buttons li.slider-button');
+    let sliderLeftArrow=document.querySelector('.slider-arrows a.slider-left-arrow');
+    let sliderRightArrow=document.querySelector('.slider-arrows a.slider-right-arrow');
+     
+    let index=0;
+    for(let j=0;j<sliderImages.length;j++){
+      sliderImages[j].style.position='relative';
+      sliderImages[j].style.left=0;
+    }
+    for(let i=0;i<sliderButtons.length;i++){
+      sliderButtons[i].addEventListener('mousedown',function down(e){
+        if(e.buttons==0){
+          sliderButtons[i].removeEventListener('mousedown',down);
+        }
+        for(let j=0;j<sliderImages.length;j++){
+          sliderImages[j].style.left=-i+'00%';
+        }
+        index=i;
+      })
+    }
+
+    //未做
+    sliderLeftArrow.addEventListener('mousedown',function down(e){
+      if(e.buttons==0){
+        sliderLeftArrow.removeEventListener('mousedown',down);
+      }
+
+
+    })
+
+    sliderRightArrow.addEventListener('mousedown',function down(e){
+      if(e.buttons==0){
+        sliderRightArrow.removeEventListener('mousedown',down);
+      }
+
+
+    })
+
+  }
+
+
+
+  //自动浮现透明度
+  // slideImgAuto_opacity();
+  // function slideImgAuto_opacity() {
+  //   let count = 0;
+  //   let intervalID;
+  //   let sliderImages = document.querySelector('.slider-images');
+  //   let images = document.querySelectorAll('.slider img');
+  //   // let slider = document.querySelector('.slider');
+  //   startAutoPlay();
+  //   sliderImages.onmouseout=function(){
+  //     //setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。
+  //     //setInterval() 方法会不停地调用函数，直到 clearInterval() 被调用或窗口被关闭。
+  //     //由 setInterval() 返回的 ID 值可用作 clearInterval() 方法的参数。
+  //     console.log('移出');
+  //     startAutoPlay();
+  //   }
+  //   sliderImages.onmouseover=function(){
+  //     console.log('移入'); 
+  //     stopAutoPlay();
+  //   }
+  //   function startAutoPlay(){
+  //     intervalID = setInterval(function () {
+  //       count++;
+  //       if (count >= 5) {
+  //         count = 0;
+  //       }
+  //       console.log(count);
+  //       for(let i=0;i<images.length;i++){
+  //         // images[i].style.display='none';
+  //         images[i].style.opacity=0;
+  //       }
+  //       // images[count].style.display='block';
+  //       images[count].style.opacity=1;
+  //     }, 3000);//毫秒
+  //   }
+  //   function stopAutoPlay(){
+  //     if(intervalID){
+  //       clearInterval(intervalID);
+  //     }
+  //   }
+  // }
+</script>
+
+
+</html> 

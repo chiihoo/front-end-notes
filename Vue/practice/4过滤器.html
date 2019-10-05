@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="../lib/vue.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <!-- <p>{{ msg | msgFormat }}</p> -->
+
+    <!-- <p>{{ msg | msgFormat('疯狂') }}</p> -->
+
+    <p>{{ msg | msgFormat('疯狂','123') }}</p>
+
+    <p>{{ msg | msgFormat('疯狂','123') | test}}</p>
+
+  </div>
+  <script>
+    // 过滤器第一个参数一定是前面传过来的值,但是在div中的代码第一个参数直接写定义函数时的第二个参数
+    // Vue.filter('msgFormat', function (msg) {
+    //   return msg.replace(/单纯/g, '邪恶');
+    // })
+
+    // Vue.filter('msgFormat', function (msg, arg) {
+    //   return msg.replace(/单纯/g, arg);
+    // })
+
+    Vue.filter('msgFormat', function (msg, arg, arg2) {
+      return msg.replace(/单纯/g, arg + arg2);
+    })
+
+    Vue.filter('test', function (msg) {
+      return msg + '==========';
+    })
+
+
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        msg: '曾经，我也是一个单纯的少年，傻傻的问，谁是世界上最单纯的男人，这句话真滴中二'
+      },
+      methods: {},
+      // 私有过滤器，优先调用私有过滤器
+      filters: {
+        msgFormat: function (msg, arg) {
+          return msg.replace(/单纯/g, arg);
+        },
+        test: function (msg) {
+          return msg + '==========';
+        }
+      }
+    })
+
+  </script>
+</body>
+
+</html>

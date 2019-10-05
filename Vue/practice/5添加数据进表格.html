@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="../lib/vue.js"></script>
+  <title>Document</title>
+  <style>
+    table,
+    table tr th,
+    table tr td {
+      border: 1px solid;
+    }
+
+    table {
+      border-collapse: collapse;
+    }
+  </style>
+</head>
+
+<body>
+  <div id='app'>
+    <label>id:
+      <input type="text" v-model="id">
+    </label>
+    <label>name:
+      <input type="text" v-model="name" @keyup.enter="add()">
+    </label>
+    <!-- add加不加()效果一样，不同的地方是add()可以传入参数 -->
+    <button @click="add()">提交</button>
+    <!-- <button v-on:click="add">提交</button> -->
+    <label>搜索名称关键字:
+      <input type="text" v-model="keywords" v-focus>
+    </label>
+    <br><br>
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Ctime</th>
+          <th>Operation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in search(keywords)" :key="item.id">
+          <td>{{item.id}}</td>
+          <td>{{item.name}}</td>
+          <!-- <td>{{item.ctime | dateFormat('yyyy-mm-dd')}}</td> -->
+          <td v-fontweight="700">{{item.ctime | dateFormat('')}}</td>
+          <td>
+            <!-- 阻止默认行为 -->
+            <a href="" @click.prevent="del(item.id)">删除</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    //自定义指令，让页面已加载文本框就获取焦点，需要在input上加 v-focus 来调用
+    //el为被绑定了指令的那个元素，这个el参数，是一个原生的js对象
+    //公有不带s,私有directives
+    Vue.directive('focus', {
+      bind: function (el) { },  //指令绑定给元素时会立即执行一次
+      inserted: function (el, binding) {   //元素插入到DOM中的时候会执行一次
+        el.focus();
+      },
+      updated: function (el) { }  //当VNode更新的时候会执行，可能触发多次
+    })
+
+    //定义过滤器
+    Vue.filter('dateFormat', function (dateStr, pattern = '') {
+      var dt = new Date(dateStr);
+      var y = dt.getFullYear();
+      var m = (dt.getMonth() + 1).toString().padStart(2, '0');//从0开始的
+      var d = dt.getDate().toString().padStart(2, '0');
+      // 要么加pattern &&，要么加默认参数pettern=''
+      // 这是为了防止dateFormat()传入空参数时，pattern为undefined,这时pattern.toLowerCase()报错
+      // if (pattern && pattern.toLowerCase() === 'yyyy-mm-dd') {
+      if (pattern.toLowerCase() === 'yyyy-mm-dd') {
+        return `${y}-${m}-${d}`;
+      } else {
+        var hh = dt.getHours().toString().padStart(2, '0');  //在只有一位数时，在前面添0,变为01,02...
+        var mm = dt.getMinutes().toString().padStart(2, '0');
+        var ss = dt.getSeconds().toString().padStart(2, '0');
+        return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+      }
+    })
+
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        id: '',
+        name: '',
+        keywords: '',
+        list: [
+          { id: 1, name: '1号', ctime: new Date() },
+          { id: 2, name: '2号', ctime: new Date() },
+          { id: 3, name: '3号', ctime: new Date() },
+          { id: 4, name: '4号', ctime: new Date() },
+          { id: 5, name: '5号', ctime: new Date() },
+        ]
+      },
+      methods: {
+        add() {
+          var foo = { id: this.id, name: this.name, ctime: new Date() };
+          this.list.push(foo);
+          this.id = this.name = '';
+        },
+        del(id) {
+          var index = this.list.findIndex(item => {
+            if (item.id == id) {
+              return true;
+            }
+          })
+          this.list.splice(index, 1);
+        },
+        search(keywords) {
+          return this.list.filter(item => item.name.includes(keywords));
+          // return this.list.filter(item => item.name.indexOf(keywords) != -1);
+        }
+      },
+      directives: {
+        fontweight: {
+          bind: function (el, binding) {
+            el.style.fontWeight = binding.value;
+          }
+        }
+      }
+    })
+  </script>
+
+</body>
+
+</html>

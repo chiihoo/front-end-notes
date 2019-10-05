@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2609616445,1297261628&fm=26&gp=0.jpg" alt=""
+    style="width:500px;">
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=421366427,3298585889&fm=26&gp=0.jpg" alt=""
+    style="width:500px;">
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3809576133,1589894853&fm=26&gp=0.jpg" alt=""
+    style="width:500px;">
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+</body>
+<script>
+  document.onkeydown = function (event) {
+    let count = 0;
+    function step() {
+      if (event.keyCode == '74') {
+        scrollBy(0, 5);
+      }
+      if (event.keyCode == '75') {
+        scrollBy(0, -5);
+      }
+      count++;
+      if (count < 8) {
+        requestAnimationFrame(step);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+
+
+  // document.onkeydown = function (event) {
+  //   if (event.keyCode == '74') {
+  //     smoothScrollBy(window, 35, 300);
+  //   }
+  //   if (event.keyCode == '75') {
+  //     smoothScrollBy(window, -35, 300);
+  //   }
+  // }
+  // // 用duration毫秒的时间让window垂直滚动pixel个像素
+  // function smoothScrollBy(window, pixel, duration) {
+  //   var startTime = null;
+  //   var lastTime = null;
+  //   requestAnimationFrame(function step(time) {
+  //     if (startTime == null) {
+  //       startTime = time;
+  //     }
+  //     if (lastTime !== null) {
+  //       var timeDiff = time - lastTime;
+  //     }
+  //     lastTime = time;
+  //     var timeRatio = timeDiff / duration;
+  //     var pixelRation = timeRatio * pixel;
+  //     window.scrollBy(0, pixelRation);
+  //     if (time - startTime < duration) {
+  //       requestAnimationFrame(step);
+  //     }
+  //   })
+  // }
+
+</script>
+
+</html>

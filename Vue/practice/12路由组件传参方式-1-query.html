@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="../lib/vue.js"></script>
+  <script src="../lib/vue-router.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <router-link to="/login?id=2019&name=春茶">登录link</router-link>
+    <router-link to="/register">注册link</router-link>
+    <router-view></router-view>
+
+  </div>
+
+  <script>
+    var login = {
+      // 用this.$route这个对象来获取<router-link to="/login?id=2019">中传进来的id
+      template: '<h1>登录组件---{{ $route.query.id }}---{{ $route.query.name}}</h1>',
+      // 在{{ }}中加不加this都可以
+      // template: '<h1>登录组件---{{ this.$route.query.id }}</h1>',
+
+      // created() {
+      //   console.log(this.$route)
+      // }
+    }
+    var register = {
+      template: '<h1>注册组件</h1>',
+    }
+
+    var routerObj = new VueRouter({
+      // 路由匹配规则
+      routes: [
+        // 每个路由匹配规则都是一个对象，path表示监听哪个路由链接地址，component表示匹配成功后将对应的组件，
+        // 这个组件必须是一个组件的模版对象，不能是组件的引用名称，比如Vue.component('login',{template:'<h1>登录组件</h1>'})就是错的
+        { path: '/login', component: login },
+        { path: '/register', component: register },
+        // 使页面一加载就重定向到登陆页面
+        { path: '/', redirect: '/login' },
+
+        // 这样初次重定向不行，无法在routes中找到对应的组件，组件不能显示！
+        // { path: '/', redirect: '/login?id=2019&name=春茶' },
+      ],
+    })
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {},
+      router: routerObj,  // 将路由规则对象注册到vm实例上，用来监听url地址的变化，然后展示相应的组件
+    })
+  </script>
+</body>
+
+</html>

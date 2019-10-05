@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="../lib/vue.js"></script>
+  <script src="../lib/vue-router.js"></script>
+  <title>Document</title>
+  <style>
+    /* 只有router-link标签才有效果 */
+    .router-link-active {
+      color: red;
+      font-weight: 800;
+      font-style: italic;
+    }
+
+    .v-enter,
+    .v-leave-to {
+      opacity: 0;
+      transform: translateX(150px);
+    }
+
+    .v-enter-active,
+    .v-leave-active {
+      transition: all 0.5s ease;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+
+    a标签(需要写#/...):
+    <br>
+    <a href="#/login">登录</a>
+    <a href="#/register">注册</a>
+
+    <br>
+
+    router-link-to(会默认渲染为一个a标签，直接写/...，用tag可以更改为其他标签):
+    <br>
+    <router-link to="/login">登录link</router-link>
+    <router-link to="/register" tag="span">注册link</router-link>
+    <!-- 这是vue-router提供的元素，用作占位符，将来路由规则匹配到的组件，就会展示到这个标签里面去 -->
+    <transition mode="out-in">
+      <router-view></router-view>
+    </transition>
+
+  </div>
+
+  <script>
+    var login = {
+      template: '<h1>登录组件</h1>',
+    }
+    var register = {
+      template: '<h1>注册组件</h1>'
+    }
+
+    var routerObj = new VueRouter({
+      // 路由匹配规则
+      routes: [
+        // 每个路由匹配规则都是一个对象，path表示监听哪个路由链接地址，component表示匹配成功后将对应的组件，
+        // 这个组件必须是一个组件的模版对象，不能是组件的引用名称，比如Vue.component('login',{template:'<h1>登录组件</h1>'})就是错的
+        { path: '/login', component: login },
+        { path: '/register', component: register },
+        // 使页面一加载就重定向到登陆页面
+        { path: '/', redirect: '/login' }
+      ],
+      // 可以把router-link-active这个类名自定义修改成myActive类，设置这个类的样式可以实现高亮
+      // linkActiveClass: 'myActive',
+    })
+
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {},
+      router: routerObj,  // 将路由规则对象注册到vm实例上，用来监听url地址的变化，然后展示相应的组件
+    })
+  </script>
+</body>
+
+</html>

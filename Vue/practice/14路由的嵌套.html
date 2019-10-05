@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="../lib/vue.js"></script>
+  <script src="../lib/vue-router.js"></script>
+  <title>Document</title>
+
+</head>
+
+<body>
+  <div id="app">
+    <router-link to="/account">account</router-link>
+    <router-view></router-view>
+  </div>
+
+  <template id="tmpl">
+    <div>
+      <h1>这是account组件</h1>
+      <router-link to="/account/login">登录</router-link>
+      <router-link to="/account/register">注册</router-link>
+      <router-view></router-view>
+    </div>
+  </template>
+
+  <script>
+    var account = {
+      template: '#tmpl',
+    }
+    var login = {
+      template: '<h1>account组件中的登录组件</h1>',
+    }
+    var register = {
+      template: '<h1>account组件中的注册组件</h1>',
+    }
+
+    var router = new VueRouter({
+      routes: [
+        {
+          path: '/account',
+          component: account,
+          // 使用children属性实现子路由
+          children: [
+            // '/'的意思是以根目录开始进行匹配，不加'/'是以当前目录开始进行匹配，子路由的path不要加'/'
+            { path: 'login', component: login },
+            { path: 'register', component: register },
+          ]
+        },
+        // 这样写就是同级的了，改变组件时会把前一个覆盖掉
+        // { path: '/account', component: account },
+        // { path: '/account/login', component: login },
+        // { path: '/account/register', component: register },
+      ]
+    })
+
+
+
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {},
+      router, // 即router:router,
+    })
+  </script>
+</body>
+
+</html>

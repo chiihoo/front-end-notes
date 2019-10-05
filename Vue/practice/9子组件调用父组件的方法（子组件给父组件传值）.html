@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="../lib/vue.js"></script>
+  <title>要点:@子组件方法名="父组件方法名"，子组件中调用this.$emit('子组件方法名',参数)
+    子组件调用父组件的方法时，传进去的参数就是子组件的数据，在这个方法中就可以让父组件接收到子组件的数据！
+  </title>
+</head>
+
+<body>
+  <div id="app">
+    <!-- func2可以改，需要在子组件中创建一个方法，里面触发func2 -->
+    <com2 @func2="show"></com2>
+  </div>
+
+  <template id="tmpl">
+    <div>
+      <h1>这是子组件</h1>
+      <input type="button" value="这是子组件中的按钮，点击触发父组件传递来的方法" @click="myClick">
+    </div>
+  </template>
+
+  <script>
+    var com2 = {
+      template: '#tmpl',
+      data() {
+        return {
+          sonMsg: {
+            name: 'son对象',
+            age: '6'
+          }
+        }
+      },
+      methods: {
+        myClick() {
+          // 调用子组件的func2方法,实际上是调用func2绑定的父组件的show方法,后面是传递的参数
+          // this.$emit('func2','第一个参数','第二个参数')
+          // 这个参数可以是对象，就起到了传递对象的效果
+          this.$emit('func2', this.sonMsg)
+        }
+      }
+    }
+
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        dataMsgFromSon: null,
+      },
+      methods: {
+        // 子组件调用父组件的方法时，传进去的参数就是子组件的数据，在这个方法中就可以让父组件接收到子组件的数据！
+
+        // 父组件的show方法
+        // show(item1,item2){
+        //   console.log('调用了父组件的show方法',item1,item2)
+        //   this.dataMsgFromSon=item1
+        // }
+        // 参数可以是对象
+        show(item) {
+          console.log(item)
+          this.dataMsgFromSon = item
+        }
+      },
+      components: {
+        //这是com2:com2的简写
+        com2
+        //相当于是这样写，把上面的var com2=...移到这里
+        // com2: {
+        //   template: '#tmpl',
+        //   data() {
+        //     return {
+        //       sonMsg: {
+        //         name: 'son对象',
+        //         age: '6'
+        //       }
+        //     }
+        //   },
+        //   methods: {
+        //     myClick() {
+        //       // this.$emit('func2','第一个参数','第二个参数')
+        //       this.$emit('func2', this.sonMsg)
+        //     }
+        //   }
+        // }
+      }
+    })
+  </script>
+</body>
+
+</html>

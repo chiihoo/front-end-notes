@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+<script>
+  function arrayToList1(ary) {
+    if (ary.length == 0) {
+      return null
+    }
+    var nodes = []
+    for(var i = 0; i < ary.length; i++) {
+      var node = {
+        value: ary[i],
+        next: null,
+      }
+      nodes.push(node)
+    }
+    for(var i = 0; i < nodes.length - 1; i++) {
+      nodes[i].next = nodes[i + 1] 
+    }
+    return nodes[0]
+  }
+
+  function arrayToList2(ary) {
+    var dummy = {
+      value: undefined,
+      next: null
+    }
+
+    var prev = dummy
+
+    for (var i = 0; i < ary.length; i++) {
+      var node = {
+        value: ary[i],
+        next: null,
+      }
+      prev.next = node
+      prev = node
+    }
+
+    return dummy.next
+  }
+
+  function arrayToList3(ary, start = 0) {
+    if (start == ary.length) {
+      return null
+    }
+    return {
+      value: ary[start],
+      next: arrayToList3(ary, start + 1),
+    }
+  }
+
+
+  function listToArray(list) {
+    var result = []
+
+    while (list != null) {
+      result.push(list.value)
+      list = list.next
+    }
+
+    return result
+  }
+
+  function listToArray2(list) {
+    if (list == null) {
+      return []
+    }
+    var tail = list.next
+    // return [list.value].concat( listToArray2(tail) )
+    return [list.value, ...listToArray2(tail)]
+  }
+
+  function size(list) {
+    var c = 0
+    while (list !== null) {
+      c++
+      list = list.next
+    }
+    return c
+  }
+
+  function size2(list) {
+    if (!list) {
+      return 0
+    }
+    return 1 + size2(list.next)
+  }
+
+  function insert(list, index, value) {
+    if (index < 0) {
+      index = 0
+    }
+    if (!list) {
+      return {
+        value: value, next: null
+      }
+    }
+    if (index == 0) {
+      return {
+        value: value,
+        next: list
+      }
+    }
+    var head = list
+    var idx = -1
+
+    while (idx != index - 1 && list.next) {
+      idx++
+      list = list.next
+    }
+
+    list.next = {
+      value: value,
+      next: list.next,
+    }
+
+    return head
+  }
+
+  function nth(list, index) {
+    if (!list) {
+      return undefined
+    }
+    if (index == 0) {
+      return list.value
+    }
+    return nth(list.next, index - 1)
+  }
+
+  function prepend(list, value) {
+    return insert(list, 0, value)
+  }
+
+  function append(list, value) {
+    return insert(list, Infinity, value)
+  }
+
+
+  function sortList(l) {
+    if (!list || !list.next) {
+      return list
+    }
+
+    var left = xxx
+    var right = yyy
+
+    left = sortList(left)
+    right = sortList(right)
+
+    while(l1 && l2) {
+      if (l1.value < l2.value) {
+        xxxx
+      } else {
+        yyyy
+      }
+    }
+
+    return head
+  }
+</script>
+</body>
+</html>

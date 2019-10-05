@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- 不推荐在这里直接引用任何包和css文件 -->
+  <!-- 因为main.js的代码中，浏览器不支持ES6的import和CommonJS中的require,直接导入main.js会报错，需要用webpack打包后引入 -->
+  <!-- <script src="./main.js"></script> -->
+
+  <!-- 
+  npm打包命令为:  
+    webpack .\src\main.js -o .\dist\bundle.js --mode=development
+    webpack ./src/main.js --output ./dist/bundle.js --mode development
+  其中，\与/是一样的，--output可以简写为-o
+  意思是把.\src\main.js用webpack打包成.\dist\bundle.js 
+  注：最开始时要运行 npm init -y 这行命令，目的是初始化生成package.json
+
+  一般把这行打包命令写成配置文件的形式，需要打包时直接运行webpack即可，配置文件名称为webpack.config.js
+  -->
+
+  <script src="../dist/bundle.js"></script>
+
+  <!-- 
+  从这个示例中，可以看出webpack的作用：
+    1.webpack能够处理js文件的相互依赖关系
+    2.webpack能够处理js的兼容问题，把高级的、浏览器不支持的语法，转化为低级的、浏览器能够正常识别的语法
+  -->
+
+
+  <style>
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+  </style>
+</head>
+
+<body>
+  <ul>
+    <li>这是第1个li</li>
+    <li>这是第2个li</li>
+    <li>这是第3个li</li>
+    <li>这是第4个li</li>
+    <li>这是第5个li</li>
+    <li>这是第6个li</li>
+    <li>这是第7个li</li>
+    <li>这是第8个li</li>
+    <li>这是第9个li</li>
+    <li>这是第10个li</li>
+  </ul>
+</body>
+
+</html>

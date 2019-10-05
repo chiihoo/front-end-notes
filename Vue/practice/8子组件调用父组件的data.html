@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="../lib/vue.js"></script>
+  <title>要点:v-bind:子组件props数组里面的某项="父组件data里面的数据"，
+    子组件中有props数组，如果里面的名字写成驼峰命名法，则v-bind紧跟的名字需要全小写，并且用横杠-间隔</title>
+</head>
+
+<body>
+  <!-- HTML 中的特性名是大小写不敏感的，所以浏览器会把所有大写字符解释为小写字符。这意味着当你使用 DOM 中的模板时，
+  camelCase (驼峰命名法) 的 prop 名需要使用其等价的 kebab-case (短横线分隔命名) 命名：
+  定义时如果写成parentMsg，那么使用时需要写成parent-msg;  要么都写成parentmsg -->
+  <div id="app">
+    <com1 v-bind:parent-msg="msg"></com1>
+  </div>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        msg: '这是父组件',
+      },
+      components: {
+        com1: {
+          template: '<h3 @click="change">这是子组件--{{ parentMsg }}--{{ title }}</h3>',
+          // props里面的数据都是父组件传递给子组件的，props里面的数据是只读的，无法重新赋值，实际上可以赋值但会报错
+          props: ['parentMsg',],
+          // data里面的数据都是子组件自身私有的，比如子组件通过Ajax请求回来的数据就可以放到data里面，data里面的数据可读可写的
+          // 组件中的data必须是一个方法，和实例中的data的使用方式完全一样
+          data() {
+            return {
+              title:'原来的title',
+            }
+          },
+          methods: {
+            change(){
+              this.title='title被修改了'
+              // props里面的数据虽然能修改，但是会报错
+              // this.parentMsg='parentMsg被修改了'
+            }
+          },
+        }
+      },
+    })
+  </script>
+</body>
+
+</html>

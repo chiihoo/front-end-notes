@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="../lib/vue.js"></script>
+  <title>Document</title>
+  <style>
+    .ball{
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      border-radius: 100%;
+    }
+    
+  </style>
+</head>
+<body>
+  <div id="app">
+    <button @click="flag=!flag">点击测试</button>
+    <input type="button" value="测试" @click="flag=!flag">
+    <transition 
+      @before-enter="beforeEnter"
+      @enter="enter"
+      @after-enter="afterEnter">
+      <div class="ball" v-show="flag"></div>
+    </transition>
+  </div>
+  <script>
+    var vm = new Vue({
+      el:'#app',
+      data:{
+        flag:false
+      },
+      methods:{
+        beforeEnter(el){
+          el.style.transform='translate(0,0)'
+        },
+        enter(el,done){
+          // 不加el.offsetWidth的话动画过渡效果是没有实现的，原因在于浏览器不会根据你js对style的修改实时更新，
+          // 而一般是在当前js修改完毕之后，会对所有修改统一更新，而display:none(它本身是不能transition的)
+          // 的状态切换影响了其他过渡效果的切换，毕竟为none的元素没法触发过渡。
+          // 将offsetWidth打开，你会发现过渡生效了，原因在于取offsetWidth导致浏览器重绘，使后面的style修改前，
+          // display确确实实变为了block，从而消除了元素状态为none对过渡的这种影响。
+          // 添加setTimeout，“打断”js的执行也可生效。
+          el.offsetWidth
+          el.style.transform='translate(200px,500px)'
+          el.style.transition='all 0.5s ease'
+          done()
+        },
+        afterEnter(el){
+          this.flag=!this.flag
+        }
+      }
+    })
+  </script>
+</body>
+</html>

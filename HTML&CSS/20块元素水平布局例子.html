@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    div{
+      background-color: aquamarine;
+      min-width:600px; 
+      /* max-width:800px;把绿框宽度定死了，用margin:auto来使绿框居中
+      margin:auto; */
+    }
+    section{
+      padding:30px;
+      /* 居中 */
+      margin:auto;
+      width:500px;
+      text-align: justify;
+    }
+    main{
+      background-color: cornflowerblue;
+      width:500px; 
+      padding:30px;
+      /* margin:auto要和宽度width一起用！！ */
+      /* padding-left:calc((100%-500px)/2);不要用这个，不好用，用margin:auto;
+      padding-right:calc((100%-500px)/2); */
+      margin:auto;
+    }
+
+
+    /* 缩小页面时会发现文字超出有颜色区域，这是由于body(div)的宽度减去padding、width和border的宽度，
+    发现为负数，而margin-left不能为负数，则就让margin-right为负数,超出了div的范围
+    div{
+      background-color: aquamarine;
+    }
+    section{
+      padding:30px;
+      margin:auto;
+      width:300px;
+      两端对齐
+      text-align: justify;
+    } */
+  </style>
+
+</head>
+<body>
+  <div>
+    <section>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
+      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+      nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
+      e cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
+      culpa qui officia deserunt mollit anim id est laborum.
+    </section>
+  </div>
+  <main>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
+    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
+    e cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
+    culpa qui officia deserunt mollit anim id est laborum.
+  </main>
+</body>
+</html>

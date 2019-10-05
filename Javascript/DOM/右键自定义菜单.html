@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+
+    span.copyright {
+      background-color: black;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      width: 75px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+      border-radius: 3px;
+      display: none;
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2609616445,1297261628&fm=26&gp=0.jpg" alt="" style="width:500px;">
+  <br>
+  <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=421366427,3298585889&fm=26&gp=0.jpg" alt="" style="width:500px;">
+  <span class="copyright">©版权保护</span>
+</body>
+<script>
+  var images = document.querySelectorAll('img');
+  var copyright = document.querySelector('span.copyright');
+  // image.addEventListener('contextmenu', function (e) {
+  //   e.preventDefault();
+  // })
+  for (let image of images) {
+    image.oncontextmenu = function (e) {
+      e.preventDefault();
+      copyright.style.display = 'block';
+      copyright.style.left = e.clientX + 'px';
+      copyright.style.top = e.clientY + 'px';
+    }
+  }
+  document.onclick = function () {
+    copyright.style.display = 'none';
+  }
+</script>
+
+</html>

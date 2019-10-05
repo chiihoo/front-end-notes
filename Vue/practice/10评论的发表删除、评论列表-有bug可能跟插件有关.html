@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="../lib/vue.js"></script>
+  <link rel="stylesheet" href="../lib/bootstrap.css">
+  <title>发表评论时有时莫名其妙点一下发了两三条，多发的一两条是空内容，有时候又莫名奇妙的啥事没有！
+    出现bug时是用Preview on Web Server插件开的，用Liver Server打开或者直接打开html文件暂时未出现bug！
+  </title>
+  <style>
+    /* 这里控制的是起始位置和终止位置 */
+    .fade-enter,
+    .fade-leave-to {
+      /* opacity: 0; */
+      transform: translateY(80px);
+    }
+
+    /* 这里控制的是要操作的那个li */
+    .fade-enter-active,
+    .fade-leave-active {
+      transition: all 0.6s ease;
+    }
+
+    /* v-move是控制除了要操作的那个li之外的其余li */
+    /* v-move要和v-leave-active一起用 */
+    /* v-move内部的实现用的是FLIP动画 */
+    .fade-move {
+      transition: all 0.6s ease;
+    }
+
+    /* 这里如果不加定位，当删除li的时候，其余的li不会有平滑动画 */
+    .fade-leave-active {
+      position: absolute;
+    }
+
+    li.list-group-item {
+      /* 这里这样写是因为加了定位删除li就有动画了，但宽度会不正常 */
+      width: 100%;
+      /* 不写内容添加时，li高度不会撑高，需要设置最小高度 */
+      min-height: 42px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 子组件调用父组件的loadComment方法 -->
+    <cmt-box @func="loadComment"></cmt-box>
+    <ul class="list-group">
+      <transition-group name="fade">
+        <li class="list-group-item" v-for="item in list" :key="item.id">
+          <span class="badge" :style="delStyle" @click="delComment(item.id)">删除</span>
+          <span class="badge">评论人: {{ item.user }}</span>
+          {{ item.content }}
+        </li>
+      </transition-group>
+    </ul>
+  </div>
+
+  <template id="tmpl">
+    <div>
+      <div class="form-group">
+        <b>评论人:</b>
+        <input type="text" class="form-control" v-model="user">
+      </div>
+      <div class="form-group">
+        <b>评论内容:</b>
+        <textarea class="form-control" v-model="content"></textarea>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary" @click="postComment">发表评论</button>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    var contentBox = {
+      template: '#tmpl',
+      data() {
+        return {
+          user: '',
+          content: '',
+        }
+      },
+      methods: {
+        postComment() {
+          // localStorage只能存字符串，所以存入先要JSON.stringify(),读取要先JSON.parse()
+          var comment = { id: Math.random().toString(36).substr(2), user: this.user, content: this.content }
+          var list = JSON.parse(localStorage.getItem('cmts') || '[]')
+          list.unshift(comment)
+          localStorage.setItem('cmts', JSON.stringify(list))
+          this.user = this.content = ''
+          // 子组件中调用父组件的方法，能在发表评论后即时刷新页面，这里func绑定了父组件的loadComment方法
+          this.$emit('func')
+        }
+      },
+    }
+
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        list: [
+          //假数据
+          // { id: Math.random().toString(36).substr(2), user: '李白', content: '天生我材必有用' },
+          // { id: Math.random().toString(36).substr(2), user: '杜甫', content: '万里悲秋常作客' },
+          // { id: Math.random().toString(36).substr(2), user: '白居易', content: '枫叶荻花秋瑟瑟' },
+        ],
+        delStyle: {
+          cursor: 'pointer',
+        }
+      },
+      created() {
+        //加载localStorage里面的数据
+        this.loadComment()
+      },
+      methods: {
+        loadComment() {
+          var list = JSON.parse(localStorage.getItem('cmts') || '[]')
+          this.list = list
+        },
+        delComment(id) {
+          var list = JSON.parse(localStorage.getItem('cmts') || '[]')
+          for (let i = 0; i < list.length; i++) {
+            if (list[i].id === id) {
+              list.splice(i, 1)
+              localStorage.setItem('cmts', JSON.stringify(list))
+              this.loadComment()
+            }
+          }
+        }
+      },
+      components: {
+        'cmt-box': contentBox,
+      }
+    })
+  </script>
+</body>
+
+</html>

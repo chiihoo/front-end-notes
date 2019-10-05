@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>实现与progress.js一样的类  https://usablica.github.io/progress.js/</title>
+</head>
+<body>
+  <script>
+    class ProgressJS{
+      constructor(){
+        this.el=document.createElement('div');
+        this.el.style=`
+          position: fixed;
+          height: 10px;
+          background-color: skyBlue;
+          top: 0;
+          left: 0;
+          width: 3%;
+          transition: 0.2s;
+        `
+        this.percentage=3;
+      }
+
+      start(){
+        this.percentage=3;
+        this.el.style.width=this.percentage+'%';
+        document.body.appendChild(this.el);
+      }
+
+      increase(amount=5){
+        this.percentage+=amount;
+        this.el.style.width=this.percentage+'%';
+        if(this.percentage>=100){
+          setTimeout(()=>{
+            document.body.removeChild(this.el);
+          },500)
+        }
+      }
+
+      set(amount){
+        this.percentage=amount;
+        this.el.style.width=this.percentage+'%';
+        if(this.percentage>=100){
+          setTimeout(()=>{
+            document.body.removeChild(this.el);
+          },500)
+        }
+      }
+
+      complete(){
+        this.percentage= 100;
+        this.el.style.width=this.percentage+'%';
+        setTimeout(()=>{
+          document.body.removeChild(this.el);
+        },500)
+      }
+
+    }  
+  </script>
+</body>
+</html>

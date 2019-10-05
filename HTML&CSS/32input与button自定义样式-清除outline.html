@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    input {
+      width: 200px;
+      height: 30px;
+      border: 1px solid rgba(0, 0, 0, 0.35);
+      border-radius: 10px;
+      /* 首字符缩进 */
+      text-indent: 10px;
+      /* 输入框字体大小 */
+      font-size: 18px;
+    }
+
+    input:focus {
+      border-color: #66afe9;
+      /* outline设置为0或者none,这是消除外围矩形边框，该边框除了火狐outline-radius外均无法设置弧度 */
+      outline: 0;
+      box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+    }
+
+    button {
+      width: 70px;
+      height: 30px;
+      border: 0px #2e6da4;
+      /* 不能光写一个border-color，否则无法消除button原有样式 */
+      /* border-color:  #2e6da4; */
+      border-radius: 5px;
+      outline: 0;
+      cursor: pointer;
+      background-color: #337ab7;
+      color: #fff;
+    }
+
+    button:hover {
+      background-color: #286090;
+    }
+
+    button:active {
+      background-color: #204d74;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="text">
+  <button>提&nbsp;&nbsp;交</button>
+</body>
+
+</html>

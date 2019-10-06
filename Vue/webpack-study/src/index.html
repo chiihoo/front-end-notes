@@ -21,7 +21,12 @@
   一般把这行打包命令写成配置文件的形式，需要打包时直接运行webpack即可，配置文件名称为webpack.config.js
   -->
 
-  <script src="../dist/bundle.js"></script>
+  <!-- <script src="../dist/bundle.js"></script> -->
+
+  <!-- 使用webpack-dev-server插件时需要引用这个路径才行 -->
+  <!-- <script src="/bundle.js"></script> -->
+  <!-- 当用html-webpack-plugin插件时，不需要导入，插件会自动导入这个地址 -->
+
 
   <!-- 
   从这个示例中，可以看出webpack的作用：
@@ -29,14 +34,10 @@
     2.webpack能够处理js的兼容问题，把高级的、浏览器不支持的语法，转化为低级的、浏览器能够正常识别的语法
   -->
 
+  <!-- 不推荐这样使用，有二次加载的问题，可以在main.js中导入 -->
+  <!-- <link rel="stylesheet" href="./css/index.css"> -->
 
-  <style>
-    ul {
-      margin: 0;
-      padding: 0;
-      list-style-type: none;
-    }
-  </style>
+
 </head>
 
 <body>

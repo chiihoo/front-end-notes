@@ -62,7 +62,26 @@ module.exports = {
       {   //配置处理.scss文件的第三方loader规则
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
-      }
+      },
+      {   //处理图片路径的loader, cnpm install url-loader file-loader -D 
+        test: /\.(jpg|png|gif|bmp|jpeg)$/,
+        use: 'url-loader?limit=7500&name=[hash:8]-[name].[ext]',
+        // limit=7500的意思是：当图片大小<7500字节时，会转成Base64编码格式传递图片，当图片大小>=7500字节时，则不会被转码
+        // 默认limit是10000byte
+        // &name=[name].[ext]的意思是：如果不被转码，在网页中图片的名字会变成 哈希值.(jpg|png...)，这是为了防止图片重名，这样写，可以原来什么名字就显示什么名字
+        // 但是如果文件A中的图片和文件B中的图片重名的话，分别导入两张图，打包后页面中只会显示两张一样的图片，后者会覆盖前者
+        // 怎么解决？可以在前面手动加哈希值，&name=[hash:8]-[name].[ext], 哈希值的前8位
+      },
+      {   //处理字体文件的loader
+        test: /\.(ttf|eot|svg|woff|woff2)$/,
+        use: 'url-loader',
+      },
+      {   //配置Babel来把高级的ES语法转换成低级的ES语法
+        test: /\.js$/,
+        use: 'babel-loader',
+        exclude: /node_modules/,
+      },
+
     ]
   }
 }

@@ -3,3 +3,9 @@ ul {
   padding: 0;
   list-style-type: none;
 }
+.box{
+  width: 100px;
+  height: 100px;
+  background: url(../images/Tachyon.jpg);
+  background-size: cover;
+}

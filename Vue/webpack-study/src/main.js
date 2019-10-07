@@ -32,13 +32,11 @@ class Person {
 }
 console.log(Person.info)
 
-
-
 // webpack默认只能处理一部分ES6的新语法，一些更高级的ES6或者ES7语法，webpack是处理不了的，这时候需要借助Babel，把高级语法转换成低级语法
 // 1. 装包
-//   cnpm i babel-loader @babel/core @babel/preset-env @babel/plugin-transform-runtime -D
-//   cnpm i @babel/polyfill @babel/runtime -S
-//   cnpm i @babel/plugin-transform-arrow-functions @babel/plugin-proposal-class-properties -D
+  // cnpm i babel-loader @babel/core @babel/preset-env @babel/plugin-transform-runtime -D         //转换工具
+  // cnpm i @babel/polyfill @babel/runtime -S                                                     //按需加载插件
+  // cnpm i @babel/plugin-transform-arrow-functions @babel/plugin-proposal-class-properties -D    //语法解析
 //   第三行的cnpm不全，如果用了某个高级语法报错，会报缺少哪个解析器，把缺的包下载下来添加到babel.config.js中的plugins中去就行
 // 2. package.json中 {test:/\.js$/,use:'babel-loader',exclude:/node_modules/}
 // 3. 在项目根目录新建一个叫做babel.config.js的配置文件

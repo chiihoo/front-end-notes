@@ -4,12 +4,12 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 // 导入App组件
-import app from './App.vue'
+import App from './App.vue'
 // 从抽离出去的route.js中导入router对象
 import router from './router.js'
 
 var vm = new Vue({
   el: '#app',
-  render: c => c(app),
+  render: h => h(App),
   router  //把路由对象挂载到vm上
 })

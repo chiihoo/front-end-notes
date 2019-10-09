@@ -133,7 +133,10 @@
         }
       },
       components: {
-        'cmt-box': contentBox,
+        // 这三种写法是一样的，第二三种可以把单引号去掉，第一种由于有短横杠所以得加单引号
+        // 'cmt-box': contentBox,
+        // 'CmtBox': contentBox,
+        'cmtBox': contentBox,
       }
     })
   </script>

@@ -39,7 +39,7 @@ var vm = new Vue({
 
   // render函数会直接把#app这个div替换成login模板
   // 简写
-  render: c => c(login)
+  render: h => h(login)
 
 })
 

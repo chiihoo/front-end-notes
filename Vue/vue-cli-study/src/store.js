@@ -17,16 +17,20 @@ const store = new Vuex.Store({
   },
   actions:{
     // increment(context){
+    //   // console.log(context)
     //   context.commit('increment')
     // },
     // increment:({commit})=>{
     //   commit('increment')
     // },
+
+    // {}里面必须是context的属性
     increment({commit}){
       // 提交的是mutations里面的方法
       commit('increment')
     },
-    // 等同于底下这个，当然底下这个的语法不对
+    
+    // 等同于底下这个，当然底下这个的语法不对。
     // increment ({ commit: context.commit }) {
     //   context.commit('increment');
     // }

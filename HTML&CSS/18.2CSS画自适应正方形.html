@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .box1 {
+      /* 若向容器添加内容，内容会占据一定高度，为了解决这个问题，需要设置height: 0 */
+      /* 必须是padding-bottom，不能写top，否则文字会从容器底部开始 */
+      width: 10%;
+      height: 0;
+      padding-bottom: 10%;
+      background-color: lightblue;
+    }
+
+    .box2 {
+      /* vw 浏览器兼容性不好
+      vw计算的是整个视口的宽度，包括滚动条
+      百分比计算宽度不包括滚动条 */
+      /* width: 10%; */
+      width: 10vw;
+      height: 10vw;
+      background-color: lightblue;
+    }
+
+
+    /* 也存在添加内容会使高度额外增加的问题，可以把内容放在一个包含块中，设置绝对定位 */
+    .box3 {
+      width: 10%;
+      background-color: lightblue;
+      position: relative;
+    }
+
+    .box3:after {
+      content: '';
+      display: block;
+      /* margin-top: 100%; */
+      padding-top: 100%;
+    }
+
+    .box3-son {
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <p>
+    width: 10%;
+    height: 0;
+    padding-bottom: 10%;
+  </p>
+  <div class="box1">
+    Lorem ipsum dolor sit amet consectetur
+  </div>
+  <br>
+  <p>
+    vw 浏览器兼容性不好。
+    vw计算的是整个视口的宽度，包括滚动条；
+    百分比计算宽度不包括滚动条
+  </p>
+  <div class="box2"></div>
+  <br>
+  <p>
+    利用伪元素的 margin(padding)-top 撑开容器，
+    这种方法也存在添加内容会使高度额外增加的问题，可以把内容放在一个包含块中，设置绝对定位
+  </p>
+  <div class="box3">
+    <div class="box3-son">
+      Lorem ipsum dolor sit amet consectetur
+    </div>
+  </div>
+  <br>
+</body>
+
+</html>

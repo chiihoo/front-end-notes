@@ -54,7 +54,6 @@
       clearTimeout(timerId);
       //func.call(this, ...args)是一个结果，不是一个函数，() => func.call(this, ...args)才是一个函数
       timerId = setTimeout(() => func.call(this, ...args), duration);
-
       // let context = this;
       // timerId = setTimeout(function () {
       //   return func.call(context, ...args)
@@ -64,6 +63,7 @@
   }
 
   //不立即执行
+  //只会执行一次debounce函数，然后都执行的是debounce函数返回的function
   // content.onmousemove=debounce(function(){
   //   content.innerHTML=count++;
   // },200)
@@ -75,6 +75,7 @@
     let timerId;
     return function (...args) {
       clearTimeout(timerId);
+      // 第一次 !undefined 为 true ,后面timeId有值了，比如 ！13 为 false
       let callNow = !timerId;
       // console.log(timerId+'+++++1')
       timerId = setTimeout(() => timerId = null, duration);
@@ -131,9 +132,7 @@
 
 
 
-
-
-
+  
 // 节流（throttle）
 // 节流，就是指连续触发事件但是在 n 秒中只执行一次函数。节流会稀释函数的执行频率。
 

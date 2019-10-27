@@ -27,71 +27,75 @@
 </body>
 <script>
 
-// 防抖，debounce，就是指触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
-// 自己的理解: 一个事件触发以后，函数在n秒后会执行一次，如果在这n秒的时间内，该事件又触发了，就会重置这个n秒的计时。
+  // 防抖，debounce，就是指触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
+  // 自己的理解: 一个事件触发以后，函数在n秒后会执行一次，如果在这n秒的时间内，该事件又触发了，就会重置这个n秒的计时。
 
-// 节流，throttle，就是指连续触发事件但是在 n 秒中只执行一次函数。节流会稀释函数的执行频率。
-// 自己的理解: 事件连续的触发，但是，每个n秒内，只会执行一次函数，就是恒定的速度执行函数。
+  // 节流，throttle，就是指连续触发事件但是在 n 秒中只执行一次函数。节流会稀释函数的执行频率。
+  // 自己的理解: 事件连续的触发，但是，每个n秒内，只会执行一次函数，就是恒定的速度执行函数。
 
 
 
-  let count = 1;
-  let content = document.querySelector('#content');
+  let count = 1
+  let content = document.querySelector('#content')
   // content.onmousemove=function(){
-  //   content.innerHTML=count++;
+  //   content.innerHTML=count++
   // }
 
 
 
-// 防抖（debounce）
-// 防抖，就是指触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
+  // 防抖（debounce）
+  // 防抖，就是指触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
 
   //非立即执行版，触发事件后函数不会立即执行，而是在n秒后执行，如果在n秒内又触发了事件，则会重新计算函数执行时间。
   function debounce(func, duration) {
-    let timerId;
+    let timer
     return function (...args) {
       //将undefined传递给clearTimeOut或者在一个已结束的定时器上调用clearTimeOut是没有效果的
-      clearTimeout(timerId);
+      clearTimeout(timer)
       //func.call(this, ...args)是一个结果，不是一个函数，() => func.call(this, ...args)才是一个函数
-      timerId = setTimeout(() => func.call(this, ...args), duration);
-      // let context = this;
-      // timerId = setTimeout(function () {
-      //   return func.call(context, ...args)
-      // }, duration);
+      timer = setTimeout(() => {
+        func.call(this, ...args)
+      }, duration)
+      // let context = this
+      // timer = setTimeout(function () {
+      //   func.call(context, ...args)
+      // }, duration)
 
     }
   }
 
   //不立即执行
   //只会执行一次debounce函数，然后都执行的是debounce函数返回的function
-  // content.onmousemove=debounce(function(){
-  //   content.innerHTML=count++;
-  // },200)
+  content.onmousemove = debounce(function () {
+    content.innerHTML = count++
+  }, 200)
 
 
 
   //立即执行版，触发事件后函数会立即执行，然后n秒内不触发事件才能继续执行函数的效果。
   function debounce2(func, duration) {
-    let timerId;
+    let timer
     return function (...args) {
-      clearTimeout(timerId);
+      clearTimeout(timer)
       // 第一次 !undefined 为 true ,后面timeId有值了，比如 ！13 为 false
-      let callNow = !timerId;
-      // console.log(timerId+'+++++1')
-      timerId = setTimeout(() => timerId = null, duration);
-      // console.log(timerId+'+++++2')
+      let callNow = !timer
+      // console.log(timer+'+++++1')
+      timer = setTimeout(() => {
+        timer = null
+      }, duration)
+      // console.log(timer+'+++++2')
       if (callNow) {
-        func.call(this, ...args);
+        func.call(this, ...args)
       }
     }
   }
 
-  // debounce(function (e) {console.log(3);}, 200)这个的运行结果就是里面的函数
+  // debounce(function (e) {console.log(3)}, 200)这个的运行结果就是里面的函数
   //立即执行
   //这边改成了点击，好观察输出
   // content.addEventListener('mousedown', debounce2(function (e) {
-  //   content.innerHTML = count++;
-  // }, 200));
+  //   content.innerHTML = count++
+  // }, 200))
 
 
 
@@ -103,73 +107,77 @@
    * @param immediate   true 表示立即执行，false 表示非立即执行
    */
   function debounce3(func, duration, immediate) {
-    let timerId;
+    let timer
     return function (...args) {
-      clearTimeout(timerId);
+      clearTimeout(timer)
       if (immediate) {
-        let callNow = !timerId;
-        timerId = setTimeout(() => timerId = null, duration);
+        let callNow = !timer
+        timer = setTimeout(() => {
+          timer = null
+        }, duration)
         if (callNow) {
-          func.call(this, ...args);
+          func.call(this, ...args)
         }
       }
       else {
-        timerId = setTimeout(() => func.call(this, ...args), duration);
+        timer = setTimeout(() => {
+          func.call(this, ...args)
+        }, duration)
       }
     }
   }
 
   //立即执行
   // content.addEventListener('mousemove', debounce3(function (e) {
-  //   content.innerHTML = count++;
-  // }, 200, true));
+  //   content.innerHTML = count++
+  // }, 200, true))
   // 不立即执行
   // content.addEventListener('mousemove', debounce3(function (e) {
-  //   content.innerHTML = count++;
-  // }, 200, false));
+  //   content.innerHTML = count++
+  // }, 200, false))
 
 
 
 
 
-  
-// 节流（throttle）
-// 节流，就是指连续触发事件但是在 n 秒中只执行一次函数。节流会稀释函数的执行频率。
+
+  // 节流（throttle）
+  // 节流，就是指连续触发事件但是在 n 秒中只执行一次函数。节流会稀释函数的执行频率。
 
   //时间戳版
   function throttle(func, duration) {
-    let previews = 0;
+    let previews = 0
     return function (...args) {
-      let now = Date.now();
-      console.log(now)
+      let now = Date.now()
+      // console.log(now)
       if (now - previews > duration) {
-        func.call(this, ...args);
-        previews = now;
+        func.call(this, ...args)
+        previews = now
       }
     }
   }
   // content.addEventListener('mousemove', throttle(function () {
-  //   content.innerHTML = count++;
+  //   content.innerHTML = count++
   // }, 500))
 
 
 
   //定时器版
   function throttle2(func, duration) {
-    let timerId;
+    let timer
     return function (...args) {
-      if(!timerId){
-        timerId = setTimeout(() => {
-          timerId = null;
-          func.call(this, ...args);
-        }, duration);
+      if (!timer) {
+        timer = setTimeout(() => {
+          timer = null
+          func.call(this, ...args)
+        }, duration)
       }
     }
 
   }
-  content.addEventListener('mousemove', throttle2(function () {
-    content.innerHTML = count++;
-  }, 500))
+  // content.addEventListener('mousemove', throttle2(function () {
+  //   content.innerHTML = count++
+  // }, 500))
 
 
 

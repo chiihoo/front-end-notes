@@ -1,132 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>最底下是封装版的ajax</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>最底下是封装版的ajax</title>
-</head>
+  <body>
+    <input type="button" name="" id="" value="测试" />
+    <br />
+    <input type="text" name="" id="testId" />
+    <script>
+      // Ajax的本质就是让网页本身的js函数向服务器端发送请求，返回的结果是直接发回给这个js函数，
+      // 之后这个js函数直接对数据进行处理，对页面进行dom操作，就可以不刷新页面而对页面内容进行修改
+      // 使用XMLHttpRequest对象进行该操作
 
-<body>
-  <input type="button" name="" id="" value="测试">
-  <br>
-  <input type="text" name="" id="testId">
-  <script>
-    // Ajax的本质就是让网页本身的js函数向服务器端发送请求，返回的结果是直接发回给这个js函数，
-    // 之后这个js函数直接对数据进行处理，对页面进行dom操作，就可以不刷新页面而对页面内容进行修改
-    // 使用XMLHttpRequest对象进行该操作
+      // 去看最底下封装的ajax函数！！！
 
-    function getData() {
-      // 创建XMLHttpRequest对象
-      var xhr;
-      if (window.XMLHttpRequest) {
-        xhr = new XMLHttpRequest();
-      } else if (window.ActiveXObject) {
-        xhr = new ActiveXObject("Msxm12.XMLHTTP");   //最新版的ActiveX对象
-      }
+      function getData() {
+        // 创建XMLHttpRequest对象
+        var xhr
+        if (window.XMLHttpRequest) {
+          xhr = new XMLHttpRequest()
+        } else if (window.ActiveXObject) {
+          xhr = new ActiveXObject('Msxm12.XMLHTTP') //最新版的ActiveX对象
+        }
 
-      // readyState属性存有服务器响应的状态信息。每当readyState改变时，onreadystatechange函数就会被执行。
-      // readyState属性可能的值: 0,1,2,3,4
-      // 0	请求未初始化（在调用 open() 之前）
-      // 1	请求已提出（调用 send() 之前）
-      // 2	请求已发送（这里通常可以从响应得到内容头部）
-      // 3	请求处理中（响应中通常有部分数据可用，但是服务器还没有完成响应）
-      // 4	请求已完成（可以访问服务器响应并使用它）
-      xhr.onreadystatechange = function () {
-        //判断readyState状态码，请求已完成时进行操作
-        if (xhr.readyState == 4) {
-          //判断响应状态码
-          if (xhr.status == 200) {
-            //获取响应内容
-            var result = xhr.responseText;
-            //处理响应结果
-            var testInput = document.querySelector('#testId');
-            testInput.innerHTML = result;
-          } else {
-            alert('Ajax服务器返回错误！');
+        // readyState属性存有服务器响应的状态信息。每当readyState改变时，onreadystatechange函数就会被执行。
+        // readyState属性可能的值: 0,1,2,3,4
+        // 0	请求未初始化（在调用 open() 之前）
+        // 1	请求已提出（调用 send() 之前）
+        // 2	请求已发送（这里通常可以从响应得到内容头部）
+        // 3	请求处理中（响应中通常有部分数据可用，但是服务器还没有完成响应）
+        // 4	请求已完成（可以访问服务器响应并使用它）
+        // 或者onload也行，onreadystatechange事件有跨浏览器兼容性的问题，它必须放在在xhr.open()之前
+        xhr.onreadystatechange = function() {
+          //判断readyState状态码，请求已完成时进行操作
+          if (xhr.readyState == 4) {
+            //判断响应状态码
+            if (xhr.status == 200) {
+              //获取响应内容
+              var result = xhr.responseText
+              //处理响应结果
+              var testInput = document.querySelector('#testId')
+              testInput.innerHTML = result
+            } else {
+              alert('Ajax服务器返回错误！')
+            }
           }
         }
+        // xhr.onload = function() {
+        //   if (xhr.status == 200) {
+        //     //获取响应内容
+        //     var result = xhr.responseText
+        //     //处理响应结果
+        //     var testInput = document.querySelector('#testId')
+        //     testInput.innerHTML = result
+        //   } else {
+        //     alert('Ajax服务器返回错误！')
+        //   }
+        // }
+
+        //发送请求
+        //get请求:请求实体拼接在URL后面
+        // xmlHttp.open('get', 'ajax?name=张三&pwd=123');//第二个参数是带请求实体的url
+        // xmlHttp.send(null);
+        //post请求
+        xhr.open('get', 'ajax') //第二个参数是不带请求实体的url,比如'ajax'
+        xhr.setRequestHeader(
+          'Content-type',
+          'application/x-www-form-urlencoded;charset=UTF-8'
+        )
+        xhr.send('name=张三&pwd=123')
       }
 
-      //发送请求
-      //get请求:请求实体拼接在URL后面
-      // xmlHttp.open('get', 'ajax?name=张三&pwd=123');//第二个参数是带请求实体的url
-      // xmlHttp.send(null);
-      //post请求
-      xhr.open('get', 'ajax');//第二个参数是不带请求实体的url,比如'ajax'
-      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
-      xhr.send('name=张三&pwd=123');
-    }
-
-
-
-
-
-    //封装ajax函数
-    function ajax(options) {
-
-      // 这个函数是把options.data的数据拼接成带?和&的请求实体
-      function formsParams(data) {
-        var arr = [];
-        for (var item in data) {
-          arr.push(item + '=' + data[item]);
+      // 封装ajax函数!
+      function ajax(options) {
+        // 这个函数是把options.data的数据拼接成带?和&的请求实体
+        function formsParams(data) {
+          var arr = []
+          for (var item in data) {
+            arr.push(item + '=' + data[item])
+          }
+          return arr.join('&')
         }
-        return arr.join('&');
-      }
 
-      var xhr = null;
-      // 这个函数是把options.data的数据拼接成带?和&的请求实体
-      var params = formsParams(options.data);
+        var xhr = null
+        // 这个函数是把options.data的数据拼接成带?和&的请求实体
+        var params = formsParams(options.data)
+        // 或者直接这样
+        // var params = Object.entries(options.data).map(pair=>pair.join('=')).join('&')
 
-      // 创建XMLHttpRequest对象
-      if (window.XMLHttpRequest) {
-        xhr = new XMLHttpRequest();
-      } else if (window.ActiveXObject) {
-        xhr = new ActiveXObject("Microsoft.XMLHTTP");
-      }
+        // 创建XMLHttpRequest对象
+        if (window.XMLHttpRequest) {
+          xhr = new XMLHttpRequest()
+        } else if (window.ActiveXObject) {
+          xhr = new ActiveXObject('Microsoft.XMLHTTP')
+        }
 
-      // 监听readyState属性，当readyState=4时，说明请求已完成（可以访问服务器响应并使用它）
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
+        // 监听readyState属性，当readyState=4时，说明请求已完成（可以访问服务器响应并使用它），onreadystatechange必须放在在xhr.open()之前
+        // onload事件和onreadystatechange效果一样，不用判断readyState状态码
+        xhr.onload = function() {
           if (xhr.status == 200) {
-            options.success(xhr.responseText);
+            options.success(xhr.responseText)
           } else {
-            alert('Ajax服务器返回错误！');
+            alert('Ajax服务器返回错误！')
           }
         }
+
+        //发送请求
+        if (options.type == 'GET') {
+          //'get'或者'post' ,url ,异步true或者同步false
+          xhr.open(options.type, options.url + '?' + params, options.async)
+          xhr.send(null)
+        } else if (options.type == 'POST') {
+          xhr.open(options.type, options.url, options.async)
+          xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+          xhr.send(params)
+        }
       }
 
-      //发送请求
-      if (options.type == 'GET') {
-        //'get'或者'post' ,url ,异步true或者同步false
-        xhr.open(options.type, options.url + '?' + params, options.async);
-        xhr.send(null);
-      } else if (options.type == 'POST') {
-        xhr.open(options.type, options.url, options.async);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.send(params);
-      }
-
-    }
-
-    ajax({
-      url: 'a.php',  //url-->地址
-      type: 'POST', //type-->请求方式
-      async: true, //async-->异步:true,同步:false, 默认是异步的
-      data: {     //传入信息
-        name: '张三',
-        age: 23,
-      },
-      success: function (data) {  //返回接受信息
-        console.log(data);
-      }
-
-    })
-
-
-
-  </script>
-</body>
-
+      ajax({
+        url: 'a.php', //url-->地址
+        type: 'POST', //type-->请求方式
+        async: true, //async-->异步:true,同步:false, 默认是异步的
+        data: {
+          //这里的信息是请求的参数，会转成 ?name=张三&age=23 发出请求
+          name: '张三',
+          age: 23
+        },
+        success: function(data) {
+          //返回接受信息
+          console.log(data)
+        }
+      })
+    </script>
+  </body>
 </html>

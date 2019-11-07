@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <script src="./lib/react.development.js" crossorigin></script>
+    <script src="./lib/react-dom.development.js" crossorigin></script>
+    <script src="./lib/babel.min.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // <a b="c">d</a>
+      // 相当于React.create('a',{b:'c'},'d')
+
+      //组件名必须大写，React.createElement(Counter),而小写就是('counter')
+      /*
+      //第1种写法
+      class Counter extends React.Component {
+        constructor(props) {
+          //props传入的是<Counter a="1" b="2" />中的 {a:"1",b:"2"}
+          super(props)
+          this.state = {
+            count: 0
+          }
+        }
+        dec() {
+          this.setState({
+            count: this.state.count - 1
+          })
+        }
+        inc() {
+          this.setState({
+            count: this.state.count + 1
+          })
+        }
+        // 需要绑定this，是因为dec和inc函数里面有一句this.state.count + 1
+        // 在JSX中传递的事件不是一个字符串，而是一个函数（如:onClick={this.dec}），此时onClick即是中间变量，
+        // 利用中间变量调用方法，此时this.dec函数里面count中的this会失去指向，输出undefined，所以要绑定this，
+        // 使得无论事件处理函数如何传递，this指向都是当前实例化对象
+        // 绑定this，每次都要重新创建新的函数，改进：放到构造函数中直接绑定好
+        render() {
+          return (
+            <div>
+              <button onClick={this.dec.bind(this)}>-</button>
+              <span>{this.state.count}</span>
+              <button onClick={this.inc.bind(this)}>+</button>
+            </div>
+          )
+        }
+      }
+
+      // 第2种写法
+      class Counter extends React.Component {
+        constructor(props) {
+          //props传入的是<Counter a="1" b="2" />中的 {a:"1",b:"2"}
+          super(props)
+          // 绑定this，直接放到构造函数中直接绑定好
+          this.dec = this.dec.bind(this)
+          this.inc = this.inc.bind(this)
+          this.state = {
+            count: 0
+          }
+        }
+        dec() {
+          this.setState({
+            count: this.state.count - 1
+          })
+        }
+        inc() {
+          this.setState({
+            count: this.state.count + 1
+          })
+        }
+        render() {
+          return (
+            <div>
+              <button onClick={this.dec}>-</button>
+              <span>{this.state.count}</span>
+              <button onClick={this.inc}>+</button>
+            </div>
+          )
+        }
+      }
+
+      // 第3种写法
+      class Counter extends React.Component {
+        constructor(props) {
+          //props传入的是<Counter a="1" b="2" />中的 {a:"1",b:"2"}
+          super(props)
+          this.dec = () => {
+            this.setState({
+              count: this.state.count - 1
+            })
+          }
+          this.inc = () => {
+            this.setState({
+              count: this.state.count + 1
+            })
+          }
+          this.state = {
+            count: 0
+          }
+        }
+        render() {
+          return (
+            <div>
+              <button onClick={this.dec}>-</button>
+              <span>{this.state.count}</span>
+              <button onClick={this.inc}>+</button>
+            </div>
+          )
+        }
+      }
+      */
+      //第4种写法（第三种写法的ES6形式）
+      class Counter extends React.Component {
+        constructor(props) {
+          //props传入的是<Counter a="1" b="2" />中的 {a:"1",b:"2"}
+          super(props)
+          this.state = {
+            count: 0
+          }
+        }
+        method = () => {}
+        // ES6语法 class field，相当于代码写在构造函数里面，并且前面加上this.
+        dec = () => {
+          this.setState({
+            count: this.state.count - 1
+          })
+        }
+        inc = () => {
+          this.setState({
+            count: this.state.count + 1
+          })
+        }
+        // 绑定this，每次都要重新创建新的函数，改进：放到构造函数中直接绑定好
+        render() {
+          return (
+            <div>
+              <button onClick={this.dec}>-</button>
+              <span>{this.state.count}</span>
+              <button onClick={this.inc}>+</button>
+            </div>
+          )
+        }
+      }
+
+      // <Counter /> == React.createElement(Counter, null))
+      ReactDOM.render(
+        <div>
+          <Counter />
+        </div>,
+        document.getElementById('root')
+      )
+    </script>
+  </body>
+</html>

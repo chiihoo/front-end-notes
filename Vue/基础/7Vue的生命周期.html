@@ -16,7 +16,7 @@
   </div>
   <script>
     var vm = new Vue({
-      el: '#app',
+    el: '#app',
       data: {
         msg: 'this is a message!',
       },
@@ -68,8 +68,8 @@
 
       //updated执行时，页面和data数据已经保持同步了，都是最新的
       updated() {
-        console.log('界面上元素的内容:' + document.querySelector('#app').innerText)
-        console.log('data中的msg数据是:' + this.msg)
+      console.log('界面上元素的内容:' + document.querySelector('#app').innerText)
+      console.log('data中的msg数据是:' + this.msg)
         // 界面上元素的内容: msg已被修改!
         // data中的msg数据是:msg已被修改!
       },

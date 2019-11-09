@@ -30,11 +30,25 @@ var mimeMap = {
   '': 'text/plain'
 }
 
+// 思路：使用http模块创建一个服务器，用根目录__dirname与用户请求的路径req.url拼接，得到当前完整路径，这个路径如果有中文就会被转码，需要解码
+// 通过fs.stat模块来判断当前路径是文件还是文件夹
+// 一、 如果是文件，则直接返回这个文件的内容
+// 二、 如果是文件夹，判断这个文件夹里面是否有index.html文件
+//     1. 有：返回这个index.html中的内容
+//     2. 没有：用fs.readdir()读取这个文件夹中每个文件的名字，遍历生成html列表返回
+
+// 注意事项：
+// 1. 用mimeMap可以保存不同格式的文件返回的 'Content-Type' 文件类型
+// 2. 'Content-Type': 'text/html; charset=UTF-8'需要编码格式
+// 3. url末尾要加斜杠'/'
+
 // 回调版本
 const server = http.createServer((req, res) => {
+  // decodeURIComponent解码
   var targetPath = decodeURIComponent(path.join(baseDir, req.url))
   fs.stat(targetPath, (err, stat) => {
     if (err) {
+      // 这里可以把每个文件的类型写进去，其中path.extname()可以返回path路径的文件扩展名
       var type = mimeMap[path.extname(targetPath)]
       res.writeHead(404, {
         'Content-Type': `${type}; charset=UTF-8`
@@ -104,18 +118,15 @@ const server = http.createServer((req, res) => {
 const serverP = http.createServer(async (req, res) => {
   // decodeURIComponent解码
   var targetPath = decodeURIComponent(path.join(baseDir, req.url))
-  console.log(targetPath)
   try {
     var stat = await fsp.stat(targetPath)
     if (stat.isFile()) {
       var data = await fsp.readFile(targetPath)
-
-      // 这里可以把每个文件的类型写进去
+      // 这里可以把每个文件的类型写进去，其中path.extname()可以返回path路径的文件扩展名
       var type = mimeMap[path.extname(targetPath)]
       res.writeHead(200, {
         'Content-Type': `${type}; charset=UTF-8`
       })
-
       res.end(data)
     } else if (stat.isDirectory()) {
       var indexPath = path.join(targetPath, 'index.html')

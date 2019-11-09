@@ -10,9 +10,10 @@ function run(generatorFunc) {
     step()
     function step() {
       if (generated.done) {
-        // 如果generated.value是个Promise，resolve(generated.value)需要等里面Promise完成才能继续
-        // 如果generated.value不是Promise，resolve(generated.value)就直接运行了
-        // Promise.resolve()用于将现有对象转换为Promise对象，所以可以统一转成Promise对象
+        // 如果generated.value不是Promise，resolve(generated.value)这样写可以
+        // 如果generated.value是个Promise，这样写不行，需要这样写generated.value.then(resolve,reject)
+        // Promise.resolve()用于将现有对象转换为Promise对象，如果本来就是Promise对象，Promise.resolve()不会改动它
+        // 所以可以写成以下形式 Promise.resolve(generated.value).then(resolve, reject)
         Promise.resolve(generated.value).then(resolve, reject)
       } else {
         generated.value.then(

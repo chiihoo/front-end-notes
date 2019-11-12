@@ -5,81 +5,78 @@
 
 // 方法一:直接解析
 var parseBoolExpr = function(expression) {
-  let i=0;
-  return parse();
-  
-  function parse(){
-    if(expression[i]=='t'){
-      i++;
-      return true;
-    }
-    if(expression[i]=='f'){
-      i++;
-      return false;
-    }
-    if(expression[i]=='!'){
-      return parseNot();
-    }
-    if(expression[i]=='&'){
-      return parseAnd();
-    }
-    if(expression[i]=='|'){
-      return parseOr();
-    }
-  }
-  
-  function parseNot(){
-    i+=2;
-    let value=parse();
-    i++;
-    return !value;
-  }
-  
-  function parseAnd(){
-    i+=2;
-    let result=true;
-    while(true){
-      let value=parse();
-      result=result&&value;
-      if(expression[i]==')'){
-        i++;
-        break;
-      }
-      if(expression[i]==','){
-        i++;
-      }
-    }
-    return result;
-  }
-  
-  function parseOr(){
-    i+=2;
-    let result=false;
-    while(true){
-      let value=parse();
-      result=result||value;
-      if(expression[i]==')'){
-        i++;
-        break;
-      }
-      if(expression[i]==','){
-        i++;
-      }
-    }
-    return result;
-  }
-};
+  let i = 0
+  return parse()
 
+  function parse() {
+    if (expression[i] == 't') {
+      i++
+      return true
+    }
+    if (expression[i] == 'f') {
+      i++
+      return false
+    }
+    if (expression[i] == '!') {
+      return parseNot()
+    }
+    if (expression[i] == '&') {
+      return parseAnd()
+    }
+    if (expression[i] == '|') {
+      return parseOr()
+    }
+  }
 
+  function parseNot() {
+    i += 2
+    let value = parse()
+    i++
+    return !value
+  }
+
+  function parseAnd() {
+    i += 2
+    let result = true
+    while (true) {
+      let value = parse()
+      result = result && value
+      if (expression[i] == ')') {
+        i++
+        break
+      }
+      if (expression[i] == ',') {
+        i++
+      }
+    }
+    return result
+  }
+
+  function parseOr() {
+    i += 2
+    let result = false
+    while (true) {
+      let value = parse()
+      result = result || value
+      if (expression[i] == ')') {
+        i++
+        break
+      }
+      if (expression[i] == ',') {
+        i++
+      }
+    }
+    return result
+  }
+}
 
 // 方法二:解析语法树
-var parseBoolExpr = function (expression) {
+var parseBoolExpr = function(expression) {
   var i = 0
   var tree = parse()
   return run(tree)
   // return compile(tree)
   // return compile2(tree)
-
 
   // //后缀表达式     (只是转化,不能做这题)
   // function compile2(tree) {
@@ -149,14 +146,14 @@ var parseBoolExpr = function (expression) {
       i++
       return {
         type: 'literal',
-        value: true,
+        value: true
       }
     }
     if (expression[i] == 'f') {
       i++
       return {
         type: 'literal',
-        value: false,
+        value: false
       }
     }
     if (expression[i] == '!') {
@@ -226,6 +223,4 @@ var parseBoolExpr = function (expression) {
     }
     return result
   }
-};
-
-
+}

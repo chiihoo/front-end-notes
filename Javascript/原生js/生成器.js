@@ -82,11 +82,11 @@ for (var i of 10) {
 
 //TODO:在for之前增加代码以让for循环可以输出 9 1 2 3
 
-// Number.prototype[Symbol.iterator] = function* () {
-//   let n = this;
+// Number.prototype[Symbol.iterator] = function*() {
+//   let n = this
 //   while (n) {
-//     yield (n % 10);
-//     n = Math.floor(n / 10);
+//     yield n % 10
+//     n = Math.floor(n / 10)
 //   }
 // }
 // for (var digit of 3219) {

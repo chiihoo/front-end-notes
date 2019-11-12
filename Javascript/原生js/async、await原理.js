@@ -4,10 +4,10 @@ function run(generatorFunc) {
     var generated
     try {
       generated = iterable.next()
+      step() 
     } catch (e) {
       reject(e)
     }
-    step()
     function step() {
       if (generated.done) {
         // 如果generated.value不是Promise，resolve(generated.value)这样写可以
@@ -20,18 +20,18 @@ function run(generatorFunc) {
           val => {
             try {
               generated = iterable.next(val)
+              step()
             } catch (e) {
               reject(e)
             }
-            step()
           },
           reason => {
             try {
               generated = iterable.throw(reason)
+              step()
             } catch (e) {
               reject(e)
             }
-            step()
           }
         )
       }

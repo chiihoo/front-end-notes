@@ -7,27 +7,27 @@ const port = 3005
 
 const app = express()
 
-// const dbPromise = sqlite.open(__dirname+'/db/voting-website.sqlite3')
+const dbPromise = sqlite.open(__dirname + '/db/voting-website.sqlite3')
 // const dbPromise = sqlite.open('./db/voting-website.sqlite3')
-// let db
+let db
 
-const users = [
-  {
-    name: 'a',
-    email: 'a@qq.com',
-    password: 'a'
-  },
-  {
-    name: 'b',
-    email: 'b@qq.com',
-    password: 'b'
-  },
-  {
-    name: 'yy',
-    email: 'yyflying11d@163.com',
-    password: 'y'
-  }
-]
+// const users = [
+//   {
+//     name: 'a',
+//     email: 'a@qq.com',
+//     password: 'a'
+//   },
+//   {
+//     name: 'b',
+//     email: 'b@qq.com',
+//     password: 'b'
+//   },
+//   {
+//     name: 'yy',
+//     email: 'yyflying11d@163.com',
+//     password: 'y'
+//   }
+// ]
 
 const changePasswordTokenMap = {}
 
@@ -80,12 +80,22 @@ app
     </form>
   `)
   })
-  .post((req, res, next) => {
-    var userInfo = req.body
-    if (users.findIndex(it => it.name === userInfo.name) >= 0) {
+  .post(async (req, res, next) => {
+    var regInfo = req.body
+    if (regInfo.name == '' || regInfo.email == '' || regInfo.password == '') {
+      res.end('用户名、邮箱、密码不能为空')
+      return
+    }
+    var user = await db.get('SELECT * FROM users WHERE name=?', regInfo.name)
+    if (user) {
       res.end('用户名已被占用')
     } else {
-      users.push(userInfo)
+      await db.run(
+        'INSERT INTO users (name, email, password) VALUES (?,?,?)',
+        regInfo.name,
+        regInfo.email,
+        regInfo.password
+      )
       res.end('注册成功')
     }
   })
@@ -112,6 +122,7 @@ app
         xhr.onload = () => {
           if(xhr.status==200){
             var data = JSON.parse(xhr.responseText)
+            // 获取POST请求中返回的code，0表示登录成功，-1表示登录失败
             if(data.code==0){
               alert('login success, will redirected to homepage')
               location.href = '/'
@@ -128,16 +139,16 @@ app
     </script>
   `)
   })
-  .post((req, res, next) => {
+  .post(async (req, res, next) => {
     var tryLoginUser = req.body
-    if (
-      users.findIndex(
-        it => it.name === tryLoginUser.name && it.password === tryLoginUser.password
-      ) >= 0
-    ) {
+    var user = await db.get(
+      'SELECT * FROM users WHERE name=? AND password=?',
+      tryLoginUser.name,
+      tryLoginUser.password
+    )
+    if (user) {
       // 设置cookie
       res.cookie('user', tryLoginUser.name, { signed: true })
-
       res.json({ code: 0 })
       return
 
@@ -175,9 +186,10 @@ app
     </form>
   `)
   })
-  .post((req, res, next) => {
+  .post(async (req, res, next) => {
     var email = req.body.email
-    if (!users.find(it => it.email == email)) {
+    var user = await db.get('SELECT * FROM users WHERE email=?', email)
+    if (!user) {
       res.end('未找到此用户邮箱!')
       return
     }
@@ -223,15 +235,19 @@ app
     //   }
     //   console.log('Message sent: ' + info.response)
     // })
-
-    res.end('已向您的邮箱发送密码重置链接')
+    res.end('已向您的邮箱发送密码重置链接，请于20分钟内点击链接修改密码！')
   })
 
 app
   .route('/change-password/:token')
-  .get((req, res, next) => {
+  .get(async (req, res, next) => {
     var token = req.params.token
-    var user = users.find(it => it.email == changePasswordTokenMap[token])
+    var email = changePasswordTokenMap[token]
+    if (!email) {
+      res.end('链接已失效')
+      return
+    }
+    var user = await db.get('SELECT * FROM users WHERE email=?', email)
     res.end(`
       此页面可以重置${user.name}的密码
       <form action="" method="post">
@@ -240,16 +256,16 @@ app
       </form>
     `)
   })
-  .post((req, res, next) => {
+  .post(async (req, res, next) => {
     var token = req.params.token
-    var user = users.find(it => it.email == changePasswordTokenMap[token])
     var password = req.body.password
-    if (user) {
-      user.password = password
-      delete changePasswordTokenMap[token]
-      res.end('密码修改成功')
+    var email = changePasswordTokenMap[token]
+    if (!email) {
+      res.end('链接已失效')
     } else {
-      res.end('此链接已失效')
+      delete changePasswordTokenMap[token]
+      await db.run('UPDATE users SET password=? WHERE email=?', password, email)
+      res.end('密码修改成功')
     }
   })
 
@@ -258,12 +274,9 @@ app.get('/logout', (req, res, next) => {
   res.redirect('/')
 })
 
-// dbPromise.then(dbObject => {
-//   db = dbObject
-//   app.listen(port, () => {
-//     console.log('server listening on port', port)
-//   })
-// })
-app.listen(port, () => {
-  console.log('server listening on port', port)
+dbPromise.then(dbObject => {
+  db = dbObject
+  app.listen(port, () => {
+    console.log('server listening on port', port)
+  })
 })

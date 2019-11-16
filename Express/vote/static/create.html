@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>创建投票</h2>
+    <form id="form" action="/create-vote" method="post">
+      <div><input type="text" placeholder="标题" name="title" required /></div>
+      <div><input type="text" placeholder="问题描述" name="desc" /></div>
+      <div>
+        <input type="text" placeholder="选项" name="options" />
+        <button class="remove-option">-</button>
+      </div>
+      <div>
+        <input type="text" placeholder="选项" name="options" />
+        <button class="remove-option">-</button>
+      </div>
+      <div id="add-option-wrap"><button id="add-option">添加选项</button></div>
+      <div><input type="datetime-local" placeholder="截止日期" name="deadline" /></div>
+      <div>
+        匿名<input type="radio" value="0" name="anonymous" />
+        非匿名<input type="radio" value="1" name="anonymous" />
+      </div>
+      <div>
+        <select name="singleSelection">
+          <option value="1">单选</option>
+          <option value="0">多选</option>
+        </select>
+      </div>
+      <div>
+        <button>创建投票</button>
+      </div>
+    </form>
+
+    <script>
+      var form = document.querySelector('#form')
+      var addOptionBtn = document.querySelector('#add-option')
+      var addOptionBtnWrap = document.querySelector('#add-option-wrap')
+
+      form.addEventListener('click', e => {
+        if (e.target.matches('.remove-option')) {
+          e.preventDefault()
+          e.target.parentNode.remove()
+        }
+      })
+      addOptionBtn.addEventListener('click', e => {
+        // button标签中设置type="button"也可以阻止默认的submit提交行为
+        e.preventDefault()
+        var wrap = document.createElement('div')
+        wrap.innerHTML = `<div>
+          <input type="text" placeholder="选项" name="options" />
+          <button class="remove-option">-</button>
+        </div>`
+        form.insertBefore(wrap.firstChild, addOptionBtnWrap)
+      })
+    </script>
+  </body>
+</html>

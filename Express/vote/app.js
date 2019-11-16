@@ -11,24 +11,6 @@ const dbPromise = sqlite.open(__dirname + '/db/voting-website.sqlite3')
 // const dbPromise = sqlite.open('./db/voting-website.sqlite3')
 let db
 
-// const users = [
-//   {
-//     name: 'a',
-//     email: 'a@qq.com',
-//     password: 'a'
-//   },
-//   {
-//     name: 'b',
-//     email: 'b@qq.com',
-//     password: 'b'
-//   },
-//   {
-//     name: 'yy',
-//     email: 'yyflying11d@163.com',
-//     password: 'y'
-//   }
-// ]
-
 const changePasswordTokenMap = {}
 
 app.use((req, res, next) => {
@@ -49,11 +31,11 @@ app.use(
 app.get('/', (req, res, next) => {
   console.log(req.cookies)
   console.log(req.signedCookies)
-  if (req.signedCookies.user) {
+  if (req.signedCookies.userid) {
     res.send(`
       <div>
-        <span>Welcome,${req.signedCookies.user}</span>
-        <a href="/create">创建投票</a>
+        <span>Welcome,${req.signedCookies.userid}</span>
+        <a href="/create.html">创建投票</a>
         <a href="/logout">登出</a>
       </div>
     `)
@@ -66,8 +48,30 @@ app.get('/', (req, res, next) => {
     `)
   }
 })
-app.get('/create', (req, res, next) => {})
+app.post('/create-vote', async (req, res, next) => {
+  console.log(req.body)
+  var voteInfo = req.body
+  var userid = req.signedCookies.userid
+  // 如果使用${}的形式，容易被XSS注入，比如 "OR 1=1"
+  await db.run(
+    'INSERT INTO votes (title, desc, userid, singleSelection, deadline, anonymous) VALUES (?,?,?,?,?,?)',
+    voteInfo.title,
+    voteInfo.desc,
+    userid,
+    voteInfo.singleSelection,
+    new Date(voteInfo.deadline).getTime(),
+    voteInfo.anonymous
+  )
+  // 倒序查找第一个，也就是正序的最后一个
+  var  vote = await db.get('SELECT * FROM votes ORDER BY id DESC LIMIT 1')
+  await Promise.all(voteInfo.options.map(option=>{
+    db.run('INSERT INTO options (content, voteid) VALUES (?,?)',option,vote.id)
+  }))
+  res.end('投票已创建，编号为' + vote.id)
+})
+
 app.get('/vote/:id', (req, res, next) => {})
+
 app
   .route('/register')
   .get((req, res, next) => {
@@ -118,7 +122,6 @@ app
         var password = document.querySelector('[name="password"]').value
         // 用ajax请求在当前页面验证用户名密码是否正确
         var xhr = new XMLHttpRequest()
-        xhr.open('POST','/login')
         xhr.onload = () => {
           if(xhr.status==200){
             var data = JSON.parse(xhr.responseText)
@@ -133,6 +136,7 @@ app
             alert('服务器错误')
           }
         }
+        xhr.open('POST','/login')
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
         xhr.send('name='+name+'&password='+password)
       }
@@ -148,7 +152,7 @@ app
     )
     if (user) {
       // 设置cookie
-      res.cookie('user', tryLoginUser.name, { signed: true })
+      res.cookie('userid', user.id, { signed: true })
       res.json({ code: 0 })
       return
 
@@ -270,7 +274,7 @@ app
   })
 
 app.get('/logout', (req, res, next) => {
-  res.clearCookie('user')
+  res.clearCookie('userid')
   res.redirect('/')
 })
 

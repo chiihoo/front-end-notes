@@ -53,6 +53,7 @@ app.post('/create-vote', async (req, res, next) => {
   var voteInfo = req.body
   var userid = req.signedCookies.userid
   // 如果使用${}的形式，容易被XSS注入，比如 "OR 1=1"
+  // 把投票的基本信息插入votes表中
   await db.run(
     'INSERT INTO votes (title, desc, userid, singleSelection, deadline, anonymous) VALUES (?,?,?,?,?,?)',
     voteInfo.title,
@@ -63,14 +64,36 @@ app.post('/create-vote', async (req, res, next) => {
     voteInfo.anonymous
   )
   // 倒序查找第一个，也就是正序的最后一个
+  // 读取votes表中最新插入的一条数据，获取id，把这个id作为voteid，和投票的选项一起插入到options表中，
   var  vote = await db.get('SELECT * FROM votes ORDER BY id DESC LIMIT 1')
   await Promise.all(voteInfo.options.map(option=>{
     db.run('INSERT INTO options (content, voteid) VALUES (?,?)',option,vote.id)
   }))
-  res.end('投票已创建，编号为' + vote.id)
+  // res.end('投票已创建，编号为' + vote.id)
+  res.redirect('/vote/'+vote.id)
 })
 
-app.get('/vote/:id', (req, res, next) => {})
+app.get('/vote/:id', async (req, res, next) => {
+  var votePromise = db.get('SELECT * FROM votes WHERE id=?', req.params.id)
+  var optionsPromise = db.all('SELECT * FROM options WHERE voteid=?', req.params.id)
+
+  var vote = await votePromise
+  var options = await optionsPromise
+
+  res.end(`
+    <h1>${vote.title}</h1>
+    <h3>${vote.desc}</h3>
+    ${
+      options.map(option=>{
+        return`
+          <div data-option-id="${option.id}">
+            <span>${option.content}</span>
+          </div>
+        `
+      }).join('  ')
+    }
+  `)
+})
 
 app
   .route('/register')
@@ -83,7 +106,7 @@ app
       <button>注册</button>
     </form>
   `)
-  })
+  }) 
   .post(async (req, res, next) => {
     var regInfo = req.body
     if (regInfo.name == '' || regInfo.email == '' || regInfo.password == '') {

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>
+      当页面内容过少时，footer底部的div会跟随着上一个盒子，此时footer在整体的尾部，但在视口的中间
+      如何让footer在页面内容过少时，位于视口的底部；在页面元素较多时，位于页面整体的尾部？
+
+      #container设置 position: relative; min-height: 100%;
+      footer设置 position: absolute; bottom: 0; height: 101px;
+      仅仅这样还不够！因为绝对定位会使footer会遮盖.main的底部，要想让footer与.main分开，
+      还需要再给#container设置 padding-bottom: 101px(大于等于footer高度); box-sizing: border-box;
+    </title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      #container {
+        position: relative; /*保证footer是相对于container位置绝对定位*/
+        width: 100%;
+
+        min-height: 100%; /*这里只设置min-height，切记不要设置height*/
+
+        padding-bottom: 100px; /*设置padding-bottom值大于等于footer的height值，以保证main的内容能够全部显示出来而不被footer遮盖；*/
+        box-sizing: border-box; /*使用padding-bottom必须设置box-sizing，否则footer会跑出视口*/
+      }
+      footer {
+        width: 100%;
+        height: 100px; /* footer的高度一定要是固定值*/
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        /* background-color: #333; */
+      }
+      header {
+        width: 100%;
+        height: 200px;
+        background-color: #999;
+      }
+      .main {
+        width: 100%;
+        height: 200px;
+        /* height: 2000px; */
+        background-color: orange;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <header>HEADER</header>
+      <section class="main">MAIN</section>
+      <!-- Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere.
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium consequatur dolores asperiores sit sequi in quam magni necessitatibus ipsum rerum sapiente, consequuntur quod sunt nam inventore esse accusamus enim facere. -->
+      <footer>FOOTER</footer>
+    </div>
+  </body>
+</html>

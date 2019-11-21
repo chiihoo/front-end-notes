@@ -117,7 +117,7 @@
         }
       }
       */
-      //第4种写法（第三种写法的ES6形式）
+      //第4种写法（第三种写法的ES6形式） 属性初始化器语法
       class Counter extends React.Component {
         constructor(props) {
           //props传入的是<Counter a="1" b="2" />中的 {a:"1",b:"2"}
@@ -127,7 +127,7 @@
           }
         }
         method = () => {}
-        // ES6语法 class field，相当于代码写在构造函数里面，并且前面加上this.
+        // ES6语法 属性初始化器语法（class field不确定），相当于代码写在构造函数里面，并且前面加上this.
         dec = () => {
           this.setState({
             count: this.state.count - 1

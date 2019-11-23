@@ -38,11 +38,23 @@
             count: this.state.count + 1
           })
         }
-        // 需要绑定this，是因为dec和inc函数里面有一句this.state.count + 1
-        // 在JSX中传递的事件不是一个字符串，而是一个函数（如:onClick={this.dec}），此时onClick即是中间变量，
-        // 利用中间变量调用方法，此时this.dec函数里面count中的this会失去指向，输出undefined，所以要绑定this，
+
+        // 如果一个函数里面存在this语句，将这个函数引用赋值给某个其他变量并使用这个新变量去调用该函数时，该函数里面的this会丢失指向，
+        // 这个this转而由这个新变量所在作用域决定，在"use strict"严格模式下，这个this会指向undefined
+
+        // 需要绑定this，是因为dec和inc函数里面有一句this.state.count + 1，这里的this是隐式绑定，
+        // 在JSX中传递的事件不是一个字符串，而是一个函数（如:onClick={this.dec}），此时onClick即是中间变量，利用中间变量调用方法，
+        // 此时this.dec函数里面this.setState的this会丢失原来的指向，而类声明和类表达式的主体以严格模式执行，会输出undefined，所以要绑定this，
         // 使得无论事件处理函数如何传递，this指向都是当前实例化对象
         // 绑定this，每次都要重新创建新的函数，改进：放到构造函数中直接绑定好
+        // https://segmentfault.com/a/1190000015406770
+
+        // onClick={(e) => this.dec(e)}这种写法也可以，箭头函数被包含在render()方法中，该方法由 React在组件实例的上下文中调用
+        // 箭头函数实际没有this，箭头函数中的this其实是父级作用域中的this，箭头函数引用了父级作用域的变量，构成了一个闭包
+        // 箭头函数不仅没有this，常用的arguments也没有。如果你能获取到arguments，那它一定是来自于父级作用域。
+
+        // 类声明和类表达式的主体以 严格模式 执行，主要包括构造函数、静态方法和原型方法。Getter 和 setter 函数也在严格模式下执行。
+
         render() {
           return (
             <div>
@@ -117,7 +129,7 @@
         }
       }
       */
-      //第4种写法（第三种写法的ES6形式） 属性初始化器语法
+      //第4种写法（第三种写法的ES6形式）属性初始化器语法  React文档中写的是class fields语法（实验性）
       class Counter extends React.Component {
         constructor(props) {
           //props传入的是<Counter a="1" b="2" />中的 {a:"1",b:"2"}
@@ -127,8 +139,8 @@
           }
         }
         method = () => {}
-        // ES6语法 属性初始化器语法（class field不确定），相当于代码写在构造函数里面，并且前面加上this.
-        dec = () => {
+        // ES6语法 属性初始化器语法（React文档中写的class fields语法），相当于代码写在构造函数里面，并且前面加上this.
+        dec = () => { 
           this.setState({
             count: this.state.count - 1
           })

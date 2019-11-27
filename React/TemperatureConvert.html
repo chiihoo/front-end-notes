@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <script src="./lib/react.development.js" crossorigin></script>
+    <script src="./lib/react-dom.development.js" crossorigin></script>
+    <script src="./lib/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // 转换函数 temperature温度，convert转换函数(toCelsius、toFahrenheit)
+      function toCelsius(fahrenheit) {
+        return ((fahrenheit - 32) * 5) / 9
+      }
+      function toFahrenheit(celsius) {
+        return (celsius * 9) / 5 + 32
+      }
+      function tryConvert(temperature, convert) {
+        const input = parseFloat(temperature)
+        if (Number.isNaN(input)) {
+          return ''
+        }
+        // 把转换结果取三位小数并四舍五入最后一位  3.14159 3141.59 3142 3.142
+        const rounded = Math.round(convert(input) * 1000) / 1000
+        return rounded.toString()
+      }
+
+      //组件：显示水温是否大于华氏100度
+      function BoilingVerdict(props) {
+        if (props.celsius >= 100) {
+          return <p>The water would boil.</p>
+        }
+        return <p>The water would not boil.</p>
+      }
+
+      // 让一个组件渲染两个独立的温度输入框组件，也是这里的子组件
+      const scaleNames = {
+        c: 'Celsius',
+        f: 'Fahrenheit'
+      }
+      class TemperatureInput extends React.Component {
+        constructor(props) {
+          super(props)
+        }
+        handleChange = e => {
+          this.props.onTemperatureChange(e.target.value)
+        }
+        render() {
+          return (
+            <fieldset>
+              <legend>Enter temperature in {scaleNames[this.props.scale]}:</legend>
+              <input type="text" value={this.props.temperature} onChange={this.handleChange} />
+              <BoilingVerdict celsius={parseFloat(this.props.temperature)}></BoilingVerdict>
+            </fieldset>
+          )
+        }
+      }
+
+      // 在 React 中，将多个组件中需要共享的 state 向上移动到它们的最近共同父组件中，便可实现共享 state。这就是所谓的“状态提升”。
+      // 用onTemperatureChange参数把handleCelsiusChange和handleFahrenheitChange函数传到子组件中去，
+      // 子组件中可以用this.props.onTemperatureChange来接收到这个函数，调用的时候可以传入子组件中的参数
+      // 父组件中这两个函数可以把接收到的参数写入this.state，这样就实现了子组件向父组件传值
+      // 而父组件向子组件传值只需要在子组件标签上传入参数，在子组件中以this.props.xxx即可得到父组件的值.
+
+      // 主组件，也是这里的父组件
+      class Calculator extends React.Component {
+        constructor(props) {
+          super(props)
+          this.state = { temperature: '', scale: 'c' }
+        }
+        handleCelsiusChange = temperature => {
+          this.setState({temperature,scale:'c'})
+        }
+        handleFahrenheitChange = temperature => {
+          this.setState({temperature,scale:'f'})
+        }
+        render() {
+          const scale = this.state.scale
+          const temperature = this.state.temperature
+          const celsius = scale == 'f' ? tryConvert(temperature, toCelsius) : temperature
+          const fahrenheit = scale == 'c' ? tryConvert(temperature, toFahrenheit) : temperature
+          return (
+            <div>
+              <TemperatureInput scale="c" temperature={celsius} onTemperatureChange={this.handleCelsiusChange}/>
+              <TemperatureInput scale="f" temperature={fahrenheit} onTemperatureChange={this.handleFahrenheitChange}/>
+            </div>
+          )
+        }
+      }
+
+      ReactDOM.render(
+        <div>
+          <Calculator />
+        </div>,
+        document.getElementById('root')
+      )
+    </script>
+  </body>
+</html>

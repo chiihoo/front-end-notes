@@ -42,7 +42,7 @@
         // 如果一个函数里面存在this语句，将这个函数引用赋值给某个其他变量并使用这个新变量去调用该函数时，该函数里面的this会丢失指向，
         // 这个this转而由这个新变量所在作用域决定，在"use strict"严格模式下，这个this会指向undefined
 
-        // 需要绑定this，是因为dec和inc函数里面有一句this.state.count + 1，这里的this是隐式绑定，
+        // 需要绑定this，是因为dec和inc函数里面有一句this.setState，这里的this是隐式绑定，
         // 在JSX中传递的事件不是一个字符串，而是一个函数（如:onClick={this.dec}），此时onClick即是中间变量，利用中间变量调用方法，
         // 此时this.dec函数里面this.setState的this会丢失原来的指向，而类声明和类表达式的主体以严格模式执行，会输出undefined，所以要绑定this，
         // 使得无论事件处理函数如何传递，this指向都是当前实例化对象
@@ -161,6 +161,9 @@
           )
         }
       }
+
+      // React的render函数是把虚拟DOM绘制在第二个参数表示的dom元素里面
+      // 而Vue的render函数是直接替换该dom元素
 
       // <Counter /> == React.createElement(Counter, null))
       ReactDOM.render(

@@ -148,6 +148,8 @@
         inc = () => {
           this.setState({
             count: this.state.count + 1
+            // ++this.state.count可以，this.state.count++不行
+            // count: ++this.state.count
           })
         }
         // 绑定this，每次都要重新创建新的函数，改进：放到构造函数中直接绑定好

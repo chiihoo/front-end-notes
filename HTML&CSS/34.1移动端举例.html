@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    html{
+      /* font-size: 16px; */
+      /* font-size: 62.5%; */
+
+      /* 浏览器 移动端调试，设置为屏幕宽300px时，盒子宽30px，此时100vw = 300px, font-size:100/3px, 0.1rem = 100/3px
+      设置为屏幕宽400px时，盒子自动调整为宽40px，此时100vw = 400px, font-size:400/3px, 0.3rem * 400/3 px/rem = 40px */
+
+      font-size: calc(100vw / 300 * 100);
+    }
+    div{
+      background-color: red;
+      height: 50px;
+      width: 0.3rem;
+    }
+  </style>
+</head>
+<body>
+  <div></div>
+</body>
+</html>

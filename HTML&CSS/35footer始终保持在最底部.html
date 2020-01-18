@@ -8,10 +8,18 @@
       当页面内容过少时，footer底部的div会跟随着上一个盒子，此时footer在整体的尾部，但在视口的中间
       如何让footer在页面内容过少时，位于视口的底部；在页面元素较多时，位于页面整体的尾部？
 
-      #container设置 position: relative; min-height: 100%;
-      footer设置 position: absolute; bottom: 0; height: 101px;
-      仅仅这样还不够！因为绝对定位会使footer会遮盖.main的底部，要想让footer与.main分开，
-      还需要再给#container设置 padding-bottom: 101px(大于等于footer高度); box-sizing: border-box;
+        设置html,body {height: 100%;}，且* {margin: 0;}
+        footer设置 position: absolute（相对于#container）; bottom: 0; height: 101px（定高）;
+      与此同时，#container设置 position: relative; min-height: 100%;
+        仅仅这样还不够！
+        因为当.main的高度很大的时候，绝对定位会使footer遮盖.main的底部，要想让footer与.main分开，
+      还需要再给#container设置 padding-bottom: 101px(大于等于footer高度); 
+        然而当.main的高度很小的时候，给#container设置的底部内边距又会使footer脱离视口，
+      故还需要给#container设置box-sizing: border-box;
+
+      简而言之，footer设置到container的最底部，container设置min-height: 100%，以此保持高度的自适应变化，
+      同时，由于main高度大时，会被footer遮盖一部分，就要给container设置一个底部的内边距（大于等于footer高度），
+      而main高度小时，这个内边距又会使footer挤到页面外，就设置box-sizing: border-box使 边框和内边距包含在宽度、高度中
     </title>
     <style>
       * {

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>TodoApp</title>
+    <script src="./lib/react.development.js" crossorigin></script>
+    <script src="./lib/react-dom.development.js" crossorigin></script>
+    <script src="./lib/babel.min.js"></script>
+    <script src="https://unpkg.com/immer/dist/immer.umd.js"></script>
+    <style>
+      .menu {
+        display: inline-block;
+        margin-right: 10px;
+        border: 1px solid #27b3eb;
+        cursor: pointer;
+        width: 70px;
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="TodoApp"></div>
+    <script type="text/babel">
+      class TodoApp extends React.Component {
+        constructor(props) {
+          super(props)
+
+          this.state = {
+            data: [
+              {
+                id: 1,
+                text: '数据1',
+                done: false
+              },
+              {
+                id: 2,
+                text: '数据2',
+                done: true
+              }
+            ]
+          }
+        }
+
+        addData = val => {
+          // this.state.data.push({ id: Date.now().toString(16), text: val, done: false })
+          // this.setState({ data: this.state.data })
+          this.setState(
+            immer.produce(state => {
+              state.data.push({ id: Date.now().toString(16), text: val, done: false })
+            })
+          )
+          // this.setState(state =>
+          //   immer.produce(state, draft => {
+          //     draft.data.push({ id: Date.now().toString(16), text: val, done: false })
+          //   })
+          // )
+        }
+
+        delData = val => {
+          this.setState(
+            immer.produce(state => {
+              state.data = state.data.filter(it => {
+                return it.id !== val
+              })
+
+              // for (let i in state.data) {
+              //   //for in 用来遍历数组时，i为下标
+              //   if (state.data[i].id === val) {
+              //     state.data.splice(i, 1)
+              //   }
+              // }
+            })
+          )
+        }
+
+
+        render() {
+          return (
+            <React.Fragment>
+              <h1>Todo</h1>
+              <TodoForm childAddData={this.addData} />
+              <TodoList data={this.state.data} childDelData={this.delData} />
+              <TodoFooter />
+            </React.Fragment>
+          )
+        }
+      }
+
+      class TodoForm extends React.Component {
+        constructor(props) {
+          super(props)
+          this.myRef = React.createRef()
+        }
+
+        handleAddData = () => {
+          if (this.myRef.current.value !== '') {
+            this.props.childAddData(this.myRef.current.value)
+            this.myRef.current.value = ''
+          }
+        }
+
+        render() {
+          return (
+            <React.Fragment>
+              <input type="text" ref={this.myRef} style={{ verticalAlign: 'top' }} />{' '}
+              <span
+                style={{
+                  border: '1px solid #27b3eb',
+                  cursor: 'pointer',
+                  display: 'inline-block',
+                  width: '50px',
+                  textAlign: 'center'
+                }}
+                onClick={this.handleAddData}
+              >
+                添加
+              </span>
+            </React.Fragment>
+          )
+        }
+      }
+
+      class TodoList extends React.Component {
+        constructor(props) {
+          super(props)
+          this.state = {
+            borderStyle: '',
+            id: ''
+          }
+        }
+
+        handleDelData = id => {
+          this.props.childDelData(id)
+        }
+
+        handleMouseOver = id => {
+          this.setState({
+            borderStyle: '1px solid #27b3eb',
+            id: id
+          })
+        }
+        handleMouseOut = () => {
+          this.setState({
+            borderStyle: '',
+            id: ''
+          })
+        }
+
+        render() {
+          return (
+            <React.Fragment>
+              <ul>
+                {this.props.data.map((item, idx) => {
+                  return (
+                    <li key={item.id} style={{ marginBottom: '5px' }}>
+                      <input type="checkbox" defaultChecked={item.done} />
+                      {item.text}
+                      <span
+                        onClick={() => this.handleDelData(item.id)}
+                        // onClick={this.handleDelData.bind(this,item.id)}
+
+                        onMouseOver={() => this.handleMouseOver(item.id)}
+                        onMouseOut={() => this.handleMouseOut(item.id)}
+                        style={{
+                          float: 'right',
+                          marginRight: '1000px',
+                          cursor: 'pointer',
+                          //传key可以设置单个li的样式
+                          border: this.state.id == item.id ? this.state.borderStyle : ''
+                        }}
+                      >
+                        删除
+                      </span>
+                    </li>
+                  )
+                })}
+              </ul>
+            </React.Fragment>
+          )
+        }
+      }
+
+      class TodoFooter extends React.Component {
+        constructor(props) {
+          super(props)
+        }
+        render() {
+          return (
+            <React.Fragment>
+              <ul>
+                <li className="menu" value='1'>全部事项</li>
+                <li className="menu" value='2'>待完成</li>
+                <li className="menu" value='3'>已完成</li>
+              </ul>
+            </React.Fragment>
+          )
+        }
+      }
+
+      ReactDOM.render(<TodoApp style={{ width: '300px' }} />, document.getElementById('TodoApp'))
+    </script>
+  </body>
+</html>

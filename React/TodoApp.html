@@ -13,12 +13,18 @@
       .menu {
         display: inline-block;
         margin-right: 10px;
-        border: 1px solid #27b3eb;
         cursor: pointer;
         width: 70px;
         height: 25px;
         line-height: 25px;
         text-align: center;
+        border: 1px solid #27b3eb;
+      }
+      .menu:hover {
+        background-color: #27b3eb;
+      }
+      .selected {
+        background-color: #27b3eb;
       }
       ul {
         list-style-type: none;
@@ -33,7 +39,6 @@
       class TodoApp extends React.Component {
         constructor(props) {
           super(props)
-
           this.state = {
             data: [
               {
@@ -44,9 +49,30 @@
               {
                 id: 2,
                 text: '数据2',
+                done: false
+              },
+              {
+                id: 3,
+                text: '数据3',
+                done: false
+              },
+              {
+                id: 4,
+                text: '数据4',
+                done: false
+              },
+              {
+                id: 5,
+                text: '数据5',
                 done: true
+              },
+              {
+                id: 6,
+                text: '数据6',
+                done: false
               }
-            ]
+            ],
+            tag: 'all'
           }
         }
 
@@ -73,7 +99,7 @@
               })
 
               // for (let i in state.data) {
-              //   //for in 用来遍历数组时，i为下标
+              //   // for in 用来遍历数组时，i为下标
               //   if (state.data[i].id === val) {
               //     state.data.splice(i, 1)
               //   }
@@ -82,14 +108,57 @@
           )
         }
 
+        // 上层改变下层所有checkbox状态
+        changeAllChecked = bool => {
+          this.setState(
+            immer.produce(state => {
+              state.data.map(it => {
+                it.done = bool
+              })
+            })
+          )
+        }
+
+        // 下层checkbox改变上层state数据 ,obj={id:id, refsObj:{id1:dom1,id2:dom2,...}}
+        changeChecked = obj => {
+          this.setState(
+            immer.produce(state => {
+              state.data.map(it => {
+                if (it.id === obj.id) {
+                  it.done = obj.refsObj[obj.id].checked
+                }
+              })
+            })
+          )
+        }
+
+        // 筛选全部，未完成，已完成的条目，即修改tag为'all','active'或'done'
+        selectText = tag => {
+          this.setState(
+            immer.produce(state => {
+              state.tag = tag
+            })
+          )
+        }
 
         render() {
           return (
             <React.Fragment>
               <h1>Todo</h1>
-              <TodoForm childAddData={this.addData} />
-              <TodoList data={this.state.data} childDelData={this.delData} />
-              <TodoFooter />
+              <TodoForm
+                datas={this.state}
+                childAddData={this.addData}
+                changeChecked={this.changeAllChecked}
+              />
+              <TodoList
+                datas={this.state}
+                childDelData={this.delData}
+                changeChecked={this.changeChecked}
+              />
+              <TodoFooter
+                selectText={this.selectText}
+                count={this.state.data.filter(item => item.done == false).length}
+              />
             </React.Fragment>
           )
         }
@@ -99,6 +168,29 @@
         constructor(props) {
           super(props)
           this.myRef = React.createRef()
+          this.checkedRef = React.createRef()
+        }
+        componentDidUpdate() {
+          // 判断下级组件是否全选上了，以此更改总的checkbox状态
+          let isAllDone = this.props.datas.data.every((item, index, arr) => {
+            return item.done === true
+          })
+
+          this.checkedRef.current.checked =
+            this.props.datas.data.length !== 0 && isAllDone ? true : false
+        }
+
+        // 键盘回车事件
+        componentDidMount() {
+          document.addEventListener('keydown', this.handleEnterKey)
+        }
+        componentWillUnmount() {
+          document.removeEventListener('keydown', this.handleEnterKey)
+        }
+        handleEnterKey = e => {
+          if (e.keyCode === 13) {
+            this.handleAddData()
+          }
         }
 
         handleAddData = () => {
@@ -108,9 +200,14 @@
           }
         }
 
+        handleChangeChecked = () => {
+          this.props.changeChecked(this.checkedRef.current.checked)
+        }
+
         render() {
           return (
             <React.Fragment>
+              <input type="checkbox" onChange={this.handleChangeChecked} ref={this.checkedRef} />
               <input type="text" ref={this.myRef} style={{ verticalAlign: 'top' }} />{' '}
               <span
                 style={{
@@ -136,12 +233,17 @@
             borderStyle: '',
             id: ''
           }
+          this.refsObj = {}
         }
 
         handleDelData = id => {
           this.props.childDelData(id)
         }
+        handleChangeChecked = id => {
+          this.props.changeChecked({ id: id, refsObj: this.refsObj })
+        }
 
+        // 只是为了设置右侧单个删除按钮hover时出现浅蓝色边框效果
         handleMouseOver = id => {
           this.setState({
             borderStyle: '1px solid #27b3eb',
@@ -156,17 +258,34 @@
         }
 
         render() {
+          let tag = this.props.datas.tag
+          let data =
+            tag === 'all'
+              ? this.props.datas.data
+              : this.props.datas.data.filter((item, index, arr) => {
+                  return tag == 'done' ? item.done == true : item.done == false
+                })
           return (
             <React.Fragment>
               <ul>
-                {this.props.data.map((item, idx) => {
+                {data.map((item, idx) => {
                   return (
                     <li key={item.id} style={{ marginBottom: '5px' }}>
-                      <input type="checkbox" defaultChecked={item.done} />
-                      {item.text}
+                      <input
+                        type="checkbox"
+                        checked={item.done}
+                        onChange={() => this.handleChangeChecked(item.id)}
+                        ref={el => {
+                          // 在map中要给每一个都加上ref,就这样把每一个都写入refsObj对象中
+                          this.refsObj[item.id] = el
+                        }}
+                      />
+                      <span style={{ textDecoration: item.done ? 'line-through' : '' }}>
+                        {item.text}
+                      </span>
                       <span
                         onClick={() => this.handleDelData(item.id)}
-                        // onClick={this.handleDelData.bind(this,item.id)}
+                        // onClick={this.handleDelData.bind(this, item.id)}
 
                         onMouseOver={() => this.handleMouseOver(item.id)}
                         onMouseOut={() => this.handleMouseOut(item.id)}
@@ -174,7 +293,7 @@
                           float: 'right',
                           marginRight: '1000px',
                           cursor: 'pointer',
-                          //传key可以设置单个li的样式
+                          // MouseOver时设置this.state.id，再与自身id比较，就可以设置单个li的样式
                           border: this.state.id == item.id ? this.state.borderStyle : ''
                         }}
                       >
@@ -193,13 +312,32 @@
         constructor(props) {
           super(props)
         }
+        handleSelectText = e => {
+          let tag = e.target.getAttribute('tag')
+          // console.log(tag)
+          // 判断是点在了li上，而不是ul上。或者直接判断tag非空也可以达到一样的效果
+          if (e.target.tagName == 'LI') {
+            // 向上层组件传递tag
+            this.props.selectText(tag)
+            // 使按钮点击后保持高亮
+            document.querySelectorAll('li.menu').forEach(item => item.classList.remove('selected'))
+            e.target.classList.add('selected')
+          }
+        }
         render() {
           return (
             <React.Fragment>
-              <ul>
-                <li className="menu" value='1'>全部事项</li>
-                <li className="menu" value='2'>待完成</li>
-                <li className="menu" value='3'>已完成</li>
+              <span>{this.props.count} items left</span>
+              <ul onClick={e => this.handleSelectText(e)}>
+                <li className="menu selected" tag="all">
+                  全部
+                </li>
+                <li className="menu" tag="active">
+                  未完成
+                </li>
+                <li className="menu" tag="done">
+                  已完成
+                </li>
               </ul>
             </React.Fragment>
           )

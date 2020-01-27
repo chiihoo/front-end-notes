@@ -119,7 +119,7 @@
           )
         }
 
-        // 下层checkbox改变上层state数据 ,obj={id:id, refsObj:{id1:dom1,id2:dom2,...}}
+        // 下层checkbox改变上层state数据，obj={id:id, refsObj:{id1:dom1,id2:dom2,...}}
         changeChecked = obj => {
           this.setState(
             immer.produce(state => {
@@ -171,7 +171,7 @@
           this.checkedRef = React.createRef()
         }
         componentDidUpdate() {
-          // 判断下级组件是否全选上了，以此更改总的checkbox状态
+          // 判断TodoList组件的checkbox是否全选上了，以此更改总的checkbox状态
           let isAllDone = this.props.datas.data.every((item, index, arr) => {
             return item.done === true
           })
@@ -243,7 +243,7 @@
           this.props.changeChecked({ id: id, refsObj: this.refsObj })
         }
 
-        // 只是为了设置右侧单个删除按钮hover时出现浅蓝色边框效果
+        // 只是为了设置右侧单个删除按钮hover时出现浅蓝色边框的效果
         handleMouseOver = id => {
           this.setState({
             borderStyle: '1px solid #27b3eb',

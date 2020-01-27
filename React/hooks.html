@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="./lib/react.development.js" crossorigin></script>
+    <script src="./lib/react-dom.development.js" crossorigin></script>
+    <script src="./lib/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      var { useState, useEffect, useContext, useCallback, useRef } = React
+
+      var ColorContext = React.createContext()
+      var AgeContext = React.createContext()
+
+      function App() {
+        var [color, setColor] = useState('skyblue')
+        var [age, setAge] = useState(23)
+        return (
+          <ColorContext.Provider value={color}>
+            <AgeContext.Provider value={age}>
+              <Counter />
+            </AgeContext.Provider>
+          </ColorContext.Provider>
+        )
+      }
+      function Foo() {
+        return (
+          <div>
+            <Bar />
+          </div>
+        )
+      }
+      function Bar() {
+        return (
+          <div>
+            <Counter />
+          </div>
+        )
+      }
+
+      function Counter(props) {
+        // 不要用if或者for打乱不同useState()的顺序（出bug），或改变useState()的个数（报错）！！！
+        // 不推荐写成 var [state, setState1] = useState({ count: 1, name: 'Chiho' }) 的形式
+        // 因为如果要单独修改count时，必须 setCount({ ...state, count: count + 1 }) ，其中 ...state不可缺少，旧状态不会自动merge到新状态中去
+        // 而class组件只需要 setState({ count: 1 }) 即可，它会自动比较不同之处来进行修改
+        var [count, setCount] = useState(1)
+        var [name, setName] = useState('Chiho')
+
+        var color = useContext(ColorContext)
+        var age = useContext(AgeContext)
+
+        // useEffect是componentDidMount和componentDidUpdate的集成体，每次组件挂载和更新完成后都会运行
+        useEffect(() => {
+          // effect:
+          console.log('effect on', count)
+          const timeId = setInterval(() => {
+            setCount(count + 1)
+          }, 1000)
+
+          // 清除操作：return的函数 是 componentWillUnmount 即组件卸载时 要干的事，比如清除周期函数
+          return () => {
+            console.log('effect off', count)
+            clearInterval(timeId)
+          }
+          // effect 的清除阶段在每次重新渲染时都会执行，而不是只在卸载组件的时候执行一次，这有利于消除bug
+          // 比如 从props中读取friend.id，组件挂载后订阅好友状态，卸载组件时取消订阅
+          // 如果当组件已经显示在屏幕上时，friend props发生了变化，组件仍将继续显示原来的好友状态
+          // 在class组件中一般在componentDidUpdate中取消订阅之前的friend.id，再订阅新的friend.id
+          // 而函数组件每次更新，都会重新渲染，effect都会清除和重新执行，也解决了这个问题
+
+          // 第二个可选参数，会比较数组中的每个元素有没有发生变化，如果没有变化，React会跳过这次effect，
+          // 不会执行effect，也不会清除effect，可以实现性能优化。空数组[]会始终跳过effect，只会运行一次effect
+          // 一般来说，effect使用了哪些参数，就在第二个数组参数中写上这些参数，也可以避免其他无关state的更新对该effect造成的影响
+          // 请确保数组中包含了所有外部作用域中会随时间变化并且在effect中使用的变量，否则会引用到先前渲染中的旧变量。
+        }, [count])
+        // }) //这个不写第二个参数会导致，每次修改输入框里面的值，都会导致effect的清除和重新执行，可以从打印语句观察到这一现象
+
+        // 每次点击这个增加删除按钮，setCount()运行，这个Counter组件都会重新销毁创建
+        return (
+          <div>
+            <p>
+              {color}--{age}
+            </p>
+            <input type="text" value={name} onChange={e => setName(e.target.value)} />
+            <button onClick={() => setCount(count - 1)}>-</button>
+            <span>{count}</span>
+            <button onClick={() => setCount(count + 1)}>+</button>
+          </div>
+        )
+      }
+      ReactDOM.render(
+        <div>
+          <App />
+        </div>,
+        document.getElementById('root')
+      )
+    </script>
+  </body>
+</html>

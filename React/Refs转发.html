@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="./lib/react.development.js" crossorigin></script>
+    <script src="./lib/react-dom.development.js" crossorigin></script>
+    <script src="./lib/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+      // 函数组件不能被给refs，会报错，class组件可以被给refs
+      // const FancyButton = (props) => (
+      //   <button className="FancyButton">
+      //     {props.children}
+      //   </button>
+      // )
+
+      const FancyButton = React.forwardRef((props, ref) => ( //这个ref接受的是ref1
+        <button ref={ref} className="FancyButton">
+          {props.children}
+        </button>
+      ))
+
+
+      const ref1 = React.createRef()
+      ReactDOM.render(
+        <div>
+          <FancyButton ref={ref1}>Click me!</FancyButton>
+        </div>,
+        document.querySelector('#root')
+      )
+      console.log(ref1)
+    </script>
+  </body>
+</html>

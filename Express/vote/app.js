@@ -1,3 +1,4 @@
+// 使用终端进入当前目录，输入 node app.js 运行
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const nodemailer = require('nodemailer')

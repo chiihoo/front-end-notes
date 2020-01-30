@@ -84,6 +84,9 @@
               state.data.push({ id: Date.now().toString(16), text: val, done: false })
             })
           )
+          // immer.produce(state=>{...})返回的是一个函数，放在this.setState中，就是给这个函数传入了一个state
+          // 实际上immer.produce(state=>{...})(state) 会返回一个新的修改过的state
+
           // this.setState(state =>
           //   immer.produce(state, draft => {
           //     draft.data.push({ id: Date.now().toString(16), text: val, done: false })

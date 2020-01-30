@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="./lib/react.development.js" crossorigin></script>
+    <script src="./lib/react-dom.development.js" crossorigin></script>
+    <script src="./lib/babel.min.js"></script>
+    <script src="https://unpkg.com/react-router-dom@5.1.2/umd/react-router-dom.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+      // HashRouter是#，BrowserRouter是history方案，没有#，但要进行配置，设置根目录
+      var { HashRouter, Switch, Route, Link, withRouter } = ReactRouterDOM
+      function About() {
+        return (
+          <div>
+            <nav>
+              <ul>
+                <li>
+                  <Link to="/about/me">me</Link>
+                </li>
+                <li>
+                  <Link to="./him">him</Link>
+                </li>
+                <li>
+                  <Link to="her">her</Link>
+                </li>
+              </ul>
+            </nav>
+            <Switch>
+              <Route path="/about/me">about me</Route>
+              <Route path="/about/him">about him</Route>
+              <Route path="/about/her">about her</Route>
+            </Switch>
+          </div>
+        )
+      }
+      function Users() {
+        return (
+          <div>
+            <Link to="/user/1">张三</Link>
+            <br />
+            <Link to="/user/2">李四</Link>
+            <br />
+            <Link to="/user/3">王五</Link>
+            <br />
+            <Link to="/user/4">赵六</Link>
+            <br />
+          </div>
+        )
+      }
+      // 需要用withRouter这个高阶组件才能拿到props
+      var User = withRouter(function User(props) {
+        // JSON.stringify出来的props
+        // {
+        //   history: {
+        //     length: 50,
+        //     action: 'PUSH',
+        //     location: { pathname: '/user/1', search: '', hash: '' }
+        //   },
+        //   location: { pathname: '/user/1', search: '', hash: '' },
+        //   match: { path: '/user/:id', url: '/user/1', isExact: true, params: { id: '1' } }
+        // }
+        console.log(props)
+        return (
+          <React.Fragment>
+            <button
+              onClick={() => {
+                // 返回上一步
+                props.history.go(-1)
+              }}
+            >
+              返回
+            </button>
+            <div
+              onClick={() => {
+                // 函数式跳转
+                props.history.push('/user/' + (+props.match.params.id + 1))
+              }}
+            >
+              user:{JSON.stringify(props)}
+            </div>
+          </React.Fragment>
+        )
+      })
+      function Home() {
+        return <div>home</div>
+      }
+      function NotFound() {
+        return <div>404</div>
+      }
+
+      function App() {
+        return (
+          <HashRouter>
+            <div>
+              <nav>
+                <ul>
+                  <li>
+                    <Link to="/">Home</Link>
+                  </li>
+                  <li>
+                    <Link to="/about">About</Link>
+                  </li>
+                  <li>
+                    <Link to="/users">Users</Link>
+                  </li>
+                </ul>
+              </nav>
+
+              {/* <Switch>是会选择匹配到的第一个，也可以使用<Route path="/" exact>来进行精确匹配 */}
+              <Switch>
+                <Route path="/about">
+                  <About />
+                </Route>
+                <Route path="/users">
+                  <Users />
+                </Route>
+                <Route path="/user/:id">
+                  <User />
+                </Route>
+                <Route path="/" exact>
+                  <Home />
+                </Route>
+                <Route path="*">
+                  <NotFound />
+                </Route>
+              </Switch>
+            </div>
+          </HashRouter>
+        )
+      }
+
+      ReactDOM.render(<App />, document.querySelector('#root'))
+    </script>
+  </body>
+</html>

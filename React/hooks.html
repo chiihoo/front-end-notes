@@ -12,7 +12,7 @@
   <body>
     <div id="root"></div>
     <script type="text/babel">
-      var { useState, useEffect, useContext, useCallback, useRef } = React
+      var { useState, useEffect, useContext, useCallback, useRef, useMemo } = React
 
       var ColorContext = React.createContext()
       var AgeContext = React.createContext()
@@ -50,6 +50,7 @@
         // 而class组件只需要 setState({ count: 1 }) 即可，它会自动比较不同之处来进行修改
         var [count, setCount] = useState(1)
         var [name, setName] = useState('Chiho')
+        var [count2, setCount2] = useState(5)
 
         var color = useContext(ColorContext)
         var age = useContext(AgeContext)
@@ -80,16 +81,40 @@
         }, [count])
         // }) //这个不写第二个参数会导致，每次修改输入框里面的值，都会导致effect的清除和重新执行，可以从打印语句观察到这一现象
 
+        // 像dec这样的写法，每次函数组件刷新都会重新创建dec函数
+        var dec = () => {
+          setCount(count - 1)
+        }
+        // 而inc这样的写法，使用了useCallback，如果第二个参数没有变化，则不会重新创建inc函数
+        var inc = useCallback(() => {
+          setCount(count + 1)
+        }, [count])
+        // var inc = useMemo(
+        //   () => () => {
+        //     setCount(count + 1)
+        //   },
+        //   [count]
+        // )
+
+        // useCallback(fn, deps) 相当于 useMemo(() => fn, deps)
+        // useMemo第一个参数是一个返回数值或者方法的函数，而useCallback第一个参数是一个可以没有返回值的函数
+        var p = useMemo(() => count * count2, [count, count2])
+        // console.log('p',p)
+
+        // 使用React.createRef()创建出来的ref每次组件刷新都会销毁并重新创建，而useRef()创建的ref不会重新创建
+        var myRef = useRef()
+        // console.log(myRef)
+
         // 每次点击这个增加删除按钮，setCount()运行，这个Counter组件都会重新销毁创建
         return (
           <div>
             <p>
               {color}--{age}
             </p>
-            <input type="text" value={name} onChange={e => setName(e.target.value)} />
-            <button onClick={() => setCount(count - 1)}>-</button>
+            <input type="text" value={name} onChange={e => setName(e.target.value)} ref={myRef} />
+            <button onClick={dec}>-</button>
             <span>{count}</span>
-            <button onClick={() => setCount(count + 1)}>+</button>
+            <button onClick={inc}>+</button>
           </div>
         )
       }

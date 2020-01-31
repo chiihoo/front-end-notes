@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="./lib/react.development.js" crossorigin></script>
+    <script src="./lib/react-dom.development.js" crossorigin></script>
+    <script src="./lib/babel.min.js"></script>
+    <script src="https://unpkg.com/immer/dist/immer.umd.js"></script>
+    <script src="https://unpkg.com/redux@4.0.5/dist/redux.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      var state = {
+        showing: 'all',
+        todos: [
+          { idx: 0, content: 'eat', done: false },
+          { idx: 1, content: 'drink', done: true },
+          { idx: 3, content: 'ddd', done: true },
+          { idx: 5, content: 'ssd', done: true }
+        ]
+      }
+
+      
+      // var store = Redux.createStore((state, action) => {
+      //   if (action.type == 'addTodo') {
+      //     // return {
+      //     //   ...state,
+      //     //   todos: [
+      //     //     ...state.todos,
+      //     //     { idx: action.idx, content: action.todoText, done: action.done }
+      //     //   ]
+      //     // }
+      //     return immer.produce(state, state => {
+      //       state.todos.push({ idx: action.idx, content: action.todoText, done: action.done })
+      //     })
+      //   }
+      //   if (action.type == 'deleteTodo') {
+      //     //不要用for in来遍历数组，有bug! 5个删除1个，结果只剩下3个，坑
+      //     // for (let i = 0; i < state.todos.length; i++) {
+      //     //   if (state.todos[i].idx == action.idx) {
+      //     //     return {
+      //     //       ...state,
+      //     //       todos: [...state.todos.slice(0, i), ...state.todos.slice(i + 1)]
+      //     //     }
+      //     //   }
+      //     // }
+      //     // return state
+      //     return immer.produce(state, state => {
+      //       state.todos = state.todos.filter(it => it.idx !== action.idx)
+      //     })
+      //   }
+      //   // 必须写上这句 return state, 或者用switch case 也行， default语句写上return state
+      //   return state
+      //   // 第二个参数state就是刚开始声明的state数据，也可以不传，那么第一个参数里面传的(state,action),这个state就会变为空的
+      // }, state)
+
+      //另一种类似于vuex的把处理函数单独抽离出来放到mutations中的store写法
+      var mutations = {
+        // 即addTodo:function(){}
+        // addTodo(state, action) {
+        //   // return immer.produce(state, state => {
+        //   //   state.todos.push({ content: action.todoText })
+        //   // })
+        //   return immer.produce(state => {
+        //     state.todos.push({ idx: action.idx, content: action.todoText, done: action.done })
+        //   })(state)
+        // },
+
+        // 更好的方式：
+        addTodo: immer.produce((state, action) => {
+          state.todos.push({ idx: action.idx, content: action.todoText, done: action.done })
+        }),
+        deleteTodo: immer.produce((state, action) => {
+          state.todos = state.todos.filter(it => it.idx !== action.idx)
+        })
+      }
+      var store = Redux.createStore((state, action) => {
+        var mutation = mutations[action.type]
+        if (mutation) {
+          return mutation(state, action)
+        } else {
+          return state
+        }
+      }, state)
+
+      // 订阅，相当于state的onChange，state改变就会触发
+      var unsubscribe = store.subscribe(() => console.log('触发subscribe'))
+      // 修改数据
+      // store.dispatch({ type: 'addTodo', idx: 10, todoText: 'sleep2', done: false })
+      // store.dispatch({ type: 'deleteTodo', idx: 5 })
+
+      // store.getState().todos可以获取当前state.todos，可以粘贴到浏览器看结果
+      ReactDOM.render(<div>1</div>, document.querySelector('#root'))
+    </script>
+  </body>
+</html>

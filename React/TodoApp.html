@@ -101,6 +101,7 @@
                 return it.id !== val
               })
 
+              // 不要用for in来遍历数组，有bug! 此时的i是字符串
               // for (let i in state.data) {
               //   // for in 用来遍历数组时，i为下标
               //   if (state.data[i].id === val) {

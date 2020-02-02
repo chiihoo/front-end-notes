@@ -89,8 +89,8 @@
 
       // 订阅，相当于state的onChange，state改变就会触发
       var unsubscribe = store.subscribe(() => console.log('触发subscribe'))
-      // 修改数据
-      // store.dispatch({ type: 'addTodo', idx: 10, todoText: 'sleep2', done: false })
+      // 修改数据，dispatch接的参数就是action
+      store.dispatch({ type: 'addTodo', idx: 10, todoText: 'sleep2', done: false })
       // store.dispatch({ type: 'deleteTodo', idx: 5 })
 
       // store.getState().todos可以获取当前state.todos，可以粘贴到浏览器看结果

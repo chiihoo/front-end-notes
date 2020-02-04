@@ -185,13 +185,8 @@
         }
 
         // 键盘回车事件
-        componentDidMount() {
-          document.addEventListener('keydown', this.handleEnterKey)
-        }
-        componentWillUnmount() {
-          document.removeEventListener('keydown', this.handleEnterKey)
-        }
         handleEnterKey = e => {
+          console.log(e)
           if (e.keyCode === 13) {
             this.handleAddData()
           }
@@ -212,7 +207,12 @@
           return (
             <React.Fragment>
               <input type="checkbox" onChange={this.handleChangeChecked} ref={this.checkedRef} />
-              <input type="text" ref={this.myRef} style={{ verticalAlign: 'top' }} />{' '}
+              <input
+                type="text"
+                onKeyDown={e => this.handleEnterKey(e)}
+                ref={this.myRef}
+                style={{ verticalAlign: 'top' }}
+              />{' '}
               <span
                 style={{
                   border: '1px solid #27b3eb',

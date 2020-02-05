@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import produce from 'immer'
-import { ADD_TODO } from '../actions/index'
+// import { ADD_TODO } from '../actions/index'
 
 const initState = {
   todos: [],
@@ -11,10 +11,30 @@ const initState = {
 const todoList = (state = initState, action) => {
   switch (action.type) {
     // ADD_TODO即字符串'ADD_TODO'，全部存在了action中，这不是必须的
-    case ADD_TODO:
+    // case ADD_TODO:
+    case 'ADD_TODO':
       return produce(state, state => {
         state.todos.push({ id: Date.now().toString(16), content: action.content, complete: false })
       })
+    case 'DELETE_TODO':
+      return produce(state, state => {
+        state.todos = state.todos.filter(it => {
+          return it.id !== action.id
+        })
+      })
+    case 'CLICK_TODO':
+      return produce(state, state => {
+        state.todos.forEach(it => {
+          if (it.id === action.id) {
+            it.complete = !it.complete
+          }
+        })
+      })
+    case 'CHANGE_FILTER':
+      return produce(state, state => {
+        state.filter = action.filter
+      })
+
     default:
       return state
   }
@@ -22,7 +42,7 @@ const todoList = (state = initState, action) => {
 
 //或者这样写
 // const mutations = {
-//   ADD_TODO: produce((state, action) => {
+//   'ADD_TODO': produce((state, action) => {
 //     state.todos.push({ content: action.content, complete: false })
 //   })
 // }

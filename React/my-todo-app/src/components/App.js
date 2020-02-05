@@ -11,6 +11,16 @@ const App = props => {
       props.handleAddTodo(inputValue, setInputValue)
     }
   }
+  const getTodos = () => {
+    const { todos, filter } = props.todoList
+    if (filter === 'all') {
+      return todos
+    } else if (filter === 'complete') {
+      return todos.filter(it => it.complete === true)
+    } else {
+      return todos.filter(it => it.complete === false)
+    }
+  }
   return (
     <div>
       <h1>Todo</h1>
@@ -24,10 +34,23 @@ const App = props => {
       />
       <button onClick={() => props.handleAddTodo(inputValue, setInputValue)}>添加</button>
       <ul>
-        {props.todoList.todos.map((item, idx) => {
-          return <li key={item.id}>{item.content}</li>
+        {getTodos().map((item, idx) => {
+          return (
+            <li key={item.id}>
+              <button onClick={() => props.handleDeleteTodo(item.id)}>X</button>
+              <span
+                onClick={() => props.handleClickTodo(item.id)}
+                style={{ textDecoration: item.complete ? 'line-through' : '' }}
+              >
+                {item.content}
+              </span>
+            </li>
+          )
         })}
       </ul>
+      <button onClick={() => props.handleFilterDisplay('all')}>全部显示</button>
+      <button onClick={() => props.handleFilterDisplay('active')}>未完成</button>
+      <button onClick={() => props.handleFilterDisplay('complete')}>已完成</button>
     </div>
   )
 }
@@ -50,12 +73,21 @@ const mapDispatchToProps = dispatch => {
   // console.log('connect->dispatch', dispatch)
   return {
     handleAddTodo: (inputValue, setInputValue) => {
-      if(inputValue!==''){
+      if (inputValue !== '') {
         setInputValue('')
         dispatch({ type: 'ADD_TODO', content: inputValue })
         // addTodo方法写是在action中的，addTodo(text){ return { type: 'ADD_TODO', content: text} } ，这不是必须的
         // dispatch(addTodo(inputValue))
       }
+    },
+    handleDeleteTodo: id => {
+      dispatch({ type: 'DELETE_TODO', id: id })
+    },
+    handleClickTodo: id => {
+      dispatch({ type: 'CLICK_TODO', id: id })
+    },
+    handleFilterDisplay: filter => {
+      dispatch({ type: 'CHANGE_FILTER', filter: filter })
     }
   }
 }

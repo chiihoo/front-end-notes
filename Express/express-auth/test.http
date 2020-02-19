@@ -1,0 +1,30 @@
+@url=http://localhost:3001/api
+
+@json=Content-Type: application/json
+
+###
+get {{url}}/users
+
+###注册
+post {{url}}/register
+{{json}}
+
+{
+  "username": "yang",
+  "password": "123456",
+  "email": "email@qq.com",
+  "title": "春园鲜烤时光"
+}
+
+###登录
+post {{url}}/login
+{{json}}
+
+{
+  "username": "yang",
+  "password": "123456"
+}
+
+###个人信息 请求头 Authorization: Bearer token从localStroage中粘贴过来
+get {{url}}/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNGJhMDI1ZWM1Zjk4MjA1NDg4NGM4NyIsImlhdCI6MTU4MjAxNTEzNn0.KVeISvmTM2uWnvK4k_xRJgJaESBqHPKLSFWIBl5UJ0A

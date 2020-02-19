@@ -19,6 +19,8 @@ VS Code Jupyter Notebook Previewer
 Vetur   写vue的插件
 Vue 2 Snippets
 
+REST Client 接口测试插件，新建test.http文件进行接口测试
+
 貌似没啥作用的插件
 HTML snippets 自动填充
 Code Spell Checker 拼写检查

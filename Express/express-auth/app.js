@@ -2,6 +2,8 @@ const express = require('express')
 const { User } = require('./models')
 const jwt = require('jsonwebtoken')
 const assert = require('http-assert')
+// require('express-async-errors') //这个包可以解决express无法全局捕获Promise异常的问题
+
 
 const app = express()
 

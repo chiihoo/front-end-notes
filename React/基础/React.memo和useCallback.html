@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./lib/react.development.js" crossorigin></script>
+    <script src="./lib/react-dom.development.js" crossorigin></script>
+    <script src="./lib/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      var { useState, useCallback } = React
+      const Child = React.memo(function({ val, onChange }) {
+        console.log('render...', val)
+        return <input value={val} onChange={onChange} />
+      })
+      // const Child = function({ val, onChange }) {
+      //   console.log('render...', val)
+      //   return <input value={val} onChange={onChange} />
+      // }
+      const AnotherChild = function() {
+        console.log('render...', 'another')
+        return <span>AnotherChild</span>
+      }
+      // const AnotherChild = React.memo(function() {
+      //   console.log('render...', 'another')
+      //   return <span>AnotherChild</span>
+      // })
+      // class AnotherChild extends React.PureComponent {
+      //   render() {
+      //     console.log('render...', 'another')
+      //     return <span>AnotherChild</span>
+      //   }
+      // }
+
+      function App() {
+        const [val1, setVal1] = useState('')
+        const [val2, setVal2] = useState('')
+
+        const onChange1 = useCallback(evt => {
+          setVal1(evt.target.value)
+          console.log(1)
+        }, [])
+        const onChange2 = useCallback(evt => {
+          setVal2(evt.target.value)
+          console.log(2)
+        }, [])
+
+        // const onChange1 = evt => {
+        //   setVal1(evt.target.value)
+        //   console.log(1)
+        // }
+        // const onChange2 = evt => {
+        //   setVal2(evt.target.value)
+        //   console.log(2)
+        // }
+
+        return (
+          <div>
+            <Child val={val1} onChange={onChange1} />
+            <br />
+            <Child val={val2} onChange={onChange2} />
+            <br />
+            {/*<AnotherChild />*/}
+            <AnotherChild />
+          </div>
+        )
+      }
+
+      ReactDOM.render(
+        <div>
+          <App />
+        </div>,
+        document.getElementById('root')
+      )
+    </script>
+  </body>
+</html>

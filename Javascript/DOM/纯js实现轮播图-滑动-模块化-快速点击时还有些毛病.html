@@ -88,7 +88,7 @@
 
         //防止鼠标快速点击带来的鬼畜问题,这个属性值得是上一个动画(主要指到达最后一张和第一张克隆图的时候)是否完成
         //不能完美解决，只能把flipTime翻页速度（时间）调低为300
-        this.hasDown=true;
+        this.hasDone=true;
         
 
         this.wrapImgs();
@@ -111,7 +111,6 @@
           flipTime:300,//每翻一页的时间,体现为翻页的速度
           indicators:true,//是否有下方分页按钮
           buttons:true,//是否有左右两侧翻页按钮
-
 
         }
         return Object.assign({},defaultOptions,options);//浅复制，把后面对象的可枚举属性拷贝给第一个对象
@@ -261,7 +260,7 @@
       }
 
       goto(num){
-        if(this.hasDown){
+        if(this.hasDone){
           let diff=num-this.currentIndex;
           this.imgWrapper.style.transition=this.options.flipTime/1000+'s';  //0.3s
           //currentIndex初始为1，left为-100%
@@ -270,21 +269,21 @@
 
           // 5 12345 1 如果运行到currentIndex为6，也就是最后一个数，就更改位置
           if(this.currentIndex>this.length){
-            this.hasDown=false;
+            this.hasDone=false;
             let timer=setTimeout(()=>{
               this.currentIndex=1;
               this.imgWrapper.style.transition='none';  //清除transition
               this.imgWrapper.style.left='-100%';   //还原left
-              this.hasDown=true;
+              this.hasDone=true;
             },this.options.flipTime);
           }
           else if(this.currentIndex<1){
-            this.hasDown=false;
+            this.hasDone=false;
             let timer=setTimeout(()=>{
               this.currentIndex=this.length;
               this.imgWrapper.style.transition='none';  //清除transition
               this.imgWrapper.style.left=-this.currentIndex+'00%';   //还原left
-              this.hasDown=true;
+              this.hasDone=true;
             },this.options.flipTime);
           }
           this.setIndicator();//设置下方分页按钮高亮

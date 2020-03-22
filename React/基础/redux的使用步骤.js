@@ -9,9 +9,12 @@
 
 // 还有一些别的状态管理库 rematch, reselect, mobx
 
-// 要安装 redux react-redux （生产环境）和 redux-devtools （开发环境）
-// yarn add redux react-redux
-// yarn add redux-devtools --dev (-D)
+// 要安装 redux react-redux （生产环境）
+// yarn add redux react-redux react-thunk
+
+// redux-devtools可以安装浏览器扩展，也可以集成到项目中（侵入式）
+// yarn add redux-devtools-extension
+// 具体配置看这个网站：http://extension.remotedev.io/
 
 // * 1.写组件
 // 需要使用redux对数据进行操作时，先写store
@@ -19,12 +22,13 @@
 // * 2.store的写法
 
 // store.js
-import { createStore, compose } from 'redux'
+import { createStore, compose, applyMiddleware } from 'redux'
+import thunk from 'react-thunk'
 import reducers from './reducer.js'
 // 创建store
 // 配置调试工具，compose、composeEnhancers都是用来配置调试工具的
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-const store = createStore(reducers, composeEnhancers())
+const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)))
 export default store
 
 // 同时在首页还需用 Provider把store给传递进去

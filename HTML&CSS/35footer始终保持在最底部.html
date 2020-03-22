@@ -31,9 +31,9 @@
         height: 100%;
       }
       #container {
-        position: relative; /*保证footer是相对于container位置绝对定位*/
         width: 100%;
 
+        position: relative; /*保证footer是相对于container位置绝对定位*/
         min-height: 100%; /*这里只设置min-height，切记不要设置height*/
 
         padding-bottom: 100px; /*设置padding-bottom值大于等于footer的height值，以保证main的内容能够全部显示出来而不被footer遮盖；*/
@@ -41,6 +41,7 @@
       }
       footer {
         width: 100%;
+        
         height: 100px; /* footer的高度一定要是固定值*/
         position: absolute;
         bottom: 0px;

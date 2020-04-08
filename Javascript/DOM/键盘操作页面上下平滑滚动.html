@@ -64,6 +64,10 @@
     //   requestAnimationFrame(step)
     // }
 
+    // window.requestAnimationFrame(callback)：优势：由系统决定回调函数的执行时机。60Hz的刷新频率，那么每次刷新的间隔中会执行一次回调函数，不会引起丢帧，不会卡顿
+    // 该回调函数callback会被传入DOMHighResTimeStamp参数，该参数与performance.now()的返回值相同，
+    // 它表示requestAnimationFrame() 开始去执行回调函数的时刻。
+
     document.onkeydown = function(event) {
       if (event.keyCode == '74') {
         smoothScrollBy(window, 35, 300)
@@ -77,6 +81,7 @@
       var startTime = null
       var lastTime = null
       requestAnimationFrame(function step(time) {
+        console.log(time)
         if (startTime == null) {
           startTime = time
         }

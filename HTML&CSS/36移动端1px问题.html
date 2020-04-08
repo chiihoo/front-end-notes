@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .demo {
+        /* border: 1px solid #000; */
+        /* 父元素相对定位 */
+        position: relative;
+      }
+      .demo::after {
+        content: '';
+        /* 确保伪元素与父元素在同一位置，之后宽高放大两倍 */
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 200%;
+        height: 200%;
+        border: 1px solid #000;
+        border-radius: 20px;
+        /* 设定变换基点位于左上角，宽高缩放成0.5 */
+        transform-origin: 0 0;
+        transform: scale(0.5, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde laborum perspiciatis, dolor vel,
+      minima asperiores laudantium, molestias ex dicta itaque officia maxime eum excepturi quos
+      veritatis eligendi. Illum, tempore tenetur.
+    </div>
+  </body>
+</html>

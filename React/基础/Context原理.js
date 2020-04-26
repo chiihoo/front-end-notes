@@ -82,7 +82,7 @@ function createContext(defaultValue){
       })
     }
     render(){
-      // 还得把context值再往下层组件传，这样就能使下层的Consumer组件也能拿到context值
+      // Consumer组件接收到context的值，传给下层要用到这个值的组件，这种传递props的方式叫render props
       return this.props.children(this.state.value)
     }
   }

@@ -17,7 +17,7 @@
     <img
       src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2609616445,1297261628&fm=26&gp=0.jpg"
       alt=""
-      style="width:500px;"
+      style="width: 500px;"
     />
     <br />
     <br />
@@ -27,7 +27,7 @@
     <img
       src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=421366427,3298585889&fm=26&gp=0.jpg"
       alt=""
-      style="width:500px;"
+      style="width: 500px;"
     />
     <br />
     <br />
@@ -37,7 +37,7 @@
     <img
       src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3809576133,1589894853&fm=26&gp=0.jpg"
       alt=""
-      style="width:500px;"
+      style="width: 500px;"
     />
     <br />
     <br />
@@ -68,9 +68,10 @@
     // 该回调函数callback会被传入DOMHighResTimeStamp参数，该参数与performance.now()的返回值相同，
     // 它表示requestAnimationFrame() 开始去执行回调函数的时刻。
 
-    document.onkeydown = function(event) {
+    document.onkeydown = function (event) {
       if (event.keyCode == '74') {
         smoothScrollBy(window, 35, 300)
+        console.log('sss')
       }
       if (event.keyCode == '75') {
         smoothScrollBy(window, -35, 300)
@@ -81,7 +82,6 @@
       var startTime = null
       var lastTime = null
       requestAnimationFrame(function step(time) {
-        console.log(time)
         if (startTime == null) {
           startTime = time
         }
@@ -89,6 +89,7 @@
           var timeDiff = time - lastTime
         }
         lastTime = time
+        console.log(startTime, lastTime, time - startTime)
         var timeRatio = timeDiff / duration
         var pixelRation = timeRatio * pixel
         window.scrollBy(0, pixelRation)

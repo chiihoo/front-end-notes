@@ -47,12 +47,14 @@
   </body>
   <script>
     // 这是写的啥？
-    // document.onkeydown = function(event) {
+    // document.onkeydown = function (event) {
     //   let count = 0
     //   function step() {
+    //     // j
     //     if (event.keyCode == '74') {
     //       scrollBy(0, 5)
     //     }
+    //     // k
     //     if (event.keyCode == '75') {
     //       scrollBy(0, -5)
     //     }
@@ -70,18 +72,17 @@
 
     document.onkeydown = function (event) {
       if (event.keyCode == '74') {
-        smoothScrollBy(window, 35, 300)
-        console.log('sss')
+        smoothScrollBy(window, 35, 150)
       }
       if (event.keyCode == '75') {
-        smoothScrollBy(window, -35, 300)
+        smoothScrollBy(window, -35, 150)
       }
     }
     // 用duration毫秒的时间让window垂直滚动pixel个像素
     function smoothScrollBy(window, pixel, duration) {
       var startTime = null
       var lastTime = null
-      requestAnimationFrame(function step(time) {
+      function step(time) {
         if (startTime == null) {
           startTime = time
         }
@@ -90,13 +91,13 @@
         }
         lastTime = time
         console.log(startTime, lastTime, time - startTime)
-        var timeRatio = timeDiff / duration
-        var pixelRation = timeRatio * pixel
+        var pixelRation = (timeDiff / duration) * pixel
         window.scrollBy(0, pixelRation)
         if (time - startTime < duration) {
           requestAnimationFrame(step)
         }
-      })
+      }
+      requestAnimationFrame(step)
     }
   </script>
 </html>

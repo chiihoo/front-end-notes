@@ -1,0 +1,11 @@
+const a = Date.now()
+const b = new Date().getTime()
+const c = new Date().valueOf()
+const d = +new Date() // 如果 + 应用于对象之前，会首先调用找个对象的 valueOf() 和 toString()
+const e = Date.parse(new Date())
+
+console.log('a:', a)
+console.log('b:', b)
+console.log('c:', c)
+console.log('d:', d)
+console.log('e:', e)

@@ -1,86 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .dot {
+        width: 20px;
+        height: 20px;
+        /* background-color: skyblue; */
+        border-radius: 100px;
+        position: absolute;
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <style>
-    .dot {
-      width: 20px;
-      height: 20px;
-      /* background-color: skyblue; */
-      border-radius: 100px;
-      position: absolute;
+  <body>
+    <!-- <div class="dot"></div> -->
+    <input type="color" id="color" value="#ff0000" />
+  </body>
+  <script>
+    // which表示哪一个鼠标按钮被按下，
+    // 0表示无，1表示左键，2表示中键，3表示右键；
+    // 无法表示组合鼠标键，此属性总是只展示最先。
+
+    // button与which一个作用，但用来表示按键的数字不同
+    // 0表示左键，1表示中键，2表示右键，3通常指浏览器后退按钮，4通常指浏览器的前进按钮。
+
+    // buttons表示哪些鼠标按钮被按下，
+    // 它的二进制形式的最低位表示左键，第二位表示右键，第三位表示中键。
+    //                         001            010          100
+    // 0b0010 | 0b0100 = 0b0110 = 6
+    // 所以同时按下中键和右键将会得到6，依此类推。
+    // 0  : 没有按键或者是没有初始化
+    // 1  : 鼠标左键
+    // 2  : 鼠标右键
+    // 4  : 鼠标滚轮或者是中键
+    // 8  : 第四按键 (通常是“浏览器后退”按键)
+    // 16 : 第五按键 (通常是“浏览器前进”)
+
+    let colorInput = document.querySelector('#color')
+    function drawDot(event) {
+      let dot = document.createElement('div')
+      dot.classList.add('dot')
+      dot.style.left = event.clientX - 10 + 'px'
+      dot.style.top = event.clientY - 10 + 'px'
+      dot.style.backgroundColor = colorInput.value
+      document.body.appendChild(dot)
     }
-  </style>
-</head>
 
-<body>
-  <!-- <div class="dot"></div> -->
-  <input type="color" id="color" value="#ff0000">
+    // document.addEventListener('mousedown', function (e) {
+    //   drawDot(e)
+    //   document.addEventListener('mousemove', drawDot)
+    // })
+    // document.addEventListener('mouseup', function (e) {
+    //   document.removeEventListener('mousemove', drawDot)
+    // })
 
-</body>
-<script>
-// which表示哪一个鼠标按钮被按下，
-// 0表示无，1表示左键，2表示中键，3表示右键；
-// 无法表示组合鼠标键，此属性总是只展示最先。
+    document.addEventListener('mousedown', function (e) {
+      if (e.target == colorInput) {
+        return
+      }
+      if (e.button == 0) {
+        //button
+        drawDot(e)
+        document.addEventListener('mousemove', function d(e) {
+          if (e.buttons == 0) {
+            //buttons
+            document.removeEventListener('mousemove', d)
+            return
+          }
+          drawDot(e)
+        })
+      }
+    })
 
-// button与which一个作用，但用来表示按键的数字不同
-// 0表示左键，1表示中键，2表示右键，3通常指浏览器后退按钮，4通常指浏览器的前进按钮。
-
-// buttons表示哪些鼠标按钮被按下，
-// 它的二进制形式的最低位表示左键，第二位表示右键，第三位表示中键。
-//                         001            010          100
-// 0b0010 | 0b0100 = 0b0110 = 6
-// 所以同时按下中键和右键将会得到6，依此类推。
-// 0  : 没有按键或者是没有初始化
-// 1  : 鼠标左键
-// 2  : 鼠标右键
-// 4  : 鼠标滚轮或者是中键
-// 8  : 第四按键 (通常是“浏览器后退”按键)
-// 16 : 第五按键 (通常是“浏览器前进”)
-
-
-  let colorInput = document.querySelector('#color');
-  function drawDot(event) {
-    let dot = document.createElement('div');
-    dot.classList.add('dot');
-    dot.style.left = event.clientX - 10 + 'px';
-    dot.style.top = event.clientY - 10 + 'px';
-    dot.style.backgroundColor = colorInput.value;
-    document.body.appendChild(dot);
-  }
-
-  // document.addEventListener('mousedown', function (e) {
-  //   drawDot(e);
-  //   document.addEventListener('mousemove', drawDot);
-  // });
-  // document.addEventListener('mouseup', function (e) {
-  //   document.removeEventListener('mousemove', drawDot);
-  // });
-
-  document.addEventListener('mousedown', function (e) {
-    if (e.target == colorInput) {
-      return;
-    }
-    if (e.button == 0) {  //button
-      drawDot(e);
-      document.addEventListener('mousemove', function d(e) {
-        if (e.buttons == 0) {   //buttons
-          document.removeEventListener('mousemove', d);
-          return;
-        }
-        drawDot(e);
-      });
-    }
-  });
-
-
-  // colorInput.addEventListener('mousedown',function(e){
-  //   document.removeEventListener('mousemove',drawDot);
-  // })
-</script>
-
+    // colorInput.addEventListener('mousedown', function (e) {
+    //   document.removeEventListener('mousemove', drawDot)
+    // })
+  </script>
 </html>

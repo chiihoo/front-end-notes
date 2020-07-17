@@ -1,337 +1,333 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1239632_1d95ig7qc1c.css" />
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+      .swiper {
+        position: absolute;
+        left: 250px;
+        overflow: hidden;
+      }
+      .swiper .img-wrapper {
+        position: absolute;
+        /* 初始就是左边始终有一张图,用js写到style上面去 */
+        /* left:-100%; */
+      }
+      ul.indicatorList {
+        margin: 0;
+        padding: 0;
+        background-color: rgba(255, 255, 255, 0.3);
+        height: 25px;
+        border-radius: 100px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 50px;
+        text-align: center;
+        /* display:flex; */
+      }
+      li.indicator-item {
+        display: inline-block;
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="//at.alicdn.com/t/font_1239632_1d95ig7qc1c.css">
-  <title>Document</title>
-  <style>
-    html,body{
-      margin:0;
-    }
-    .swiper{
-      position: absolute;
-      left: 250px;
-      overflow: hidden;
-    }
-    .swiper .img-wrapper{
-      position: absolute;
-      /* 初始就是左边始终有一张图,用js写到style上面去 */
-      /* left:-100%; */
-    }
-    ul.indicatorList{
-      margin:0;
-      padding: 0;
-      background-color: rgba(255,255,255,0.3);
-      height:25px;
-      border-radius: 100px;
-      position: absolute;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:50px;
-      text-align: center;
-      /* display:flex; */
-    }
-    li.indicator-item{
-      display: inline-block;
-
-      width: 15px;
-      height: 15px;
-      margin:5px 10px;
-      background-color: #ffffff;
-      border-radius: 100px;
-      list-style-type: none;
-      position: relative;
-      cursor: pointer;
-    }
-    li.active{
-      background-color:#ff5000;
-    }
-
-    i.icon-left-arrow{
-      font-size: 38px;
-      position: absolute;
-      top:50%;
-      transform: translateY(-50%);
-      color: whitesmoke;
-      cursor: pointer;
-    }
-    i.icon-right-arrow{
-      font-size: 38px;
-      position: absolute;
-      right:0;
-      top:50%;
-      transform: translateY(-50%);
-      color: whitesmoke;
-      cursor: pointer;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="swiper" style='width: 1000px; height: 375px;'>
-    <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/dd4eeeda1772431e72b22090df2ccda8.jpg?w=2452&h=920">
-    <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/16b60ea00a15f079b6d71d60bf8dbb2c.jpg?thumb=1&w=1533&h=575&f=webp&q=90">
-    <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/8cd73402f792141366762796439b12f1.jpg?thumb=1&w=1533&h=575&f=webp&q=90">
-    <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/866dc0fc77bc09c0e67835034b302072.jpg?thumb=1&w=1533&h=575&f=webp&q=90">
-    <img src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/2dd7a8c37337c81b02c3afc699e37318.jpg?thumb=1&w=1533&h=575&f=webp&q=90">
-  </div> 
-  <script>
-    class Swiper {
-      constructor(el,options) { //el就是.swiper这个元素
-        this.options=this.getOptions(options);                                                                                     this.el = el;
-        this.width=parseInt(el.style.width);//读取.swiper的style的宽高
-        this.height=parseInt(el.style.height);
-        this.currentIndex=1;
-
-        //防止鼠标快速点击带来的鬼畜问题,这个属性值得是上一个动画(主要指到达最后一张和第一张克隆图的时候)是否完成
-        //不能完美解决，只能把flipTime翻页速度（时间）调低为300
-        this.hasDone=true;
-        
-
-        this.wrapImgs();
-
-        if(this.options.indicators){
-          this.makeIndicators();
-        }
-        if(this.options.buttons){
-          this.makeButtons();
-        }
-        this.initEvents();  
-        this.startAutoPlay(); 
+        width: 15px;
+        height: 15px;
+        margin: 5px 10px;
+        background-color: #ffffff;
+        border-radius: 100px;
+        list-style-type: none;
+        position: relative;
+        cursor: pointer;
+      }
+      li.active {
+        background-color: #ff5000;
       }
 
-      getOptions(options){
-        let defaultOptions={
-          autoPlay:false,//是否自动播放
-          autoPlayDirection:'right',//自动播放的方向
-          interval:2000,//自动播放的间隔时间
-          flipTime:300,//每翻一页的时间,体现为翻页的速度
-          indicators:true,//是否有下方分页按钮
-          buttons:true,//是否有左右两侧翻页按钮
-
-        }
-        return Object.assign({},defaultOptions,options);//浅复制，把后面对象的可枚举属性拷贝给第一个对象
+      i.icon-left-arrow {
+        font-size: 38px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: whitesmoke;
+        cursor: pointer;
       }
+      i.icon-right-arrow {
+        font-size: 38px;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        color: whitesmoke;
+        cursor: pointer;
+      }
+    </style>
+  </head>
 
-      //绑下事件
-      initEvents(){
-        //左右按钮
-        if(this.options.buttons){
-          this.nextButton.addEventListener('click',e=>{
-            // this.next();
-            this.goto(this.currentIndex+1);
-            this.clickCount++;
-          })
-          this.prevButton.addEventListener('click',e=>{
-            // this.prev();
-            this.goto(this.currentIndex-1);
-            this.clickCount++;
+  <body>
+    <div class="swiper" style="width: 1000px; height: 375px;">
+      <img
+        src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/dd4eeeda1772431e72b22090df2ccda8.jpg?w=2452&h=920"
+      />
+      <img
+        src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/16b60ea00a15f079b6d71d60bf8dbb2c.jpg?thumb=1&w=1533&h=575&f=webp&q=90"
+      />
+      <img
+        src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/8cd73402f792141366762796439b12f1.jpg?thumb=1&w=1533&h=575&f=webp&q=90"
+      />
+      <img
+        src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/866dc0fc77bc09c0e67835034b302072.jpg?thumb=1&w=1533&h=575&f=webp&q=90"
+      />
+      <img
+        src="https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/2dd7a8c37337c81b02c3afc699e37318.jpg?thumb=1&w=1533&h=575&f=webp&q=90"
+      />
+    </div>
+    <script>
+      class Swiper {
+        constructor(el, options) {
+          //el就是.swiper这个元素
+          this.options = this.getOptions(options)
+          this.el = el
+          this.width = parseInt(el.style.width) //读取.swiper的style的宽高
+          this.height = parseInt(el.style.height)
+          this.currentIndex = 1
 
+          //防止鼠标快速点击带来的鬼畜问题,这个属性值得是上一个动画(主要指到达最后一张和第一张克隆图的时候)是否完成
+          //不能完美解决，只能把flipTime翻页速度（时间）调低为300
+          this.hasDone = true
+
+          this.wrapImgs()
+
+          if (this.options.indicators) {
+            this.makeIndicators()
+          }
+          if (this.options.buttons) {
+            this.makeButtons()
+          }
+          this.initEvents()
+          this.startAutoPlay()
+        }
+
+        getOptions(options) {
+          let defaultOptions = {
+            autoPlay: false, //是否自动播放
+            autoPlayDirection: 'right', //自动播放的方向
+            interval: 2000, //自动播放的间隔时间
+            flipTime: 300, //每翻一页的时间,体现为翻页的速度
+            indicators: true, //是否有下方分页按钮
+            buttons: true //是否有左右两侧翻页按钮
+          }
+          return Object.assign({}, defaultOptions, options) //浅复制，把后面对象的可枚举属性拷贝给第一个对象
+        }
+
+        //绑下事件
+        initEvents() {
+          //左右按钮
+          if (this.options.buttons) {
+            this.nextButton.addEventListener('click', e => {
+              // this.next();
+              this.goto(this.currentIndex + 1)
+              this.clickCount++
+            })
+            this.prevButton.addEventListener('click', e => {
+              // this.prev();
+              this.goto(this.currentIndex - 1)
+              this.clickCount++
+            })
+            //左右按钮hover效果
+            this.nextButton.addEventListener('mouseover', e => {
+              this.nextButton.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'
+            })
+            this.nextButton.addEventListener('mouseout', e => {
+              this.nextButton.style.backgroundColor = ''
+            })
+            this.prevButton.addEventListener('mouseover', e => {
+              this.prevButton.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'
+            })
+            this.prevButton.addEventListener('mouseout', e => {
+              this.prevButton.style.backgroundColor = ''
+            })
+          }
+          //下方分页按钮
+          if (this.options.indicators) {
+            this.indicatorList.addEventListener('click', e => {
+              if (e.target.matches('li.indicator-item')) {
+                //this.indicatorList.children下标区间为0~this.length-1 ,+1后为1~this.length，对应imgWrapper子元素的原图片下标
+                //index为当前点到的分页按钮对应的图片下标
+                let index = Array.from(this.indicatorList.children).indexOf(e.target) + 1
+                this.goto(index)
+              }
+            })
+          }
+
+          this.el.addEventListener('mouseenter', e => {
+            this.stopAutoPlay()
           })
-          //左右按钮hover效果
-          this.nextButton.addEventListener('mouseover',e=>{
-            this.nextButton.style.backgroundColor='rgba(255, 255, 255, 0.5)';
-          })
-          this.nextButton.addEventListener('mouseout',e=>{
-            this.nextButton.style.backgroundColor='';
-          })
-          this.prevButton.addEventListener('mouseover',e=>{
-            this.prevButton.style.backgroundColor='rgba(255, 255, 255, 0.5)';
-          })
-          this.prevButton.addEventListener('mouseout',e=>{
-            this.prevButton.style.backgroundColor='';
+          this.el.addEventListener('mouseleave', e => {
+            this.startAutoPlay()
           })
         }
-        //下方分页按钮
-        if(this.options.indicators){
-          this.indicatorList.addEventListener('click',e=>{
-            if(e.target.matches('li.indicator-item')){
-              //this.indicatorList.children下标区间为0~this.length-1 ,+1后为1~this.length，对应imgWrapper子元素的原图片下标
-              //index为当前点到的分页按钮对应的图片下标
-              let index=Array.from(this.indicatorList.children).indexOf(e.target)+1;
-              this.goto(index);
+
+        //自动播放
+        startAutoPlay() {
+          if (this.options.autoPlay) {
+            this.intervalId = setInterval(() => {
+              // this.next();
+              if (this.options.autoPlayDirection == 'right') {
+                this.goto(this.currentIndex + 1)
+              } else if (this.options.autoPlayDirection == 'left') {
+                this.goto(this.currentIndex - 1)
+              }
+            }, this.options.interval)
+          }
+        }
+        stopAutoPlay() {
+          clearInterval(this.intervalId)
+        }
+
+        //创建下方分页按钮
+        makeIndicators() {
+          this.indicatorList = document.createElement('ul')
+          this.indicatorList.className = 'indicatorList'
+          for (let i = 0; i < this.length; i++) {
+            let li = document.createElement('li')
+            li.className = 'indicator-item'
+            this.indicatorList.appendChild(li)
+          }
+          this.indicatorList.firstChild.classList.add('active') //当前第几张对应的按钮要高亮
+          this.el.appendChild(this.indicatorList)
+        }
+        //创建左右两侧翻页按钮
+        makeButtons() {
+          this.buttons = document.createElement('div')
+          this.buttons.className = 'swiper-buttons'
+
+          this.prevButton = document.createElement('i')
+          this.prevButton.className = 'iconfont icon-left-arrow'
+          this.buttons.appendChild(this.prevButton)
+
+          this.nextButton = document.createElement('i')
+          this.nextButton.className = 'iconfont icon-right-arrow'
+          this.buttons.appendChild(this.nextButton)
+
+          this.el.appendChild(this.buttons)
+        }
+
+        //给所有img添加一个大包含块
+        wrapImgs() {
+          this.imgWrapper = document.createElement('div')
+          this.imgWrapper.className = 'img-wrapper'
+          // imgWrapper.classList.add('img-wrapper');
+          let imgs = Array.from(this.el.children)
+          //Object.prototype.toString.call(this.el.children)=="[object HTMLCollection]"
+          //Object.prototype.toString.call(Array.from(this.el.children))=="[object Array]"
+          this.length = imgs.length //记录图片数量  5张
+          imgs.forEach(img => {
+            //设置一个.swiper的宽高，就能把下面所有img统一设置宽高
+            img.style.width = this.width + 'px'
+            img.style.height = this.height + 'px'
+            this.imgWrapper.appendChild(img)
+          })
+
+          // 改成这种形式:  5 12345 1
+          let cloneFirstImg = this.imgWrapper.firstChild.cloneNode(true)
+          let cloneLastImg = this.imgWrapper.lastChild.cloneNode(true)
+          this.imgWrapper.prepend(cloneLastImg)
+          this.imgWrapper.append(cloneFirstImg)
+
+          //把.img-wrapper的宽度设置为所有图片加起来的宽度，使得所有图片一行排列
+          this.imgWrapper.style.width = (imgs.length + 2) * this.width + 'px'
+          this.imgWrapper.style.left = '-100%'
+          this.el.appendChild(this.imgWrapper) //7张
+        }
+
+        //设置当前第几张对应的按钮要高亮
+        setIndicator() {
+          if (this.options.indicators) {
+            this.indicatorList.querySelector('.active').classList.remove('active')
+            //这些if判断可以避免goto函数里面的setTimeout()中更改currentIndex的延迟问题
+            if (this.currentIndex > this.length) {
+              this.indicatorList.children[0].classList.add('active')
+            } else if (this.currentIndex < 1) {
+              this.indicatorList.children[this.length - 1].classList.add('active')
+            } else {
+              this.indicatorList.children[this.currentIndex - 1].classList.add('active')
             }
-          }) 
+          }
         }
 
-        this.el.addEventListener('mouseenter',e=>{
-          this.stopAutoPlay();
-        })
-        this.el.addEventListener('mouseleave',e=>{
-          this.startAutoPlay();
-        })
+        goto(num) {
+          if (this.hasDone) {
+            let diff = num - this.currentIndex
+            this.imgWrapper.style.transition = this.options.flipTime / 1000 + 's' //0.3s
+            //currentIndex初始为1，left为-100%
+            this.imgWrapper.style.left = parseInt(this.imgWrapper.style.left) / 100 - diff + '00%'
+            this.currentIndex = num
 
-      }
-
-      //自动播放
-      startAutoPlay(){
-        if(this.options.autoPlay){
-          this.intervalId=setInterval(()=>{
-            // this.next();
-            if(this.options.autoPlayDirection=='right'){
-              this.goto(this.currentIndex+1);
+            // 5 12345 1 如果运行到currentIndex为6，也就是最后一个数，就更改位置
+            if (this.currentIndex > this.length) {
+              this.hasDone = false
+              let timer = setTimeout(() => {
+                this.currentIndex = 1
+                this.imgWrapper.style.transition = 'none' //清除transition
+                this.imgWrapper.style.left = '-100%' //还原left
+                this.hasDone = true
+              }, this.options.flipTime)
+            } else if (this.currentIndex < 1) {
+              this.hasDone = false
+              let timer = setTimeout(() => {
+                this.currentIndex = this.length
+                this.imgWrapper.style.transition = 'none' //清除transition
+                this.imgWrapper.style.left = -this.currentIndex + '00%' //还原left
+                this.hasDone = true
+              }, this.options.flipTime)
             }
-            else if(this.options.autoPlayDirection=='left'){
-              this.goto(this.currentIndex-1);
-            }
-          },this.options.interval);
-        }
-      }
-      stopAutoPlay(){
-        clearInterval(this.intervalId);
-      }
-
-
-      //创建下方分页按钮
-      makeIndicators(){
-        this.indicatorList=document.createElement('ul');
-        this.indicatorList.className='indicatorList';
-        for(let i=0;i<this.length;i++){
-          let li=document.createElement('li');
-          li.className='indicator-item';
-          this.indicatorList.appendChild(li);
-        }
-        this.indicatorList.firstChild.classList.add('active');//当前第几张对应的按钮要高亮
-        this.el.appendChild(this.indicatorList);
-      } 
-      //创建左右两侧翻页按钮
-      makeButtons(){
-        this.buttons=document.createElement('div');
-        this.buttons.className='swiper-buttons';
-
-        this.prevButton=document.createElement('i');
-        this.prevButton.className='iconfont icon-left-arrow';
-        this.buttons.appendChild(this.prevButton);
-        
-        this.nextButton=document.createElement('i');
-        this.nextButton.className='iconfont icon-right-arrow';
-        this.buttons.appendChild(this.nextButton);
-
-        this.el.appendChild(this.buttons);
-      }
-
-      //给所有img添加一个大包含块
-      wrapImgs(){ 
-        this.imgWrapper=document.createElement('div');
-        this.imgWrapper.className='img-wrapper';
-        // imgWrapper.classList.add('img-wrapper');
-        let imgs=Array.from(this.el.children);
-        //Object.prototype.toString.call(this.el.children)=="[object HTMLCollection]"
-        //Object.prototype.toString.call(Array.from(this.el.children))=="[object Array]"
-        this.length=imgs.length;  //记录图片数量  5张
-        imgs.forEach(img=>{
-          //设置一个.swiper的宽高，就能把下面所有img统一设置宽高
-          img.style.width=this.width+'px';  
-          img.style.height=this.height+'px';
-          this.imgWrapper.appendChild(img);
-        })
-
-        // 改成这种形式:  5 12345 1
-        let cloneFirstImg=this.imgWrapper.firstChild.cloneNode(true);
-        let cloneLastImg=this.imgWrapper.lastChild.cloneNode(true);
-        this.imgWrapper.prepend(cloneLastImg);
-        this.imgWrapper.append(cloneFirstImg);
-
-
-        //把.img-wrapper的宽度设置为所有图片加起来的宽度，使得所有图片一行排列
-        this.imgWrapper.style.width=(imgs.length+2)*this.width+'px';
-        this.imgWrapper.style.left='-100%';
-        this.el.appendChild(this.imgWrapper);//7张
-      }
-
-      //设置当前第几张对应的按钮要高亮
-      setIndicator(){
-        if(this.options.indicators){
-          this.indicatorList.querySelector('.active').classList.remove('active');
-          //这些if判断可以避免goto函数里面的setTimeout()中更改currentIndex的延迟问题
-          if(this.currentIndex>this.length){
-            this.indicatorList.children[0].classList.add('active');
-          }
-          else if(this.currentIndex<1){
-            this.indicatorList.children[this.length-1].classList.add('active');
-          }
-          else{
-            this.indicatorList.children[this.currentIndex-1].classList.add('active');
+            this.setIndicator() //设置下方分页按钮高亮
           }
         }
+
+        // next(){
+        //   this.currentIndex++;
+        //   this.imgWrapper.style.transition='.3s';
+        //   //currentIndex初始为1，left为-100%，currentIndex为几，left就负百分之这个数
+        //   this.imgWrapper.style.left=-this.currentIndex+'00%';
+        //   // 5 12345 1 如果运行到currentIndex为6，也就是最后一个数，就更改位置
+        //   if(this.currentIndex>this.length){
+        //     setTimeout(()=>{
+        //       this.currentIndex=1;
+        //       this.imgWrapper.style.transition='none';  //清除transition
+        //       this.imgWrapper.style.left='-100%';   //还原left
+        //     },300)
+        //   }
+        // }
+        // prev(){
+        //   this.currentIndex--;
+        //   this.imgWrapper.style.transition='.3s';
+        //   this.imgWrapper.style.left=-this.currentIndex+'00%';
+        //   if(this.currentIndex>this.length){
+        //     setTimeout(()=>{
+        //       this.currentIndex=1;
+        //       this.imgWrapper.style.transition='none';  //清除transition
+        //       this.imgWrapper.style.left='-100%';   //还原left
+        //     },300)
+        //   }
+        // }
       }
 
-      goto(num){
-        if(this.hasDone){
-          let diff=num-this.currentIndex;
-          this.imgWrapper.style.transition=this.options.flipTime/1000+'s';  //0.3s
-          //currentIndex初始为1，left为-100%
-          this.imgWrapper.style.left=parseInt(this.imgWrapper.style.left)/100-diff+'00%';
-          this.currentIndex=num;
-
-          // 5 12345 1 如果运行到currentIndex为6，也就是最后一个数，就更改位置
-          if(this.currentIndex>this.length){
-            this.hasDone=false;
-            let timer=setTimeout(()=>{
-              this.currentIndex=1;
-              this.imgWrapper.style.transition='none';  //清除transition
-              this.imgWrapper.style.left='-100%';   //还原left
-              this.hasDone=true;
-            },this.options.flipTime);
-          }
-          else if(this.currentIndex<1){
-            this.hasDone=false;
-            let timer=setTimeout(()=>{
-              this.currentIndex=this.length;
-              this.imgWrapper.style.transition='none';  //清除transition
-              this.imgWrapper.style.left=-this.currentIndex+'00%';   //还原left
-              this.hasDone=true;
-            },this.options.flipTime);
-          }
-          this.setIndicator();//设置下方分页按钮高亮
-        }
-      }
-
-
-      // next(){
-      //   this.currentIndex++;
-      //   this.imgWrapper.style.transition='.3s';
-      //   //currentIndex初始为1，left为-100%，currentIndex为几，left就负百分之这个数
-      //   this.imgWrapper.style.left=-this.currentIndex+'00%';
-      //   // 5 12345 1 如果运行到currentIndex为6，也就是最后一个数，就更改位置
-      //   if(this.currentIndex>this.length){  
-      //     setTimeout(()=>{
-      //       this.currentIndex=1;
-      //       this.imgWrapper.style.transition='none';  //清除transition
-      //       this.imgWrapper.style.left='-100%';   //还原left
-      //     },300)
-      //   }
-      // }
-      // prev(){
-      //   this.currentIndex--;
-      //   this.imgWrapper.style.transition='.3s';
-      //   this.imgWrapper.style.left=-this.currentIndex+'00%';
-      //   if(this.currentIndex>this.length){
-      //     setTimeout(()=>{
-      //       this.currentIndex=1;
-      //       this.imgWrapper.style.transition='none';  //清除transition
-      //       this.imgWrapper.style.left='-100%';   //还原left
-      //     },300)
-      //   }
-      // }
-
-    }
-    
-    var s = new Swiper(document.querySelector('.swiper'),{
-      // autoPlay:true,//是否自动播放
-      // autoPlayDirection:'left',//自动播放的方向
-      // interval:3000,//自动播放的间隔时间
-      // flipTime:1000,//每翻一页的时间,体现为翻页的速度
-      // indicators:false,//是否有下方分页按钮
-      // buttons:false,//是否有左右两侧翻页按钮
-    });
-
-
-
-  </script>
-</body>
-
+      var s = new Swiper(document.querySelector('.swiper'), {
+        // autoPlay:true,//是否自动播放
+        // autoPlayDirection:'left',//自动播放的方向
+        // interval:3000,//自动播放的间隔时间
+        // flipTime:1000,//每翻一页的时间,体现为翻页的速度
+        // indicators:false,//是否有下方分页按钮
+        // buttons:false,//是否有左右两侧翻页按钮
+      })
+    </script>
+  </body>
 </html>

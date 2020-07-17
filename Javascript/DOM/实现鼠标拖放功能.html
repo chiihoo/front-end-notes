@@ -1,108 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>实现鼠标拖放功能（一个方块可以被鼠标拖动位置），且实现方块的覆盖效果。</title>
+    <style>
+      .square {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        /* 预防出现鼠标快速拖动时出现禁止符号 */
+        user-select: none;
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>实现鼠标拖放功能（一个方块可以被鼠标拖动位置），且实现方块的覆盖效果。</title>
-  <style>
-    .square {
-      width: 100px;
-      height: 100px;
-      position: absolute;
-      /* 预防出现鼠标快速拖动时出现禁止符号 */
-      user-select: none;
+  <body>
+    <div class="square" style="background-color: skyblue; left: 0px; top: 0px;"></div>
+    <div class="square" style="background-color: yellowgreen; left: 0px; top: 0px;"></div>
+    <div class="square" style="background-color: coral; left: 0px; top: 0px;"></div>
+  </body>
+  <script>
+    // let maxZ = 5
+    // document.addEventListener('mousedown', function (e) {
+    //   if (e.target.matches('.square')) {
+    //     let movingElement = e.target
+    //     movingElement.style['z-index'] = maxZ++
+    //     // movingElement.style.zIndex = maxZ++
+    //     let lastX = e.pageX
+    //     let lastY = e.pageY
+    //     document.addEventListener('mousemove', function move(e) {
+    //       if (e.buttons == 0) {
+    //         document.removeEventListener('mousemove', move)
+    //       }
+    //       // console.log('X', parseInt(movingElement.style.left), e.pageX, lastX)
+    //       // console.log('Y', parseInt(movingElement.style.top), e.pageY, lastY)
+    //       let left = parseInt(movingElement.style.left) + e.pageX - lastX
+    //       let top = parseInt(movingElement.style.top) + e.pageY - lastY
 
-    }
-  </style>
-</head>
+    //       if (left < 0) {
+    //         left = 0
+    //       }
+    //       if (left > innerWidth - 100) {
+    //         left = innerWidth - 100
+    //       }
+    //       if (top < 0) {
+    //         top = 0
+    //       }
+    //       if (top > innerHeight - 100) {
+    //         top = innerHeight - 100
+    //       }
+    //       movingElement.style.left = left + 'px'
+    //       movingElement.style.top = top + 'px'
+    //       lastX = e.pageX
+    //       lastY = e.pageY
+    //     })
+    //   }
+    // })
 
-<body>
-  <div class="square" style="background-color: skyblue; left: 0px; top: 0px"></div>
-  <div class="square" style="background-color: yellowgreen; left: 0px; top: 0px"></div>
-  <div class="square" style="background-color: coral; left: 0px; top: 0px"></div>
-</body>
-<script>
-  // let maxZ = 5
-  // document.addEventListener('mousedown', function (e) {
-  //   if (e.target.matches('.square')) {
-  //     let movingElement = e.target;
-  //     movingElement.style['z-index'] = maxZ++;
-  //     // movingElement.style.zIndex=maxZ++;
-  //     let lastX = e.pageX;
-  //     let lastY = e.pageY;
-  //     document.addEventListener('mousemove', function move(e) {
-  //       if (e.buttons == 0) {
-  //         document.removeEventListener('mousemove', move)
-  //       }
-  //       // console.log('X',parseInt(movingElement.style.left),e.pageX,lastX)
-  //       // console.log('Y',parseInt(movingElement.style.top),e.pageY,lastY)
-  //       let left = parseInt(movingElement.style.left) + e.pageX - lastX;
-  //       let top = parseInt(movingElement.style.top) + e.pageY - lastY;
+    //这种写法能防止鼠标移出窗口区域再移回来造成的位置突变的问题
+    let maxZ = 5
+    document.addEventListener('mousedown', function (e) {
+      if (e.target.matches('.square')) {
+        let movingElement = e.target
+        movingElement.style['z-index'] = maxZ++
+        // movingElement.style.zIndex = maxZ++
 
-  //       if (left < 0) {
-  //         left = 0;
-  //       }
-  //       if (left > innerWidth - 100) {
-  //         left = innerWidth - 100;
-  //       }
-  //       if (top < 0) {
-  //         top = 0;
-  //       }
-  //       if (top > innerHeight - 100) {
-  //         top = innerHeight - 100;
-  //       }
-  //       movingElement.style.left = left + 'px';
-  //       movingElement.style.top = top + 'px';
-  //       lastX = e.pageX;
-  //       lastY = e.pageY;
-  //     })
-  //   }
-  // })
+        let mouseInitX = e.pageX
+        let mouseInitY = e.pageY
+        let elInitX = parseInt(movingElement.style.left)
+        let elInitY = parseInt(movingElement.style.top)
 
+        document.addEventListener('mousemove', function move(e) {
+          // 左键松开
+          if (e.buttons == 0) {
+            document.removeEventListener('mousemove', move)
+          }
+          let left = elInitX + e.pageX - mouseInitX
+          let top = elInitY + e.pageY - mouseInitY
 
-
-  //这种写法能防止鼠标移出窗口区域再移回来造成的位置突变的问题
-  let maxZ = 5
-  document.addEventListener('mousedown', function (e) {
-    if (e.target.matches('.square')) {
-      let movingElement = e.target;
-      movingElement.style['z-index'] = maxZ++;
-      // movingElement.style.zIndex=maxZ++;
-
-      let mouseInitX = e.pageX;
-      let mouseInitY = e.pageY;
-      let elInitX = parseInt(movingElement.style.left);
-      let elInitY = parseInt(movingElement.style.top);
-
-      document.addEventListener('mousemove', function move(e) {
-        if (e.buttons == 0) {
-          document.removeEventListener('mousemove', move)
-        }
-        let left = elInitX + e.pageX - mouseInitX;
-        let top = elInitY + e.pageY - mouseInitY;
-
-        if (left < 0) {
-          left = 0;
-        }
-        if (left > innerWidth - 100) {
-          left = innerWidth - 100;
-        }
-        if (top < 0) {
-          top = 0;
-        }
-        if (top > innerHeight - 100) {
-          top = innerHeight - 100;
-        }
-        movingElement.style.left = left + 'px';
-        movingElement.style.top = top + 'px';
-        lastX = e.pageX;
-        lastY = e.pageY;
-      })
-    }
-  })
-
-</script>
-
+          if (left < 0) {
+            left = 0
+          }
+          if (left > innerWidth - 100) {
+            left = innerWidth - 100
+          }
+          if (top < 0) {
+            top = 0
+          }
+          if (top > innerHeight - 100) {
+            top = innerHeight - 100
+          }
+          movingElement.style.left = left + 'px'
+          movingElement.style.top = top + 'px'
+          lastX = e.pageX
+          lastY = e.pageY
+        })
+      }
+    })
+  </script>
 </html>

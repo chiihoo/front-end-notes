@@ -32,6 +32,15 @@ rect ->
 包含边框
 **contentWidth || contentHeight** = content +padding
 不包含边框
+
+是可见区域的宽度，如果一个盒子比屏幕大，导致出现滚动效果，那么offsetWidth都只是可见范围内的宽，
+
+比如判断一个盒子是否滚动到底部：
+
+scrollRef.current.scrollTop + scrollRef.current.offsetHeight + 5 >=scrollRef.current.scrollHeight
+
+因为touch事件拿到的这些数据计算不会恰巧相等，所以就用不等来消除误差。
+
 ![image](https://user-gold-cdn.xitu.io/2018/4/1/16280300d2cbc0ad?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
 ![image](https://user-gold-cdn.xitu.io/2018/10/19/16689fc91c1a208c?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)

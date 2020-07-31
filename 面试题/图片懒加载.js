@@ -1,10 +1,10 @@
 //  <img src="default.png占位图片" data-src="真实图片地址" alt="" />
+let images = document.querySelectorAll('img')
 
 // dom.getBoundingClientRect().top为元素到视口顶部的距离
 // 如果元素在视口之外，并且是在视口底部，则dom.getBoundingClientRect().top > window.innerWidth，
 // 当元素第一次出现在视口中时，dom.getBoundingClientRect().top < window.innerWidth
 const lazyload = () => {
-  let images = document.querySelectorAll('img')
   let count = 0
   for (let i = count; i < images.length; i++) {
     if (images[i] === 'default.png' && images[i].getBoundingClientRect().top < window.innerWidth) {
@@ -55,3 +55,16 @@ let innerHeight = window.innerHeight
 // 但是不能用elem.offsetTop来获取到文档顶部的距离，因为offsetTop是针对最近定位父级元素计算的，
 // 要计算元素到文档顶部的距离，要么递归用offsetTop获取，要么 elem.getBoundingClientRect().top + scrollTop
 // https://www.jianshu.com/p/a53c44393aae
+
+// 方法二 使用IntersectionObserver
+const observer = new IntersectionObserver(changes => {
+  // changes为被观察的元素合集
+  changes.forEach(change => {
+    // 通过change.isIntersection来判断是否在视口
+    if (change.isIntersection) {
+      change.target.src = change.target.getAttribute('data-src')
+      observer.unobserve(change.target)
+    }
+  })
+})
+images.forEach(img => observer.observe(img))

@@ -15,7 +15,7 @@
 |      Size       | 总大小在4097个字节左右，大约4kb，chrome限制每个域的cookie个数为53个，其余浏览器各不相同 |
 |    HttpOnly     | boolean类型，如果为true，则只能在http请求头中带有该cookie的信息，无法通过客户端的js脚本document.cookie读取该cookie的信息，但是还是可以在控制台Application栏目手动修改，所以只能在一定程度上防范XSS攻击 |
 |     Secure      | boolean类型，如果为true，则该cookie只在https协议中有效，在http协议中无效 |
-|    SameSite     | 可选Strict、Lax、None。Strict完全禁止第三方cookie，只有当前网页的 URL 与请求目标一致，才会带上 cookie。Lax限制稍稍放宽，大多数情况不发送第三方cookie，除了导航到目标网址的get请求除外，包括超链接<a href='...'/>，预加载<link rel="prerender" />和get表单<form method="GET" />三种形式发送cookie。None可以显示的关闭SameSite，但是必须搭配Secure使用，也就是cookie必须通过https协议发送，否则无效。Chrome80版本默认设置SameSite：Lax。 |
+|    SameSite     | 可选Strict、Lax、None。Strict完全禁止第三方cookie，只有当前网页的 URL 与请求目标一致，才会带上 cookie。Lax限制稍稍放宽，大多数情况不发送第三方cookie，除了导航到目标网址的get请求除外，包括超链接<a href='...'/>，预加载<link rel="prerender" />和get表单<form method="GET" />三种形式发送cookie。None可以显示的关闭SameSite，但是必须搭配Secure使用，也就是cookie必须通过https协议发送，否则无效。Chrome51版本新增SameSite属性，80版本默认设置SameSite：Lax。 |
 |    Priority     | 优先级，Low/Medium/High，当cookie数量超出时，低优先级的cookie会被优先清除 |
 
 
@@ -58,7 +58,7 @@ XSS跨站脚本攻击：指的是攻击者通过在web页面嵌入恶意代码�
 
   token是访问需要权限的资源接口所需要的凭证
 
-  鉴权信息会存储到token中，token保存在客户端本地的localStorage中，服务端只需要对发送过来的token值进行验证即可，普通的token应该是会存到redis数据库中，要查询数据库进行校验？而JWT不需要存储token，可以直接用密钥解密进行校验。
+  鉴权信息会存储到token中，token保存在客户端本地的localStorage0中，也可以保存在cookie中，服务端只需要对发送过来的token值进行验证即可，普通的token应该是会存到redis数据库中，要查询数据库进行校验？而JWT不需要存储token，可以直接用密钥解密进行校验。
 
   * 在登录成功时，服务端会提供给客户端一串token，客户端收到token后会保存在localStorage中，客户端每次向服务端发起请求时，需要手动携带这串token，将token放到HTTP的header中，之后服务端会校验token，如果成功则返回数据。
 
@@ -66,7 +66,9 @@ XSS跨站脚本攻击：指的是攻击者通过在web页面嵌入恶意代码�
 
   还有一种token是refresh token，专门用于对access token的过期时间进行续期。
 
-  
+  token存储在数据库中的痛点在于，服务器集群间共享token，如果是多台机器都存token，怎么同步，如果全部都存在同一台机器上，这台机器挂掉会使所有服务挂掉。因此就有了JWT，把token存储在客户端。
+
+
 
 * **基于JWT的Token**
 

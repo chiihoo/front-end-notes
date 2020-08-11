@@ -56,3 +56,13 @@ chrome=1则可以激活Chrome Frame，chrome=1不是说IE的技术增强了可�
 `<meta http-equiv="refresh" content="5"> ` 5秒后刷新该页面
 
 `<meta http-equiv="refresh" content="5;url=http://www.baidu.com">` 5秒后跳转到`http://www.baidu.com`
+
+
+
+`<meta http-equiv="Content-Security-Policy" content="script-src 'self'">` CSP内容安全策略，禁止外部脚本注入，可以预防XSS攻击，不过建议还是在服务端设置header来设置
+
+```js
+// server.js
+'Content-Security-Policy-Report-Only': 'default-src \'self\'; form-action \'self\'; report-uri / report' 
+```
+

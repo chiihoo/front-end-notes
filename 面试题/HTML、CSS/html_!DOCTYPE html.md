@@ -37,4 +37,3 @@ ie浏览器盒模型width和height是以border-box为基准，标准盒模型wid
 请确保把 DOCTYPE 放在 HTML 文件的顶部。如果有任何其他字符位于 DOCTYPE 之前，比如注释或 XML 声明，会导致 Internet Explorer 9 或更早期的浏览器触发混杂模式。
 
 
-

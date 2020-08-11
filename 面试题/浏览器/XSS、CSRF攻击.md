@@ -40,7 +40,7 @@
 
     开发者明确告诉客户端（制定比较严格的策略和规则），哪些外部资源是可以加载和执行的 ，即使攻击者发现漏洞，但是它是没办法注入脚本的。CSP 的实质就是白名单制度，开发者明确告诉客户端，哪些外部资源可以加载和执行，等同于提供白名单。它的实现和执行全部由浏览器完成，开发者只需提供配置。CSP 大大增强了网页的安全性。攻击者即使发现了漏洞，也没法注入脚本，除非还控制了一台列入了白名单的可信主机。
 
-    通过 HTTP 头信息的Content-Security-Policy的字段，或者`<meta http-equiv="Content-Security-Policy" content="script-src 'self'">`均可以启用CSP。
+    通过 HTTP 头信息的Content-Security-Policy的字段，或者在html中`<meta http-equiv="Content-Security-Policy" content="script-src 'self'">`均可以启用CSP。
 
     常见的配置为 `default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';`该策略允许加载同源的图片、脚本、AJAX和CSS资源，并阻止加载其他任何资源，对于大多数网站是一个不错的配置。
 

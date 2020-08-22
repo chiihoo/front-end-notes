@@ -35,7 +35,7 @@
         // 3	请求处理中（响应中通常有部分数据可用，但是服务器还没有完成响应）
         // 4	请求已完成（可以访问服务器响应并使用它）
         // 或者onload也行，onreadystatechange事件有跨浏览器兼容性的问题，它必须放在在xhr.open()之前
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
           //判断readyState状态码，请求已完成时进行操作
           if (xhr.readyState == 4) {
             //判断响应状态码
@@ -64,14 +64,11 @@
 
         //发送请求
         //get请求:请求实体拼接在URL后面
-        // xmlHttp.open('get', 'ajax?name=张三&pwd=123');//第二个参数是带请求实体的url
-        // xmlHttp.send(null);
+        // xhr.open('get', 'ajax?name=张三&pwd=123');//第二个参数是带请求实体的url
+        // xhr.send(null);
         //post请求
         xhr.open('get', 'ajax') //第二个参数是不带请求实体的url,比如'ajax'
-        xhr.setRequestHeader(
-          'Content-type',
-          'application/x-www-form-urlencoded;charset=UTF-8'
-        )
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
         xhr.send('name=张三&pwd=123')
       }
 
@@ -101,7 +98,7 @@
 
         // 监听readyState属性，当readyState=4时，说明请求已完成（可以访问服务器响应并使用它），onreadystatechange必须放在在xhr.open()之前
         // onload事件和onreadystatechange效果一样，不用判断readyState状态码
-        xhr.onload = function() {
+        xhr.onload = function () {
           if (xhr.status == 200) {
             options.success(xhr.responseText)
           } else {
@@ -109,15 +106,20 @@
           }
         }
 
-        //发送请求
+        // 发送请求
+        // 并不是get请求一定要在url上携带参数，post请求一定要在请求体中携带参数
+        // 其实get请求和post请求两种方式都可以携带参数，只是一般get请求就用url，post就用请求体
+        // 大多数浏览器会限制url长度在2k以内，post理论上没有限制
+
         if (options.type == 'GET') {
           //'get'或者'post' ,url ,异步true或者同步false
-          xhr.open(options.type, options.url + '?' + params, options.async)
-          xhr.send(null)
+          xhr.open(options.type, options.url + '?' + params, options.async) // 要发送的url带上params
+          xhr.send(null) // get发送的数据体为null
         } else if (options.type == 'POST') {
+          // 这里的url没有带上params，放到了xhr.send()里面。url是有长度限制
           xhr.open(options.type, options.url, options.async)
-          xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
-          xhr.send(params)
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+          xhr.send(params) // post发送的数据体为params
         }
       }
 
@@ -130,7 +132,7 @@
           name: '张三',
           age: 23
         },
-        success: function(data) {
+        success: function (data) {
           //返回接受信息
           console.log(data)
         }

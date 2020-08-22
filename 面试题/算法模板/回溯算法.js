@@ -11,7 +11,7 @@ const back = nums => {
       // 此处还可以剪枝
       track.push(xxx) //做选择
       backtrack(start + 1) // 下一个选择
-      track.pop() //这小选择
+      track.pop() //撤销选择
     }
   }
   backtrack(0)

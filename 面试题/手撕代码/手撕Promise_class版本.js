@@ -1,23 +1,24 @@
 // https://zhuanlan.zhihu.com/p/21834559?utm_source=tuicool&utm_medium=referral
 // https://juejin.im/post/6845166891061739528#heading-11
+
+// class版本
 class Promise {
   constructor(executor) {
     this.status = 'pending'
     this.value
-    this.error
     // 当 resolve在异步函数比如setTimeout中执行，then时state还是pending等待状态。
     // 并且同一个Promise可以附加多个then，比如 p.then(v=>console.log(1)); p.then(v=>console.log(2))，
     // 这就需要把后续多个操作存起来，并且由于不知道Promise操作是否成功，成功和失败的操作都需要存到数组中，并在改变状态时遍历调用
     this.resolveQueue = []
     this.rejectQueue = []
 
-    // 在class里面尽量用箭头函数，使用this不容易出错
-    const resolve = res => {
-      // setTimeout(()=>{},0)使函数异步调用
+    // 这里用箭头函数，不用保存this，如果是function就需要保存this
+    const resolve = data => {
+      // setTimeout(() => {}, 0)使函数异步调用
       setTimeout(() => {
         if (this.status === 'pending') {
           this.status = 'fulfilled'
-          this.value = res
+          this.value = data
           this.resolveQueue.forEach(fn => fn())
         }
       }, 0)
@@ -26,23 +27,23 @@ class Promise {
       setTimeout(() => {
         if (this.status === 'pending') {
           this.status = 'rejected'
-          this.error = err
+          this.value = err
           this.rejectQueue.forEach(fn => fn())
         }
       }, 0)
     }
     executor(resolve, reject)
   }
-  // 写在constructor外面的方法是挂载在prototype上的原型方法，
   // 写在constructor里面的this方法是实例方法，每次生成一个新的实例，实例方法都会不一样
+  // 写在constructor外面的方法是挂载在prototype上的原型方法，可以被所有实例共享
   then(onResolved, onRejected) {
     // 必须为函数
     if (typeof onResolved !== 'function') {
       onResolved = value => value
     }
     if (typeof onRejected !== 'function') {
-      onRejected = e => {
-        throw e
+      onRejected = err => {
+        throw err
       }
     }
 
@@ -53,10 +54,11 @@ class Promise {
           let x = onResolved(this.value)
           if (x instanceof Promise) {
             x.then(resolve, reject)
+          } else {
+            resolve(x)
           }
-          resolve(x)
-        } catch (e) {
-          reject(e)
+        } catch (err) {
+          reject(err)
         }
       }, 0)
     }
@@ -66,9 +68,11 @@ class Promise {
           let x = onRejected(this.value)
           if (x instanceof Promise) {
             x.then(resolve, reject)
+          } else {
+            resolve(x)
           }
-        } catch (e) {
-          reject(e)
+        } catch (err) {
+          reject(err)
         }
       }, 0)
     }
@@ -104,19 +108,20 @@ class Promise {
   }
 }
 
-Promise.resolve = val => {
+// 这里不要用箭头函数Promise.resolve = val => {}，否则this不是指向class Promise
+Promise.resolve = function (val) {
   return new Promise((resolve, reject) => {
     resolve(val)
   })
 }
 
-Promise.reject = val => {
+Promise.reject = function (val) {
   return new Promise((resolve, reject) => {
     reject(val)
   })
 }
 
-Promise.all = promises => {
+Promise.all = function (promises) {
   return new Promise((resolve, reject) => {
     let resArr = []
     let count = 0
@@ -135,7 +140,7 @@ Promise.all = promises => {
   })
 }
 
-Promise.allSettled = promises => {
+Promise.allSettled = function (promises) {
   return new Promise((resolve, reject) => {
     let resArr = []
     let count = 0
@@ -159,7 +164,7 @@ Promise.allSettled = promises => {
   })
 }
 
-Promise.race = promises => {
+Promise.race = function (promises) {
   return new Promise((resolve, reject) => {
     // promises.forEach(item => {
     //   item.then(resolve, reject)
@@ -172,7 +177,7 @@ Promise.race = promises => {
   })
 }
 
-Promise.promisify = fn => {
+Promise.promisify = function (fn) {
   return (...args) => {
     return new Promise((resolve, reject) => {
       // fn最后一个参数为callback，只需要args的长度大于等于fn参数除去最后一个callback的长度即可
@@ -204,6 +209,6 @@ Promise.promisify = fn => {
 new Promise(resolve => resolve(8))
   .then()
   .then()
-  .then(function foo(value) {
+  .then(value => {
     console.log('x', value)
   })

@@ -1,3 +1,4 @@
+// 这个其实就是发布订阅嘛
 const obj = {}
 
 const $on = (name, fn) => {

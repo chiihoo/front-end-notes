@@ -36,7 +36,7 @@ mousemove 在元素上移动鼠标 **易错点**
   touchmove 在绑定的元素上先进行触摸，之后不松手进行滑动，就算滑出了区域都都会触发。
   而 mousemove 只要鼠标在绑定的元素范围内，都会触发，并不是想当然的鼠标点击之后才会触发。**
 
-因此 mouse 事件一般都是绑定在 document 元素上，通过 e.target.matches('选择器') === true，或者 e.target === domRef.current，都可以判断 e.target 是否为目标元素。
+因此 mouse 事件一般都是绑定在 document 元素上，通过 e.target.matches('选择器') = true，或者 e.target = domRef.current，都可以判断 e.target 是否为目标元素。
 鼠标的点击：e.buttons === 0，其中 0、1、2 分别为 左、中、右键，在 mousemove 中松开也可以触发。
 
 ```

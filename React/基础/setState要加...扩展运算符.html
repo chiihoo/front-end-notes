@@ -42,8 +42,11 @@
                   //删除this.state第一层的某个属性
                   // let newState = this.state
                   // delete newState.color
-                  // this.setState({
-                  //   people: { ...this.state.people, age: this.state.people.age + 1 }
+                  // this.setState(newState)
+
+                  // this.setState((prevState, props) => {
+                  //   delete prevState.color
+                  //   return prevState
                   // })
                 }}
               >

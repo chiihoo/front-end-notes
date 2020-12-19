@@ -64,10 +64,10 @@
 
         //发送请求
         //get请求:请求实体拼接在URL后面
-        // xhr.open('get', 'ajax?name=张三&pwd=123');//第二个参数是带请求实体的url
+        // xhr.open('GET', 'www.test.com?name=张三&pwd=123');//第二个参数是带请求实体的url
         // xhr.send(null);
         //post请求
-        xhr.open('get', 'ajax') //第二个参数是不带请求实体的url,比如'ajax'
+        xhr.open('POST', 'www.test.com') //第二个参数是不带请求实体的url,比如'www.test.com'
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
         xhr.send('name=张三&pwd=123')
       }

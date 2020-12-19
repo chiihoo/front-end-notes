@@ -93,7 +93,7 @@ const preorderTravelsal2 = root => {
 
 // 后序，深度优先搜索，在前序基础上进行修改两个地方，res.unshift() 和 先left后right
 // 逆前序遍历结果的逆序
-// 树为1 2 3 4 5 6 7
+// 树为 1 2 3 4 5 6 7
 // 前序为 1 2 4 5 3 6 7
 // 先left后right，1 3 7 6 2 5 4，相当于前序遍历顺序左右对称换过来了
 // push换成unshift，4 5 2 6 7 3 1，正好为后序遍历的顺序
@@ -132,6 +132,31 @@ const preorderTravelsal3 = root => {
     }
     root = stack.pop()
     root = root.right
+  }
+  return res
+}
+
+// 后序也可以照着前序改,res.push换成
+const postorderTravelsal3 = root => {
+  let res = []
+  let curr = root
+  let stack = []
+  // 变量last用于保存当前栈顶所弹出的元素，判断 curr.right == last 是为了避免重复访问同一个元素而陷入死循环当中
+  let last = null
+  while (curr !== null || stack.length > 0) {
+    while (curr !== null) {
+      stack.push(curr)
+      curr = curr.left
+    }
+    curr = stack[stack.length - 1]
+    if (curr.right === null || curr.right === last) {
+      res.push(curr.val)
+      stack.pop()
+      last = curr
+      curr = null
+    } else {
+      curr = curr.right
+    }
   }
   return res
 }

@@ -7,7 +7,7 @@
      alert(key + " : "+ b[key])
      }
      我们手动加在原型上的方法，for in 的时候会被遍历出来。一般我们遍历对象并不需要其原型的属性，所以遍历时最好 Object.prototype.hasOwnProperty 方法进行判断。
-  2. 在实例中定义原型中已有的方法，浏览器 for in 情况不一致。  
+  2. 在实例中定义原型中已有的方法，浏览器 for in 情况不一致。
      var b = {"name":"txj"}
      b.toString = function(){ alert("I am toString") }
      我们给 b 实例加了一个原型上已有的方法 toString。现代浏览器能循环出 toString 低版本浏览器却不能。所以给实例定属性名时，不要和原型已有的一致。
@@ -22,22 +22,22 @@
 
 - call，apply，bind 怎么用，有什么区别，bind 之后的函数跟原函数有什么区别
 
-    call 和 apply 的作用是改变函数内部的 this 指向，第一个参数都是 this 的值，不同的是 apply 的第二个参数是一个数组，数组的各项为传入函数的实参，而 call 不是传一个数组，它是把每个实参依次写到第二个参数、第三个参数依次类推。
-    而 bind 也可以改变函数内部的 this，不同的是，它会生成一个新的绑定函数，并且可以预设该函数部分形参的默认值
-    function f (arg1, arg2, arg3) {}
-    f.call(null, ...Arr)
-    f.apply(null, Arr)
-    const f2 = f.bind(null, 5)
-    这样 f2(arg1 = 5, arg2, arg3) {}
+  call 和 apply 的作用是改变函数内部的 this 指向，第一个参数都是 this 的值，不同的是 apply 的第二个参数是一个数组，数组的各项为传入函数的实参，而 call 不是传一个数组，它是把每个实参依次写到第二个参数、第三个参数依次类推。
+  而 bind 也可以改变函数内部的 this，不同的是，它会生成一个新的绑定函数，并且可以预设该函数部分形参的默认值
+  function f (arg1, arg2, arg3) {}
+  f.call(null, ...Arr)
+  f.apply(null, Arr)
+  const f2 = f.bind(null, 5)
+  这样 f2(arg1 = 5, arg2, arg3) {}
 
 - 对 this 的理解，箭头函数的 this
 
-    this 指向的是调用它的对象实例
-    全局环境下调用的 this 指向 window
-    非严格模式下，函数中直接使用 this，this 指向 window，严格模式下，this 指向 undefined
+  this 指向的是调用它的对象实例
+  全局环境下调用的 this 指向 window
+  非严格模式下，函数中直接使用 this，this 指向 window，严格模式下，this 指向 undefined
 
-    setTimeout 是挂在 window 对象上的，当中所执行的延时函数中的 this，指向 window。除非该函数为箭头函数，或者使用闭包 用 self 保存 this
-    箭头函数在自己的作用域内没有 this，它的 this 指向定义时所在作用域的 this
+  setTimeout 是挂在 window 对象上的，当中所执行的延时函数中的 this，指向 window。除非该函数为箭头函数，或者使用闭包 用 self 保存 this
+  箭头函数在自己的作用域内没有 this，它的 this 指向定义时所在作用域的 this
 
 - 判断数组类型有哪些方法，用 instanceof 判断数组类型有什么缺点
 - 说一下你对原型链的理解

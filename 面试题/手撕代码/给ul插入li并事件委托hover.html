@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      页面有一个<ul>，一个<button>，每点击一次按钮，就向<ul>中插入一个<li>，要求每监听到一个<li>的hover时，打印这个元素的位置，内容等等信息。
+    </title>
+    <style></style>
+  </head>
+  <body>
+    <button>添加</button>
+    <ul></ul>
+    <script>
+      let ul = document.querySelector('ul')
+      let button = document.querySelector('button')
+      let count = 0
+      button.addEventListener('click', () => {
+        let li = document.createElement('li')
+        li.innerText = count++
+        li.style.backgroundColor = count % 2 === 0 ? 'yellow' : 'skyblue'
+        ul.appendChild(li)
+      })
+      ul.addEventListener(
+        'mouseenter',
+        e => {
+          if (e.target.nodeName === 'LI') {
+            console.log(
+              '内容:',
+              e.target.innerText,
+              '-----',
+              '位置信息:',
+              e.target.getBoundingClientRect()
+            )
+          }
+        },
+        true // <———— 特别要注意的地方，这里的参数为true！！！
+        // mouseenter和mouseleave事件，不支持冒泡，如果想要实现事件委托，点击li，并在ul事件拿到，就一定要是捕获
+        // 点击li，事件触发顺序为 ul的捕获事件——>目标阶段li中按顺序绑定的冒泡或捕获事件——>ul的冒泡事件
+        // 但是由于mouseenter和mouseleave不会冒泡，所以在li触发该事件时，不会到达ul的mouseenter和mouseleave冒泡事件
+        // 所以这两个事件的事件委托需要绑定在 ul的捕获事件上
+      )
+    </script>
+  </body>
+</html>

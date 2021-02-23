@@ -71,6 +71,7 @@ function deepClone1(obj, map = new WeakMap()) {
   // let cloneObj = new obj.constructor() // 找到的是所属类原型上的constructor，而原型上的constructor指向的是当前类本身
   map.set(obj, cloneObj) // 这个map只能放这，不能放for循环后面
 
+  // 这里用的是for...in...，遍历的是所有可枚举属性，即使是数组，也有自己的属性，而不仅仅是值
   for (let key in obj) {
     // 剥离原型链的数据
     if (obj.hasOwnProperty(key)) {
@@ -87,7 +88,6 @@ let copyObj1 = deepClone1(target)
 // 两个参数的版本
 function deepClone2(obj, copyObj) {
   if (!copyObj) {
-    // 这边应该要进行很多类型的判断
     copyObj = Array.isArray(obj) ? [] : {}
   }
   for (let key in obj) {
@@ -97,6 +97,7 @@ function deepClone2(obj, copyObj) {
         copyObj[key] = Array.isArray(obj[key]) ? [] : {}
         deepClone2(obj[key], copyObj[key])
       } else {
+        // 除去[]和{}以外的所有类型
         copyObj[key] = obj[key]
       }
     }

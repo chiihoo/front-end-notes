@@ -28,8 +28,10 @@ Object.prototype.toString.call(Symbol('foo')) // '[object Symbol]'
 // 除此之外还有 typeof, instanceof
 
 // typeof 可以判断number, string, boolean, function, undefined, symbol
-// 但在判断object类型的时候，无法精确的判断为哪一种object，null也为object
+// 但在判断object类型的时候，无法精确的判断为哪一种object，null也为object，[]也为object
+// typeof  null、[]、{}都为 'object'类型
 typeof null === 'object'
+typeof [] === 'object'
 typeof new String('foo') === 'object'
 typeof String('foo') === 'string'
 // typeof原理： 不同的对象在底层都表示为二进制，在javascript中二进制前（低）三位存储其类型信息。
@@ -44,6 +46,9 @@ typeof String('foo') === 'string'
 
 // instanceof 可以用来判断一个对象的具体类型，但是也可能判断不准确，比如Array会被判断为Object
 // a instanceof b是按照原型链向上搜索，只需要右边b.prototype在左边a的原型链上即可
+
+// object instanceof constructor 左侧是一个实例对象，右侧是一个构造函数constructor
+// 它的原理是向上搜索左侧实例对象的原型链，看右侧构造函数的prototype是否出现在原型链上，等同于constructor.prototype.isPrototypeOf(object)
 ;[1, 2, 3] instanceof Array === true
 ;[1, 2, 3] instanceof Object === true
 
@@ -61,3 +66,7 @@ programmer.prototype = new person()
 let p1 = new programmer()
 p1 instanceof person // true
 p1 instanceof programmer // true
+
+
+// typeof  null、[]、{}都为 'object'类型
+// [] instanceof既是Array类型又是Object类型

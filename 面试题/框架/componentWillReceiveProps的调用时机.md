@@ -1,0 +1,3 @@
+父组件第一次往子组件传props的时候它不会调用
+
+只有之后props发生了改变，才会调用componentWillReceiveProps生命周期函数

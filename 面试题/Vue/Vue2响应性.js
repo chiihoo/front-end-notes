@@ -28,8 +28,8 @@ function autorun(update) {
   // wrappedUpdate()
   // 也可以不要wrappedUpdate，写成底下这种
   activeUpdate = update
-  update()
-  activeUpdate = null
+  // update()
+  // activeUpdate = null
 }
 
 // 对obj进行观察，当读取某个值时，注册该依赖。当set新值时，通知所有订阅

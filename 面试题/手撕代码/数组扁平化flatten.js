@@ -1,16 +1,33 @@
-// 方法一：ES6中有现成的Array.prototype.flat([depth])方法，除了扁平化，还会移除数组中的空项
+// 方法：ES6中有现成的Array.prototype.flat([depth])方法，除了扁平化，还会移除数组中的空项
 // depth：指定要提取嵌套数组的结构深度，默认值为 1
 let arr1 = [1, 2, , 3, [1, 2, 3, 4, [2, 3, 4]]]
 
 console.log(arr1.flat(1)) // [1, 2, 3, 1, 2, 3, 4, [2, 3, 4]]
 
-// 方法二                                                 <———————————— 用这个版本
+// 方法一                                                 <———————————— 用这个版本
+function flattenDeep(arr) {
+  let res = []
+  function helper(arr1) {
+    if (Array.isArray(arr1)) {
+      arr1.forEach(item => {
+        helper(item)
+      })
+    } else {
+      res.push(arr1)
+    }
+  }
+  helper(arr)
+  return res
+}
+console.log(flattenDeep(arr1))
+
+// 方法二
 // 递归，结果为一维数组
 function flattenDeep1(arr) {
   let res = []
   arr.forEach(item => {
     if (Array.isArray(item)) {
-      res = res.concat(flattenDeep1(item))
+      res = res.concat(flattenDeep1(item)) // 这里 res= 必须写
     } else {
       res.push(item)
     }
@@ -58,12 +75,32 @@ console.log(flattenDeep4(arr1))
 // ————————————————————————————————————————————————————————————————————————————————
 // 如果想要可以控制最多减少的嵌套层级数，加个depth就可以了
 
-// 方法一                                                   <———————————— 用这个版本
+// 方法一                                                 <———————————— 用这个版本
 function flattenDepth(arr, depth = 1) {
+  let res = []
+  function helper(arr1, depth) {
+    if (Array.isArray(arr1) && depth >= 0) {
+      // 与别的版本不同的是，这里是 depth >= 0 ，而不是 depth > 0
+      arr1.forEach(item => {
+        helper(item, depth - 1)
+      })
+    } else {
+      res.push(arr1)
+    }
+  }
+  helper(arr, depth)
+  return res
+}
+
+console.log(flattenDepth(arr1))
+console.log(flattenDepth(arr1, Infinity))
+
+// 方法二
+function flattenDepth1(arr, depth = 1) {
   let res = []
   arr.forEach(item => {
     if (Array.isArray(item) && depth > 0) {
-      res = res.concat(flattenDepth(item, depth - 1))
+      res = res.concat(flattenDepth1(item, depth - 1))
     } else {
       res.push(item)
     }
@@ -71,14 +108,14 @@ function flattenDepth(arr, depth = 1) {
   return res
 }
 
-console.log(flattenDepth(arr1, 1))
-console.log(flattenDepth(arr1, Infinity))
+console.log(flattenDepth1(arr1, 1))
+console.log(flattenDepth1(arr1, Infinity))
 
-// 方法二
-function flattenDepth1(arr, depth = 1) {
+// 方法三
+function flattenDepth2(arr, depth = 1) {
   if (depth > 0) {
     return arr.reduce((res, item) => {
-      return res.concat(Array.isArray(item) ? flattenDepth1(item, depth - 1) : item)
+      return res.concat(Array.isArray(item) ? flattenDepth2(item, depth - 1) : item)
     }, [])
   } else {
     return [...arr]
@@ -86,5 +123,5 @@ function flattenDepth1(arr, depth = 1) {
   }
 }
 
-console.log(flattenDepth1(arr1, 1))
-console.log(flattenDepth1(arr1, Infinity))
+console.log(flattenDepth2(arr1, 1))
+console.log(flattenDepth2(arr1, Infinity))

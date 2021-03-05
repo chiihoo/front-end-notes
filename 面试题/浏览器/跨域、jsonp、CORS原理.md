@@ -83,7 +83,7 @@ console.log(testData)
 
 **如果是简单请求，那么浏览器会直接发送跨域请求给服务器，请求头会带上`Origin`字段，表示发起请求的源。服务器可以维护一个可被允许的源的列表，如果命中了，就在响应头上添加`Access-Control-Allow-Origin`字段**
 
-**如果是非简单请求，那么会有一个预检环节，浏览器发送一次`HTTP`查询请求，包括`Origin`、`Access-Control-Request-Method`和`Access-Control-Request-Headers`，表明跨域请求将使用的HTTP方法（get,post之类的）和请求头额外带上的字段。服务器收到请求后，检查字段，确认是否可以跨域，如果可以跨域，就会添加相应字段到响应头，比如`Access-Control-Allow-Origin`、`Access-Control-Allow-Methods`、`Access-Control-Allow-Headers`，还可以设置预检请求的有效期。如果不可以跨域，则不添加字段。一旦服务器通过预检请求，那之后每次浏览器的跨域请求就跟简单请求一样了。**
+**如果是非简单请求，那么会有一个预检环节(`Request Method: OPTIONS`请求)，浏览器发送一次`HTTP`查询请求，包括`Origin`、`Access-Control-Request-Method`和`Access-Control-Request-Headers`，表明跨域请求将使用的HTTP方法（get,post之类的）和请求头额外带上的字段。服务器收到请求后，检查字段，确认是否可以跨域，如果可以跨域，就会添加相应字段到响应头，比如`Access-Control-Allow-Origin`、`Access-Control-Allow-Methods`、`Access-Control-Allow-Headers`，还可以设置预检请求的有效期。如果不可以跨域，则不添加字段。一旦服务器通过预检请求，那之后每次浏览器的跨域请求就跟简单请求一样了。**
 
 
 

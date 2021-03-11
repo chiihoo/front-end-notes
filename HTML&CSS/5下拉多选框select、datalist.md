@@ -1,7 +1,7 @@
 <select>
     <option value="a">a</option>
     <option value="b">b</option>
-    <option value="c"selected>c</option>
+    <option value="c" selected>c</option>
 </select>
 <br />
 用户不能自己输入，只能选择已有选项

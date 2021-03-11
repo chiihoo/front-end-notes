@@ -96,6 +96,18 @@ console.log('quickSort', quickSort(arr))
 // 3.归并排序
 // https://images2015.cnblogs.com/blog/1024555/201612/1024555-20161218163120151-452283750.png
 function mergeSort(arr) {
+  // 主要的排序函数，先把arr一次次递归拆分成一半->一半->一半，直到拆成长度为1，之后再进行merge合并操作
+  function sort(arr) {
+    // 递归退出条件
+    if (arr.length <= 1) {
+      return arr
+    }
+    let mid = Math.floor(arr.length / 2)
+    let leftArr = sort(arr.slice(0, mid))
+    let rightArr = sort(arr.slice(mid))
+    return merge(leftArr, rightArr)
+  }
+
   // merge函数的作用是把两个有序数组合并成一个排序数组
   function merge(leftArr, rightArr) {
     let res = []
@@ -117,18 +129,6 @@ function mergeSort(arr) {
       res.push(rightArr[j++])
     }
     return res
-  }
-
-  // 主要的排序函数，先把arr一次次递归拆分成一半->一半->一半，直到拆成长度为1，之后再进行merge合并操作
-  function sort(arr) {
-    // 递归退出条件
-    if (arr.length <= 1) {
-      return arr
-    }
-    let mid = Math.floor(arr.length / 2)
-    let leftArr = sort(arr.slice(0, mid))
-    let rightArr = sort(arr.slice(mid))
-    return merge(leftArr, rightArr)
   }
 
   return sort(arr)

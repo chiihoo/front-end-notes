@@ -16,11 +16,11 @@
 
 ```
 301 Moved Permanently: 永久重定向，常用常见为使用域名跳转
-比如，访问 http://www.baidu.com 会跳转到 https://www.baidu.com
-301请求是可以缓存的， 即通过看status code，可以发现后面写着from cache
+	比如，访问 http://www.baidu.com 会跳转到 https://www.baidu.com
+	可以缓存的，即通过看status code，可以发现后面写着from cache
 
 302 Found: 临时重定向
-可用于 未登陆的用户访问重定向到登录页面；访问404页面会重新定向到首页。
+	可用于 未登陆的用户访问重定向到登录页面；访问404页面会重新定向到首页。
 
 303 See Other: 跟302状态码有相同的作用，但是明确表示客户端应当采用GET方法来重定向到另一个URI上去。
 
@@ -33,7 +33,14 @@
 ```
 
 ```
-400 Bad Request: 请求报文中存在语法错误。
+400 Bad Request: 请求报文中存在语法错误
+401	Unauthorized: 请求要求用户的身份认证
+403	Forbidden: 服务器理解请求客户端的请求，但是拒绝执行此请求
+404 Not Found: 请求的资源不存在
+405	Method Not Allowed: 客户端请求中的方法被禁止
+```
 
+```
+500 Internal Server Error: 内部服务器错误
 ```
 

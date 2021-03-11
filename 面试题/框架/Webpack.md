@@ -26,7 +26,12 @@
 
 
 
-* **plugin是对整体打包结果进行处理的插件，比如压缩混淆webpack-jsuglify-plugin，自动生成入门html页面webpack-html-plugin**
+* **plugin是对整体打包结果进行处理的插件，比如压缩混淆uglifyjs-webpack-plugin，自动生成入门html页面html-webpack-plugin**
+
+
+
+  如压缩，混淆，（uglifyjs-webpack-plugin ）
+  自动生成入门html页面（html-webpack-plugin）
 
 
 
@@ -85,3 +90,8 @@ module.exports = {
 
 
 
+**webpack打包原理是根据文件间的依赖关系对其进行静态分析，然后将这些模块按指定规则生成静态资源，当 webpack 处理程序时，它会递归地构建一个依赖关系图(dependency graph)，其中包含应用程序需要的每个模块，然后将所有这些模块打包成一个或多个 bundle。**
+
+webpack有两种组织模块的依赖方式，同步、异步。异步依赖将作为分割点，形成一个新的块；在优化了依赖树之后，每一个异步区块都将作为一个文件被打包。
+
+webpack有一个智能解析器，几乎可以处理任何第三方库。无论它们的模块形式是CommonJS、AMD还是普通的JS文件；甚至在加载依赖的时候，允许使用动态表require("、/templates/"+name+"、jade")。

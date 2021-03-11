@@ -10,7 +10,7 @@
 |      Name       |                   cookie 的名称，为字符串                    |
 |      Value      |                      对应的值，为字符串                      |
 |     Domain      |             指定 cookie 所属域名，默认为当前域名             |
-|      Path       | 可以访问该cookie的页面路径，默认为'/'，如果设置为/a/b，那么当访问/a/b/下的路径时，请求头会包含该 cookie，而访问/a/时，请求头不会带上该 cookie |
+|      Path       | 可以访问该cookie的页面相对路径，默认为'/'，如果设置为/a/b，那么当访问/a/b/下的路径时，请求头会包含该 cookie，而访问/a/时，请求头不会带上该 cookie |
 | Expires/Max-Age | 字段为cookie超时时间。不设置的话默认值为Session，意思为cookie会和session一起失效。Expires = Max-Age + 请求时间。Expires指的是过期时间，在某个时间点后cookie失效。而Max-Age指的是再过Max-Age秒cookie失效，是一个时间段，如果为负数，则为临时cookie，关闭浏览器就会失效，如果为0，则删除该cookie，默认为-1 |
 |      Size       | 总大小在4097个字节左右，大约4kb，chrome限制每个域的cookie个数为53个，其余浏览器各不相同 |
 |    HttpOnly     | boolean类型，如果为true，则只能在http请求头中带有该cookie的信息，无法通过客户端的js脚本document.cookie读取该cookie的信息，但是还是可以在控制台Application栏目手动修改，所以只能在一定程度上防范XSS攻击 |

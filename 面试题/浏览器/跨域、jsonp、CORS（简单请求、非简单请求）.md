@@ -123,6 +123,9 @@ https://juejin.cn/post/6844903873400799240
 // 必选
 Access-Control-Allow-Origin: http://127.0.0.1:3000或者*  // *代表任何域名
 
+注意该字段只能设置*或者单个域名！设置多域名是无效的
+解决方案：另外存储一个白名单，如果请求头里的Origin字段在白名单中，就设置Access-Control-Allow-Origin字段为这个域名
+
 // 可选
 Access-Control-Allow-Credentials: true或不设置
 // true表示允许发送cookie，此时Access-Control-Allow-Origin不能设置为*，必须指定明确的，与请求网页一致的域名

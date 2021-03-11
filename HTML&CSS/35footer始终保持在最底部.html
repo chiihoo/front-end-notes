@@ -36,7 +36,7 @@
         position: relative; /*保证footer是相对于container位置绝对定位*/
         min-height: 100%; /*这里只设置min-height，切记不要设置height*/
 
-        padding-bottom: 100px; /*设置padding-bottom值大于等于footer的height值，以保证main的内容能够全部显示出来而不被footer遮盖；*/
+        /* padding-bottom: 100px; 设置padding-bottom值大于等于footer的height值，以保证main的内容能够全部显示出来而不被footer遮盖； */
         box-sizing: border-box; /*使用padding-bottom必须设置box-sizing，否则footer会跑出视口*/
       }
       footer {
@@ -56,7 +56,7 @@
       .main {
         width: 100%;
         height: 200px;
-        /* height: 2000px; */
+        height: 2000px;
         background-color: orange;
       }
     </style>

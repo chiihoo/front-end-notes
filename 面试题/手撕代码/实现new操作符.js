@@ -4,10 +4,15 @@ function my_new(Func, ...args) {
   const obj = {}
   // 2. 将对象与构造函数通过原型链绑定起来
   obj.__proto__ = Func.prototype
+  // 3. 绑定this
+  Func.call(obj, ...args)
+  // 4. 返回对象
+  return obj
+
   // 将构造函数的this以及传进来的参数 绑定到新建的对象上
-  let res = Func.call(obj, ...args)
-  // // 最后判断结果是否为对象类型，并返回
-  return res instanceof Object ? result : obj
+  // let res = Func.call(obj, ...args)
+  // 最后判断结果是否为对象类型，并返回
+  // return res instanceof Object ? res : obj
 }
 
 // ————————————————————————————————————————————

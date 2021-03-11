@@ -13,6 +13,7 @@ function debounce1(func, duration) {
 }
 
 // 立即执行版，先立即执行一次func()，再接着防抖
+// 核心在于timer为null才执行，定时器里面设置timer为null
 function debounce2(func, duration) {
   let timer = null
   return function (args) {

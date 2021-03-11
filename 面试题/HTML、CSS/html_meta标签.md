@@ -39,7 +39,7 @@
 
 * **http-equiv和content**
 
-`<meta http-equiv="X-UA-Compatible" content="ie=edge">`
+`<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">`
 
 **ie=edge告诉IE使用最新的引擎渲染网页**
 

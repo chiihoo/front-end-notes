@@ -6,9 +6,9 @@
     即使是js文件，也会经过babel-loader转换
 
 plugin在webpack则是对整体的打包结果进行处理的一种插件机制
-  如压缩，混淆，（webpack-jsuglify-plugin）
+  如压缩，混淆，（uglifyjs-webpack-plugin ）
   处理通用（vendor）模块的抽离（common-chunks-plugin）
-  自动生成入门html页面（webpack-html-plugin）
+  自动生成入门html页面（html-webpack-plugin）
 
 代码分割 code spliting
   将一开始不需要用到的模块打包到另一个或多个文件中，在需要的时候（代码执行到对应的位置时）再加载

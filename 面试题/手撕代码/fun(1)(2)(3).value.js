@@ -18,6 +18,21 @@ function fun(...args1) {
 
 console.log(fun(1, 2)(2)(3).value)
 
+// sum(1)(2)(3).sumOf() = 6
+
+function sum(num) {
+  let res = 0
+  let f = function (arg) {
+    res += arg
+    f.sumOf = () => {
+      return res
+    }
+    return f
+  }
+  return f(num)
+}
+sum(1)(2)(3).sumOf()
+
 // ---------------------------------------------
 // add(1)(2) = 3
 // add(1, 2) = 3

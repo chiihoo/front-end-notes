@@ -11,8 +11,6 @@
 // 要求2：eat/sleep/go/rest可以改变任意顺序
 // human('Jack').sleep(5).eat().rest(10).go();
 
-
-
 // 写法一
 
 // // 箭头函数是不能new实例化的
@@ -30,6 +28,15 @@
 //   })
 //   return this
 // }
+// Human.prototype.go = function (time) {
+//   this.queue = this.queue.then(() => {
+//     return new Promise(resolve => {
+//       console.log(`Go`)
+//       resolve()
+//     })
+//   })
+//   return this
+// }
 // Human.prototype.sleep = function (time) {
 //   // this.queue = Promise.resolve(1)
 //   // this.queue.then(v1 => 2).then(v2 => 3) 这样才可以连起来 v1=1,v2=2
@@ -40,15 +47,6 @@
 //         console.log(`Sleep ${time}s`)
 //         resolve()
 //       }, time * 1000)
-//     })
-//   })
-//   return this
-// }
-// Human.prototype.go = function (time) {
-//   this.queue = this.queue.then(() => {
-//     return new Promise(resolve => {
-//       console.log(`Go`)
-//       resolve()
 //     })
 //   })
 //   return this
@@ -71,8 +69,6 @@
 
 // human('chiho').eat().sleep(3).go().rest(3.5)
 
-
-
 // 写法二 类
 class Human {
   constructor(name) {
@@ -89,6 +85,15 @@ class Human {
     })
     return this
   }
+  go() {
+    this.queue = this.queue.then(() => {
+      return new Promise(resolve => {
+        console.log(`Go`)
+        resolve()
+      })
+    })
+    return this
+  }
   sleep(time) {
     // this.queue = Promise.resolve(1)
     // this.queue.then(v1 => 2).then(v2 => 3) 这样才可以连起来 v1=1,v2=2
@@ -99,15 +104,6 @@ class Human {
           console.log(`Sleep ${time}s`)
           resolve()
         }, time * 1000)
-      })
-    })
-    return this
-  }
-  go() {
-    this.queue = this.queue.then(() => {
-      return new Promise(resolve => {
-        console.log(`Go`)
-        resolve()
       })
     })
     return this

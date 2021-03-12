@@ -67,6 +67,5 @@ let p1 = new programmer()
 p1 instanceof person // true
 p1 instanceof programmer // true
 
-
 // typeof  null、[]、{}都为 'object'类型
 // [] instanceof既是Array类型又是Object类型

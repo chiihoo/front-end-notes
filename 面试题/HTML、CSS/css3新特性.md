@@ -1,4 +1,4 @@
-1.选择器
+选择器
 
 ```
 https://www.w3school.com.cn/cssref/css_selectors.asp
@@ -12,3 +12,12 @@ https://www.w3school.com.cn/cssref/css_selectors.asp
 
 ```
 
+`transform`
+
+`rgba`
+
+`flex`
+
+渐变 `background-image: line-gradient(to bottom right, red, yellow)`
+
+媒体查询`@media screen and (max-width: 600px) {}`

@@ -1,10 +1,10 @@
-this是`js`的一个关键字，它是在运行时绑定的，它的绑定跟声明位置无关，只取决于调用位置（除了箭头函数）。
+`this`是`js`的一个关键字，它是在运行时绑定的，它的绑定跟声明位置无关，只取决于调用位置（除了箭头函数）。
 
-this的绑定有很多规则
+`this`的绑定有很多规则
 
 1. **默认绑定**
 
-默认绑定指的是 在全局作用域下的函数，它的this，在非严格模式下，会绑定在全局对象window上面，而严格模式下，则不会绑定。
+默认绑定指的是 在全局作用域下的函数，它的`this`，在非严格模式下，会绑定在全局对象`window`上面，而严格模式下，则不会绑定。
 
 ```js
 function foo() {
@@ -48,7 +48,7 @@ obj.b.foo() // undefined
 
 3. **显式绑定**
 
-显式绑定指的是call,apply,bin
+显式绑定指的是`call`，`apply`，`bind`
 
 ```js
 Function.prototype.call(thisArg, arg1, arg2, ...)
@@ -62,7 +62,7 @@ Function.prototype.bind(thisArg[, arg1[, arg2[, ...]]])
 
 4. **new绑定**
 
-this会指向生成出来的实例对象
+`this`会指向生成出来的实例对象
 
 ```js
 function foo() {
@@ -72,7 +72,7 @@ let obj = new foo()
 obj.a  // 1
 ```
 
-但有特殊情况，如果构造函数return了一个对象，this会绑定到返回的这个对象上面
+但有特殊情况，如果构造函数return了一个对象，`this`会绑定到返回的这个对象上面
 
 ```js
 function foo() {
@@ -83,7 +83,7 @@ let obj = new foo()
 obj.a  // undefined
 ```
 
-而如果返回的是别的基础数据类型，则this仍绑定到实例对象上
+而如果返回的是别的基础数据类型，则`this`仍绑定到实例对象上
 
 ```js
 function foo() {

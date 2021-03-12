@@ -1,8 +1,13 @@
 function ajax(options) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest()
+
     xhr.open(options.type, options.url)
-    xhr.send(null)
+    for (let key in options.headers) {
+      xhr.setRequestHeader(key, options.headers[key])
+    }
+    xhr.send(options.body)
+    // xhr.send(null)
     // 从请求体发送数据。设置底下这个参数application/x-www-form-urlencoded，则发送的params是?a=1&b=2这种形式的数据。设置application/json，则发送JSON格式的数据
     // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
     // xhr.send(params)

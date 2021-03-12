@@ -226,7 +226,7 @@ function heapSort(arr) {
     // 如果存在比父结点大的子结点，此时的maxIndex就是子结点的索引，交换位置，并继续向下搜索
     if (maxIndex !== index) {
       ;[arr[index], arr[maxIndex]] = [arr[maxIndex], arr[index]]
-      heapAdjust(maxIndex)
+      heapAdjust(maxIndex, heapSize)
     }
   }
 

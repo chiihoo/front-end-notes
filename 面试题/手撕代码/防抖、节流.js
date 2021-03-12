@@ -16,7 +16,7 @@ function debounce1(func, duration) {
 // 核心在于timer为null才执行，定时器里面设置timer为null
 function debounce2(func, duration) {
   let timer = null
-  return function (args) {
+  return function (...args) {
     if (timer) {
       clearTimeout(timer)
     } else {

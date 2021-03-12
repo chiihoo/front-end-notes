@@ -24,7 +24,7 @@ const loadUrl = url => {
 }
 
 // 第一种 密集型并发（推荐）
-const loadUrls = (urls, max, callback) => {
+const loadUrls = (urls, max = 5, callback) => {
   let i = 0 // 已发出请求的索引
   let count = 0 // 已完成请求的索引
   let res = []

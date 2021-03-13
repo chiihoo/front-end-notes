@@ -33,3 +33,11 @@ https://segmentfault.com/a/1190000018250127
 `UNSAFE_componentWillReceiveProps`
 
 https://blog.csdn.net/qq1498982270/article/details/98969259
+
+
+
+![](https://img-blog.csdnimg.cn/20191222212741273.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dscWRidHg=,size_16,color_FFFFFF,t_70)
+
+这颗Fiber树的每个节点通过child、sibling、return来相互连接，最后构成一个虚拟DOM树。
+
+sibling [ˈsɪblɪŋ] 兄、弟、姐、妹

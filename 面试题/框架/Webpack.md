@@ -73,15 +73,15 @@ webpack有一个智能解析器，几乎可以处理任何第三方库。无论�
 
 
 
-```
-同步的loader
+```js
+// 同步的loader
 module.exports = function (source) {
     return source.replace(/var/g, 'const')
 }
 ```
 
-```
-异步的loader
+```js
+// 异步的loader
 module.exports = function (source) {
     const callback = this.async()
 
@@ -95,7 +95,7 @@ module.exports = function (source) {
 
 
 
-```
+```js
 module.exports = {
   module: {
     rules: [
@@ -110,3 +110,94 @@ module.exports = {
 
 
 
+
+
+**loader**
+
+1. Webpack在模块里面搜索css的依赖项，即Webpack检查js文件是否有“require('myCssFile.css')”的引用，如果它发现有css的依赖，Webpack将css文件交给“css-loader”去处理
+2. css-loader加载所有的css文件以及css自身的依赖（比如@import 其他css）到JSON对象里，Webpack然后将处理结果传给“style-loader”
+3. style-loader接受JSON值然后添加一个style标签并将其内嵌到html文件里
+
+
+
+**plugin**
+
+在插件开发中最重要的两个资源就是 compiler 和 compilation 对象。理解它们的角色是扩展 webpack 引擎重要的第一步。
+
+**compiler 对象代表了完整的 webpack 环境配置**。这个对象在启动 webpack 时被一次性建立，并配置好所有可操作的设置，**包括 options，loader 和 plugin**。当在 webpack 环境中应用一个插件时，插件将收到此 compiler 对象的引用。可以使用它来访问 webpack 的主环境。
+
+**compilation 对象代表了一次资源版本构建**。当运行 webpack 开发环境中间件时，每当检测到一个文件变化，就会创建一个新的 compilation，从而生成一组新的编译资源。一个 compilation 对象表现了当前的模块资源、编译生成资源、变化的文件、以及被跟踪依赖的状态信息。compilation 对象也提供了很多关键时机的回调，以供插件做自定义处理时选择使用。
+
+https://segmentfault.com/a/1190000024431022?utm_source=sf-related
+
+简单的示例
+
+```js
+function Plugin(options) { }
+	Plugin.prototype.apply = function (compiler) {
+    // 所有文件资源都被 loader 处理后触发这个事件
+    compiler.plugin('emit', function (compilation, callback) {
+        // 功能完成后调用 webpack 提供的回调
+        console.log('Hello World')
+        callback()
+    })
+}
+
+module.exports = Plugin
+```
+
+/先在 webpack 配置文件中引入插件，然后在 plugins 选项中配置
+
+```js
+const Plugin = require('./src/plugin')
+
+module.exports = {
+    ...
+    plugins: [
+        new Plugin()
+    ]
+}
+```
+
+再来写一个复杂点的插件，它的作用是将经过 loader 处理后的打包文件 `bundle.js` 引入到 `index.html` 中
+
+```js
+function Plugin(options) { }
+
+Plugin.prototype.apply = function (compiler) {
+    // 所有文件资源经过不同的 loader 处理后触发这个事件
+    compiler.plugin('emit', function (compilation, callback) {
+        // 获取打包后的 js 文件名
+        const filename = compiler.options.output.filename
+        // 生成一个 index.html 并引入打包后的 js 文件
+        const html =         `<!DOCTYPE html>
+                      <html lang="en">
+                      <head>
+                          <meta charset="UTF-8">
+                          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                          <title>Document</title>
+                          <script src="${filename}"></script>
+                      </head>
+                      <body>
+                      </body>
+                      </html>`
+        // 所有处理后的资源都放在 compilation.assets 中
+        // 添加一个 index.html 文件
+        compilation.assets['index.html'] = {
+            source: function () {
+                return html
+            },
+            size: function () {
+                return html.length
+            }
+        }
+
+        // 功能完成后调用 webpack 提供的回调
+        callback()
+    })
+}
+
+module.exports = Plugin
+```
+
+![](https://segmentfault.com/img/remote/1460000024431027)

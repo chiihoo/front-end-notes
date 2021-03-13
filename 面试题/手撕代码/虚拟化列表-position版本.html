@@ -42,28 +42,32 @@
       let startIndex = 0
       let endIndex = Math.ceil(scrollWrapper.offsetHeight / itemHeight)
       ul.innerHTML = ''
+      let fragment = document.createDocumentFragment()
       for (let i = startIndex; i < endIndex; i++) {
         let li = document.createElement('li')
         li.innerText = data[i]
         li.style.top = i * itemHeight + 'px'
-        ul.append(li)
+        fragment.append(li)
       }
+      ul.append(fragment)
 
       // 滚动时也要给li加top
       scrollWrapper.addEventListener('scroll', e => {
         // 滚动时调用传入e.target.scrollTop，也就是scrollWrapper.offsetHeight
         let startIndex = Math.floor(e.target.scrollTop / itemHeight)
-        let endIndex = Math.ceil((e.target.scrollTop + scrollWrapper.offsetHeight) / itemHeight)
+        let endIndex = Math.ceil((e.target.scrollTop + e.target.offsetHeight) / itemHeight)
         // console.log(startIndex, endIndex)
         if (endIndex <= data.length) {
           // 每次都需要清空ul
           ul.innerHTML = ''
+          let fragment = document.createDocumentFragment()
           for (let i = startIndex; i < endIndex; i++) {
             let li = document.createElement('li')
             li.innerText = data[i]
             li.style.top = i * itemHeight + 'px'
-            ul.append(li)
+            fragment.append(li)
           }
+          ul.append(fragment)
         }
       })
     </script>

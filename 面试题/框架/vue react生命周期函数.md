@@ -1,5 +1,17 @@
 **React**
 
+
+
+首先是组件初始化，super(props)把父组件的props注入到子组件，constructor里面初始化state
+
+组件挂载mount
+
+组件更新update，比较新旧虚拟dom，之后渲染
+
+组件卸载willUnmount
+
+
+
 https://react.docschina.org/docs/react-component.html
 
 https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
@@ -40,6 +52,10 @@ UNSAFE_componentWillReceiveProps(nextProps){}
 
 
 **Vue**
+
+
+
+生命周期：vue创建实例，初始化数据，编译模板，挂载dom和渲染，更新和渲染，卸载
 
 `vue2.6`
 

@@ -18,8 +18,6 @@ for (let i = 0; i < row; i++) {
   console.log(a + b)
 }
 
-
-
 // Node
 const readline = require('readline')
 const rl = readline.createInterface({

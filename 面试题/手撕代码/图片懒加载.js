@@ -2,12 +2,13 @@
 let images = document.querySelectorAll('img')
 
 // dom.getBoundingClientRect().top为元素到视口顶部的距离
-// 如果元素在视口之外，并且是在视口底部，则dom.getBoundingClientRect().top > window.innerWidth，
-// 当元素第一次出现在视口中时，dom.getBoundingClientRect().top < window.innerWidth
+// 如果元素在视口之外，并且是在视口底部，则dom.getBoundingClientRect().top > window.innerHeight，
+// 当元素第一次出现在视口中时，dom.getBoundingClientRect().top < window.innerHeight
+// window.innerHeight或者document.documentElement.clientHeight都行
 const lazyload = () => {
   let count = 0
   for (let i = count; i < images.length; i++) {
-    if (images[i] === 'default.png' && images[i].getBoundingClientRect().top < window.innerWidth) {
+    if (images[i] === 'default.png' && images[i].getBoundingClientRect().top < window.innerHeight) {
       images[i].src = images[i].getAttribute('data-src')
       count++
     }

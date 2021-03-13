@@ -27,15 +27,15 @@ function clone(myObj) {
   return newObj
 }
 
-function ProxyCopy(target, handle) {
+function ProxyCopy(target, handler) {
   var targetCopy = clone(target)
   Object.keys(targetCopy).forEach(function (key) {
     Object.defineProperty(targetCopy, key, {
       get: function () {
-        return handle.get && handle.get(target, key)
+        return handler.get && handler.get(target, key)
       },
       set: function (newVal) {
-        handle.set && handle.set()
+        handler.set && handler.set()
         target[key] = newVal
       }
     })

@@ -161,6 +161,8 @@ ctx.restore() // 恢复状态
 4. 之后`SourceNode`连接`AnalyserNode`，`AnalyserNode`连接`ctx.destination`
 5. 之后就可以通过`AnalyserNode`的`frequencyBinCount`属性获取到频率数组了
 
+**`createMediaElementSource` bug可以用`createBufferSource`降级**
+
 ```js
 // 只初始化一次
 if (this.ctx) return

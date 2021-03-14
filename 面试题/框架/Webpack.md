@@ -134,7 +134,7 @@ https://segmentfault.com/a/1190000024431022?utm_source=sf-related
 
 ```js
 function Plugin(options) { }
-	Plugin.prototype.apply = function (compiler) {
+Plugin.prototype.apply = function (compiler) {
     // 所有文件资源都被 loader 处理后触发这个事件
     compiler.plugin('emit', function (compilation, callback) {
         // 功能完成后调用 webpack 提供的回调
@@ -146,7 +146,7 @@ function Plugin(options) { }
 module.exports = Plugin
 ```
 
-/先在 webpack 配置文件中引入插件，然后在 plugins 选项中配置
+先在 webpack 配置文件中引入插件，然后在 plugins 选项中配置
 
 ```js
 const Plugin = require('./src/plugin')

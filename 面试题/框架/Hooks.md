@@ -1,3 +1,7 @@
+`Hooks`是用`Object.is(a, b)`来对依赖进行比较的，它跟`===`很像，但是它会认为`+0`与-`0`是不同的，并且认为`NaN`和`NaN`是相同的
+
+
+
 **`useEffect`和`useLayoutEffect`**
 
 https://www.cnblogs.com/iheyunfei/p/13065047.html
@@ -149,12 +153,6 @@ const Foo = React.forwardRef((props, ref) => {
 ```
 const callbackRef = useRef()
 ```
-
-
-
-
-
-
 
 
 

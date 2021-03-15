@@ -9,6 +9,8 @@ function my_new(Func, ...args) {
   // 4. 返回对象
   return obj
 
+  // 第一二步可以用const obj = Object.create(Func.prototype)代替
+
   // 将构造函数的this以及传进来的参数 绑定到新建的对象上
   // let res = Func.call(obj, ...args)
   // 最后判断结果是否为对象类型，并返回

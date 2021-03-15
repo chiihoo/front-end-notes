@@ -1,23 +1,3 @@
-移动端vh，手机qq浏览器上面的搜索框都算在vh的范围
-
-移动端唤起输入法会顶起absolute，我写了一个hook，刚进页面的时候记录一下页面的clientHeight，当唤起输入法时，页面高度会变小，就用这个现象来判断是否唤起了输入法。之后对被顶起来的元素visibility: hidden处理
-
-
-
-
-
-默认使用最高级别显示，Webkit内核，还有Blink内核
-
-```
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-```
-
-
-
-
-
-
-
 js新语法不兼容
 
 用**babel-preset-env**来做语法的polyfill

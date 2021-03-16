@@ -27,8 +27,8 @@ let copyObj = JSON.parse(JSON.stringify(obj))
 // obj是数组或者对象
 function deepClone(obj) {
   if (obj === null) return obj
-  if (obj instanceof Date) return new Date(obj)
-  if (obj instanceof RegExp) return new RegExp(obj)
+  // if (obj instanceof Date) return new Date(obj)
+  // if (obj instanceof RegExp) return new RegExp(obj)
   if (typeof obj !== 'object') return obj // typeof [],{},null === 'object'
 
   let cloneObj = Array.isArray(obj) ? [] : {}

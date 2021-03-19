@@ -35,6 +35,11 @@ function A(name) {
 A.prototype = Object.create(B.prototype)
 A.prototype.constructor = A
 
+// A.prototype.constructor = A修正的主要原因是防止直接使用构造函数
+// 比如，我并不知道a是由哪个函数实例化出来的，但是我想clone一个，这时就可以这样：
+let a = new A()
+let foo = a.constructor()
+
 // 5.ES6 类class extends继承
 
 

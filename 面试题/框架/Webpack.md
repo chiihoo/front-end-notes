@@ -1,3 +1,43 @@
+```js
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+    entry: "./src/index.js",
+    output: {
+        path: __dirname + "/dist",
+        filename: "index.js"
+    },
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: [
+                    "style-loader",
+                    "css-loader"
+                ]
+            }
+        ]
+    },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            template: './index.html',
+            filename: "index.html",
+        }),
+    ]
+}
+
+```
+
+
+
+
+
+
+
+
+
 webpack是一个用于现在javascript应用程序的**静态模块打包工具**。
 
 **webpack打包原理是根据文件间的依赖关系对其进行静态分析，然后将这些模块按指定规则生成静态资源，当 webpack 处理程序时，它会递归地构建一个依赖关系图(dependency graph)，其中包含应用程序需要的每个模块，然后将所有这些模块打包成一个或多个 bundle。**
@@ -24,7 +64,7 @@ webpack有一个智能解析器，几乎可以处理任何第三方库。无论�
 
 
 
-**file-loader**：webpack会把各个模块打包，样式里的url本来是相对于原始文件所在的路径的，打包之后，路径发生了改变，url就访问不到了，file-loader就是修改文件引用路径的
+**file-loader**：`file-loader` 就是在 `JavaScript` 代码里 `import/require` 一个文件时，会将该文件生成到输出目录，并且在 `JavaScript` 代码里返回该文件的地址。
 
 **url-loader**：可以配置文件小于多少字节的时候，转为base64格式
 
@@ -212,3 +252,4 @@ module.exports = Plugin
 ```
 
 ![](https://segmentfault.com/img/remote/1460000024431027)
+

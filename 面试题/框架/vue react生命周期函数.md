@@ -110,3 +110,4 @@ renderTriggered         onRenderTriggered   此事件告诉你是什么操作触
 
 ```
 
+![](https://v3.cn.vuejs.org/images/lifecycle.svg)

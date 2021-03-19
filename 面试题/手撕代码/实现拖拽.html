@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .foo {
+        width: 100px;
+        height: 100px;
+        background-color: skyblue;
+        position: absolute;
+        left: 50px;
+        top: 80px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="foo"></div>
+    <script>
+      let foo = document.querySelector('.foo')
+
+      let initPos = {}
+
+      // 鼠标位置e.pageX,e.pageY
+      const mouseMove = e => {
+        foo.style.left = initPos.left + e.pageX - initPos.pageX + 'px'
+        foo.style.top = initPos.top + e.pageY - initPos.pageY + 'px'
+      }
+
+      foo.addEventListener('mousedown', e => {
+        let { left, top } = foo.getBoundingClientRect()
+        initPos = { left, top, pageX: e.pageX, pageY: e.pageY }
+        foo.addEventListener('mousemove', mouseMove)
+        foo.addEventListener('mouseup', e => {
+          foo.removeEventListener('mousemove', mouseMove)
+        })
+      })
+      
+    </script>
+
+    <!-- <script>
+      window.onload = function () {
+        const div = document.getElementsByClassName('foo')[0]
+        let initPosition = {}
+
+        div.addEventListener('mousedown', onMousedown)
+
+        function onMousedown(event) {
+          const { pageX, pageY } = event
+          initPosition = getPosition()
+
+          document.addEventListener('mousemove', omMousemove)
+          document.addEventListener('mouseup', onMouseUp)
+        }
+
+        function omMousemove(event) {
+          const { pageX, pageY } = event
+          const { left, top } = calcPosition(pageX, pageY)
+
+          div.style.cssText = `left:${left}px;top:${top}px;`
+        }
+
+        function onMouseUp(event) {
+          document.removeEventListener('mousemove', onMousemove)
+        }
+
+        function calcPosition(pageX, pageY) {
+          const { left, top, scrollLeft, maxCriticalX, maxCriticalY } = initPosition
+
+          let x = pageX - left
+          let y = pageY - top
+
+          if (x <= scrollLeft) {
+            x = scrollLeft
+          }
+
+          if (x >= maxCriticalX) {
+            x = maxCriticalX
+          }
+
+          if (y >= maxCriticalY) {
+            y = maxCriticalY
+          }
+
+          if (y <= 0 || maxCriticalY < 0) {
+            y = 0
+          }
+
+          return {
+            left: x,
+            top: y
+          }
+        }
+
+        function getPosition() {
+          const { left, top, width, height } = div.getBoundingClientRect()
+          const { scrollLeft, scrollTop } = document.body
+
+          const maxCriticalX = scrollLeft + innerWidth - width
+          const maxCriticalY = scrollTop + innerHeight - height
+
+          return {
+            left,
+            top,
+            scrollLeft,
+            maxCriticalX,
+            maxCriticalY
+          }
+        }
+      }
+    </script> -->
+  </body>
+</html>

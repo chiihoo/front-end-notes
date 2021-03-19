@@ -55,3 +55,54 @@ function throttle2(func, duration) {
     }
   }
 }
+
+// ————————————————————————————————————————————————————————————————————
+
+// 实现一个debounce函数，要求能够对一个事件循环内的所有调用进行防抖
+
+function F() {
+  console.log(1)
+}
+let G = debounce(F)
+function A() {
+  G()
+  G()
+  G()
+}
+A() // 只打印一次
+
+setTimeout(G, 0)
+G()
+// //则会打印两次
+
+function debounce(func) {
+  let flag = true
+  return function (...args) {
+    new Promise((resolve, reject) => {
+      if (flag) {
+        func.call(this, ...args)
+      }
+      flag = false
+      resolve()
+    }).then(() => {
+      flag = true
+    })
+  }
+}
+
+function debounce2(func, duration) {
+  let timer = null
+  return function (...args) {
+    if (timer) {
+      clearTimeout(timer)
+    }
+    new Promise((resolve, reject) => {
+      timer = setTimeout(() => {
+        func.call(this, ...args)
+      }, duration)
+      resolve()
+    }).then(() => {
+      timer = null
+    })
+  }
+}

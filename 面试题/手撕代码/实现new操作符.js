@@ -4,10 +4,10 @@ function my_new(Func, ...args) {
   const obj = {}
   // 2. 将对象与构造函数通过原型链绑定起来
   obj.__proto__ = Func.prototype
-  // 3. 绑定this
-  Func.call(obj, ...args)
-  // 4. 返回对象
-  return obj
+  // 3. 用对象作为this调用构造函数
+  let res = Func.call(obj, ...args)
+  // 4. 返回值如果是引用类型，则返回那个返回值，否则返回刚开始的对象
+  return res instanceof Object ? res : obj
 
   // 第一二步可以用const obj = Object.create(Func.prototype)代替
 

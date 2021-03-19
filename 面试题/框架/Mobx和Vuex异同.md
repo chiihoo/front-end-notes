@@ -12,6 +12,14 @@ runInAction(()=>{})
 
 
 
+mobx的原理跟vue很相似，是用的Proxy来对它的state进行代理，之后再组件中需要用的observer，或者想useObserver之类的函数，会触发getter将用到state的节点注册进发布订阅中心，之后当state发生更新的时候，触发setter将最新的数据发布出去
+
+
+
+
+
+
+
 **Vuex**
 
 ```

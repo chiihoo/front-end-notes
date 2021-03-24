@@ -36,7 +36,11 @@ const TodoReducer = (state = initState, action) => {
 }
 
 ----------------------------------------
-在最外层通过Provider组件下发,给这个TodoReducer取名为TodoRDC
+在最外层通过Provider组件下发store,给这个TodoReducer取名为TodoRDC
+提供一个 getState() 方法获取 State
+提供一个 dispatch() 方法发送 action 更改 State
+提供一个 subscribe() 方法注册回调函数监听 State 的更改
+
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
@@ -150,3 +154,5 @@ dispatch => {
 ```
 
 
+
+![](https://upload-images.jianshu.io/upload_images/6548744-df461a22f59ef7da.png?imageMogr2/auto-orient/strip|imageView2/2/w/800/format/webp)

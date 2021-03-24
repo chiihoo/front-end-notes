@@ -128,12 +128,12 @@ class ChildCom extends React.Component{
 
 用于与`forwardRef`一起使用的
 
-可以将父子间的ref和子组件的ref进行隔离
+可以将父子间的ref和子组件的ref进行隔离，并且可以暴露一些方法
 
 ```
 const Foo = React.forwardRef((props, ref) => {
 	const inputRef = useRef()
-	useImpertiveHandle(ref, () => {
+	useImperativeHandle(ref, () => {
 		return {
 			focus: inputRef.current.focus()
 		}

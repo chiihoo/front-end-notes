@@ -49,9 +49,15 @@ y: len * Math.sin(angel * i)
 都放到pos[]数组里面
 */
 // 开始循环画
-for (let j = 0; j <= 50; j++){
+for (let j = 0; j <= 50; j += 50){
     ctx.beginPath()
-    ctx.fillStyle = 'rgba(255, 230, 0, 0.3)'
+    if (j === 0) {
+        ctx.fillStyle = 'rgba(219, 90, 108, 0.3)'
+    } else if (j === 50) {
+        ctx.fillStyle = 'rgba(255, 230, 0, 0.3)'
+    } else if (j === 100) {
+        ctx.fillStyle = 'rgba(0, 153, 255, 0.3)'
+    }
     ctx.move(pos[j].x, pos[j].y)
     // 平滑连接的方法是笨法子，
     // 用两个位置坐标之间的平均数，用二次贝塞尔曲线连接

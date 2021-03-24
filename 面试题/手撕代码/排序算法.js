@@ -34,7 +34,6 @@ function bubbleSort(arr) {
     // 但是由于一次次的从前往后的冒泡过程会依次使最大值、第二大值、第三大值等排到后面，因此最后面的i + 1个数就不用再进行排序了
     // 即在第i + 1次循环时，只需交换到j < arr.length - (i + 1)即可
     for (let j = 0; j < arr.length - i - 1; j++) {
-      //
       if (arr[j] > arr[j + 1]) {
         let temp = arr[j]
         arr[j] = arr[j + 1]

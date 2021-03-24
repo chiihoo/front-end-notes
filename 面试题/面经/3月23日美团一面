@@ -1,0 +1,136 @@
+美团
+
+自我介绍
+
+
+
+介绍你知道的html标签
+
+css布局
+
+我说三栏布局，有哪些种实现方法
+
+flex、float、position
+
+注意float的mid要放最后，并且不能设置width:100%
+
+
+
+说一下清除浮动？clear: both
+
+clear: both是什么意思？
+
+
+
+你用过audio或者video吗？
+
+我用过audio没用过video
+
+说一说audio的一些属性
+
+loop play pause
+
+还有canplaythrough事件，其余的我不记得名字了
+
+
+
+基本数据类型有哪些？
+
+
+
+```
+typeof Object === 'function'
+```
+
+
+
+手写new操作符
+
+```
+function myNew(Func, ...args) {
+	let obj = {}
+	obj.__proto__ = Func.prototype
+	let res = Func.call(obj, ...args)
+	return res instanceof Object ? res : obj
+}
+```
+
+
+
+原型链
+
+```
+function Foo() {}
+let foo = new Foo()
+foo.constructor === Foo
+Foo.constructor === Function
+```
+
+
+
+
+
+说一下Webpack
+
+
+
+
+
+React
+
+说一说immutable不可变数据
+
+组件怎么进行通信的
+
+
+
+setState是异步的还是同步的 ？
+
+异步的，它会合并状态统一进行diff，但是在setTimeout中是同步的
+
+**正确回答，setState是异步的，但在原生事件和setTimeout中是同步的**
+
+
+
+
+
+说一说react diff
+
+我提到了key
+
+他就在问没有key的时候将某个dom移动到别的层级，diff会直接移动它吗？
+
+不会
+
+
+
+进程和线程
+
+进程有哪些状态？我不对操作系统不太熟
+
+
+
+就开始问计算机网络了
+
+几层模型
+
+
+
+状态码 100,200,301,302,304,404,403,500
+
+说一下304状态码的协商缓存
+
+
+
+数组和链表
+
+栈和队列
+
+
+
+判断链表是否有环
+
+
+
+
+

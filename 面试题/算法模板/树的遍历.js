@@ -69,8 +69,40 @@ const inorderTravelsal2 = root => {
   return res
 }
 
-// 前序，深度优先搜索
+// 前序
 const preorderTravelsal2 = root => {
+  let res = []
+  let stack = []
+  while (root !== null || stack.length > 0) {
+    while (root !== null) {
+      res.push(root.val)
+      stack.push(root)
+      root = root.left
+    }
+    root = stack.pop()
+    root = root.right
+  }
+  return res
+}
+
+// 后序也可以照着前序改,res.push换成
+const postorderTraversal2 = function (root) {
+  let res = []
+  let stack = []
+  while (root !== null || stack.length > 0) {
+    while (root !== null) {
+      res.unshift(root.val)
+      stack.push(root)
+      root = root.right
+    }
+    root = stack.pop()
+    root = root.left
+  }
+  return res
+}
+
+// 前序，深度优先搜索
+const preorderTravelsal3 = root => {
   let res = []
   if (root === null) {
     return res
@@ -98,7 +130,7 @@ const preorderTravelsal2 = root => {
 // 先left后right，1 3 7 6 2 5 4，相当于前序遍历顺序左右对称换过来了
 // push换成unshift，4 5 2 6 7 3 1，正好为后序遍历的顺序
 // 相当于是root->左下->右下，先变成root->右下->左下，后变成左下->右下->root
-const preorderTravelsal2 = root => {
+const preorderTravelsal3 = root => {
   let res = []
   if (root === null) {
     return res
@@ -119,25 +151,8 @@ const preorderTravelsal2 = root => {
   return res
 }
 
-// 前序和后序如果不用上述模板的写法
-// 前序
-const preorderTravelsal3 = root => {
-  let res = []
-  let stack = []
-  while (root !== null || stack.length > 0) {
-    while (root !== null) {
-      res.push(root.val)
-      stack.push(root)
-      root = root.left
-    }
-    root = stack.pop()
-    root = root.right
-  }
-  return res
-}
-
-// 后序也可以照着前序改,res.push换成
-const postorderTravelsal3 = root => {
+// 标准的后序
+const postorderTravelsal = root => {
   let res = []
   let curr = root
   let stack = []

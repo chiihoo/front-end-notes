@@ -9,8 +9,8 @@ Function.prototype._bind = function (thisArgs, ...args) {
 function _new(Func, ...args) {
   let obj = {}
   obj.__proto__ = Func.prototype
-  Func.call(obj, ...args)
-  return obj
+  let res = Func.call(obj, ...args)
+  return res instanceof Object ? res : obj
 }
 
 // ——————————————————————————————————————————————————

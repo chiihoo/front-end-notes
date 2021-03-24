@@ -10,7 +10,7 @@
 
 ```
 url:    http://www.foo.com
-同源：    http://www.foo.com/bar.html
+同源：   http://www.foo.com/bar.html
 协议不同：https://www.foo.com
 端口不同：http://www.foo.com:3000
 主机不同：http://foo.com
@@ -177,6 +177,10 @@ Access-Control-Allow-Credentials：true或者不设置
 Access-Control-Allow-Max-Age
 // 可选，用来指定本次预检请求的有效期。单位为秒。在有效期内，不用发出另一条预检请求
 ```
+
+
+
+**Access-Control-Allow-Max-Age字段可设置预检有效期，有效期内不用再次发送**
 
 
 

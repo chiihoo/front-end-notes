@@ -12,7 +12,23 @@ useEffect(()=>{
 
 如果有其他频繁渲染的状态的话，以上代码可能永远也得不到执行，因为生成之后马上又清除掉了
 
-之后我们加个依赖性`[]`
+
+
+而我们加一个依赖`[count]`，会发现效果ok，但是每次count改变都会清除定时器重新生成定时器，对性能不好
+
+```
+const [count, setCount] = useState(0)
+useEffect(()=>{
+	let timer = setInterval(() => {
+		setCount(count + 1)
+	}, 1000)
+	return () => clearInterval(timer)
+}, [count])
+```
+
+
+
+而我们加个依赖性`[]`
 
 ```
 const [count, setCount] = useState(0)
@@ -36,6 +52,8 @@ useEffect(()=>{
 
 
 **这个闭包是哪里来的？**
+
+setInterval的回调函数里面一直引用了count，形成了闭包
 
 **`useEffect`会丢弃上一次的渲染结果，之后生成新的渲染结果，并且绑定新的state和新的props，但是`setInterval`不会丢弃，它会一直引用老的props和state，直到手动将它换掉**
 

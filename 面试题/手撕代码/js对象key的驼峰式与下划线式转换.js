@@ -15,10 +15,9 @@ let obj1 = {
 
 // 下划线转驼峰式
 function underline2hump(obj) {
-  if (obj instanceof Array) {
+  if (Array.isArray(obj)) {
     obj.forEach(item => underline2hump(item))
-  } else if (obj instanceof Object) {
-    // [] instanceof既是Array类型又是Object类型，所以instanceof要先判断Array
+  } else if (typeof obj === 'object' && obj !== null) {
     // 遍历对象，for key in obj也行
     Object.keys(obj).forEach(key => {
       // \w表示任意字母数字下划线
@@ -55,9 +54,9 @@ let obj2 = {
 }
 // 驼峰式转下划线
 function hump2underline(obj) {
-  if (Object.prototype.toString.call(obj) === '[object Array]') {
+  if (Array.isArray(obj)) {
     obj.forEach(item => hump2underline(item))
-  } else if (Object.prototype.toString.call(obj) === '[object Object]') {
+  } else if (typeof obj === 'object' && obj !== null) {
     Object.keys(obj).forEach(key => {
       let newKey = key.replace(/[A-Z]/g, $0 => '_' + $0.toLowerCase())
       // 这里如果匹配到了A，则$0为A

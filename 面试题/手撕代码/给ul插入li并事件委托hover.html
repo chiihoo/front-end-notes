@@ -25,6 +25,7 @@
         'mouseenter',
         e => {
           if (e.target.nodeName === 'LI') {
+            // tagName也行
             console.log(
               '内容:',
               e.target.innerText,

@@ -8,7 +8,9 @@
 
 ```
 
-visibility、cursor、font-size、font-family
+
+
+line-height、color、white-space、text-align、font-size、font-family
 
 
 

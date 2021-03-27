@@ -39,14 +39,14 @@ console.log(flattenDeep1(arr1))
 
 // 方法二
 // 用扩展运算符，每次都要遍历每一项是否有数组，如果有数组就要用扩展运算符削去一层
-function flattenDeep2(arr) {
-  while (arr.some(item => Array.isArray(item))) {
+function flattenDeep2(arr, depth = 1) {
+  while (arr.some(item => Array.isArray(item)) && depth-- > 0) {
     arr = [].concat(...arr)
   }
   return arr
 }
 
-console.log(flattenDeep2(arr1))
+console.log(flattenDeep2(arr1, 5))
 
 // 方法三
 // 使用toString，这个方法其实是有问题的，比如null和undefined转数字

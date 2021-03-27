@@ -33,6 +33,20 @@ getSnapshotBeforeUpdate(prevProps, prevState){}
 此用法并不常见，但它可能出现在 UI 处理中，如需要以特殊方式处理滚动位置的聊天线程等。
 ```
 
+**`static getDerivedStateFromProps(nextProps, prevState) {}`**
+
+是为了替代componentWillReceiveProps，返回null则不更新
+
+根据props来派生出新的state
+
+
+
+**`getSnapshotBeforeUpdate(prevProps, prevState) {}`**
+
+替代componentWillUpdate，新的生命周期函数跟它的区别在于**新的生命周期函数只会在最终的render之前调用**，而老的周期函数由于Fiber架构可能会调用多次，有问题
+
+
+
 过时的方法：
 
 ```

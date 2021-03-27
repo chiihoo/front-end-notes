@@ -63,6 +63,8 @@ var str = read_line().split(' ')
 // 读取一行输入：read_line()
 // 将读取至多1024个字符，当还未达到1024个时如果遇到回车或结束符，提前结束。读取多行最简单的办法是while((line = read_line()) != '')。
 
+while ((a = readInt()) && (b = readInt())) {}
+
 let a, b
 while ((a = readInt()) !== undefined && (b = readInt()) !== undefined) {
   let arr1 = []

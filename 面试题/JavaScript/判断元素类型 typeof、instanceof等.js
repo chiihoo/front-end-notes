@@ -69,3 +69,20 @@ p1 instanceof programmer // true
 
 // typeof  null、[]、{}都为 'object'类型
 // [] instanceof既是Array类型又是Object类型
+
+const parent = function () {
+  const result = []
+  console.log('parent', arguments)
+  const child = () => {
+    console.log('child', arguments)
+    for (let num of arguments) {
+      result.push(num)
+    }
+    return result
+  }
+
+  return child(1, 2, 3)
+}
+
+const result = parent(4, 5, 6, 7)
+console.log(JSON.stringify(result))

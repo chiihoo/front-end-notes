@@ -12,6 +12,17 @@ store对象被全局的分发，组件可以通过connect来获取这个store对
 
 
 ```
+Redux和Mobx异同
+1. Redux操作复杂，模板代码多，Mobx操作简单
+2. Redux基于不可变数据，而Mobx是observable的
+3. Redux是单一数据源，Mobx可以是多数据源
+```
+
+
+
+
+
+```
 用的是发布订阅模式
 
 每个模块都有一个局部state,一个reducer

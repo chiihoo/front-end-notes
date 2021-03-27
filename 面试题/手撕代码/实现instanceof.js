@@ -6,6 +6,7 @@ function _instanceof(L, R) {
       // 查找原型链到顶了
       return false
     }
+    console.log(L.__proto__, R.prototype, L.__proto__ === R.prototype)
     if (L.__proto__ === R.prototype) {
       // 找到了
       return true

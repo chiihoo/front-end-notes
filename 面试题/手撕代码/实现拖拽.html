@@ -25,91 +25,33 @@
 
       // 鼠标位置e.pageX,e.pageY
       const mouseMove = e => {
-        foo.style.left = initPos.left + e.pageX - initPos.pageX + 'px'
-        foo.style.top = initPos.top + e.pageY - initPos.pageY + 'px'
+        let left = initPos.left + e.pageX - initPos.pageX
+        let top = initPos.top + e.pageY - initPos.pageY
+
+        if (left < 0) {
+          left = 0
+        } else if (left > window.innerWidth - initPos.width) {
+          left = window.innerWidth - initPos.width
+        }
+        if (top < 0) {
+          top = 0
+        } else if (top > window.innerHeight - initPos.height) {
+          top = window.innerHeight - initPos.height
+        }
+
+        foo.style.left = left + 'px'
+        foo.style.top = top + 'px'
       }
 
+      // 鼠标位置为e.pageX和e.pageY
       foo.addEventListener('mousedown', e => {
-        let { left, top } = foo.getBoundingClientRect()
-        initPos = { left, top, pageX: e.pageX, pageY: e.pageY }
-        foo.addEventListener('mousemove', mouseMove)
+        let { width, height, left, top } = e.target.getBoundingClientRect()
+        initPos = { width, height, left, top, pageX: e.pageX, pageY: e.pageY }
+        document.addEventListener('mousemove', mouseMove)
         foo.addEventListener('mouseup', e => {
-          foo.removeEventListener('mousemove', mouseMove)
+          document.removeEventListener('mousemove', mouseMove)
         })
       })
-      
     </script>
-
-    <!-- <script>
-      window.onload = function () {
-        const div = document.getElementsByClassName('foo')[0]
-        let initPosition = {}
-
-        div.addEventListener('mousedown', onMousedown)
-
-        function onMousedown(event) {
-          const { pageX, pageY } = event
-          initPosition = getPosition()
-
-          document.addEventListener('mousemove', omMousemove)
-          document.addEventListener('mouseup', onMouseUp)
-        }
-
-        function omMousemove(event) {
-          const { pageX, pageY } = event
-          const { left, top } = calcPosition(pageX, pageY)
-
-          div.style.cssText = `left:${left}px;top:${top}px;`
-        }
-
-        function onMouseUp(event) {
-          document.removeEventListener('mousemove', onMousemove)
-        }
-
-        function calcPosition(pageX, pageY) {
-          const { left, top, scrollLeft, maxCriticalX, maxCriticalY } = initPosition
-
-          let x = pageX - left
-          let y = pageY - top
-
-          if (x <= scrollLeft) {
-            x = scrollLeft
-          }
-
-          if (x >= maxCriticalX) {
-            x = maxCriticalX
-          }
-
-          if (y >= maxCriticalY) {
-            y = maxCriticalY
-          }
-
-          if (y <= 0 || maxCriticalY < 0) {
-            y = 0
-          }
-
-          return {
-            left: x,
-            top: y
-          }
-        }
-
-        function getPosition() {
-          const { left, top, width, height } = div.getBoundingClientRect()
-          const { scrollLeft, scrollTop } = document.body
-
-          const maxCriticalX = scrollLeft + innerWidth - width
-          const maxCriticalY = scrollTop + innerHeight - height
-
-          return {
-            left,
-            top,
-            scrollLeft,
-            maxCriticalX,
-            maxCriticalY
-          }
-        }
-      }
-    </script> -->
   </body>
 </html>

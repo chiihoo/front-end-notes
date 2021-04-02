@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        width: 100px;
+        justify-content: space-around;
+      }
+      .page > div {
+        display: none;
+      }
+      .page > .my {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <ul>
+      <li class="my">我的</li>
+      <li class="find">发现</li>
+    </ul>
+    <div class="page">
+      <div class="my">我的页面</div>
+      <div class="find">发现页面</div>
+    </div>
+
+    <script>
+      let ul = document.querySelector('ul')
+      ul.addEventListener('click', e => {
+        if (e.target.tagName === 'LI') {
+          let page = document.querySelector(`.page`)
+          for (let item of page.children) {
+            if (item.className === e.target.className) {
+              item.style.display = 'block'
+            } else {
+              item.style.display = 'none'
+            }
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

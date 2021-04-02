@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .light-top > div {
+        width: 8em;
+        height: 8em;
+        border-radius: 50%;
+        background-color: #000000;
+        opacity: 0.8;
+        transition: all 0.3s ease-in;
+      }
+
+      .light {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="light">
+      <div class="light-top">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="pole"></div>
+      <div class="stone"></div>
+    </div>
+    <script>
+      function changeColor(color, num) {
+        let lightItem = document.querySelectorAll('.light-top>div')
+        // 相当于document.querySelector('.light-top').children
+        // 将上一轮加的颜色调回来
+        for (let i = 0; i < lightItem.length; i++) {
+          lightItem[i].style.backgroundColor = 'black'
+        }
+        // 给传入的灯设置颜色
+        lightItem[num].style.backgroundColor = color
+      }
+
+      function light(color, num, interval) {
+        return new Promise((resolve, reject) => {
+          changeColor(color, num)
+          setTimeout(resolve, interval)
+        })
+      }
+
+      async function blink() {
+        await light('red', 0, 1000)
+        await light('orange', 1, 2000)
+        await light('green', 2, 3000)
+        await blink()
+      }
+
+      blink()
+    </script>
+  </body>
+</html>

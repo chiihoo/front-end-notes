@@ -126,3 +126,31 @@ const human = name => {
 }
 
 human('chiho').eat().sleep(3).go().rest(3.5)
+
+// function U() {
+//   this.p = Promise.resolve()
+//   this.settimeout = time => {
+//     this.p = this.p.then(
+//       () =>
+//         new Promise(resolve => {
+//           setTimeout(() => {
+//             resolve()
+//           }, time)
+//         })
+//     )
+//     return this
+//   }
+//   this.console = val => {
+//     this.p = this.p.then(
+//       () =>
+//         new Promise(resolve => {
+//           console.log(val)
+//           resolve()
+//         })
+//     )
+//     return this
+//   }
+// }
+
+// let u = new U()
+// u.console('hello').settimeout(3000).console('world').settimeout(3000).console()

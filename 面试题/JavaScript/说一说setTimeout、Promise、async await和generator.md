@@ -46,4 +46,4 @@ f.next() // {value: undefined, done: true}
 
 它会自动返回一个`Promise`对象，并且只能用`try catch`来截获错误
 
-它的执行时串行的，只有一个`await`执行完后，才会执行下一个`await`
+它的执行是串行的，只有一个`await`执行完后，才会执行下一个`await`

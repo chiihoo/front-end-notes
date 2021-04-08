@@ -33,8 +33,19 @@ function solution(articles) {
 }
 
 console.log(solution('abcdads sda sda d, asf. asf'))
+                     
+// 匹配单词的正则/[a-zA-Z]+[\-\'][a-zA-Z]+/g
+// what's, fifty-five
 
+// 用match以及全局g直接可以匹配到所有单词，结果是["abcdads", "sda", "sda", "d", "asf", "asf"]
+// 用match但没有全局g，结果是["abcdads", index: 0, input: "abcdads sda sda d, asf. asf", groups: undefined]
+// let matches = 'abcdads sda sda d, asf. asf'.match(/[a-zA-Z]+/g)
+// for (let item of matches) {
+//   console.log(item)
+// }
+
+// 用matchAll可以匹配到所有单词，结果是个迭代器，需要用for of来获取，每一项跟match不用g是相同的
 // let matches = 'abcdads sda sda d, asf. asf'.matchAll(/[a-zA-Z]+/g)
-// for (let match of matches) {
-//   console.log(match[0])
+// for (let item of matches) {
+//   console.log(item[0])
 // }

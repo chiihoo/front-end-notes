@@ -14,8 +14,10 @@ store对象被全局的分发，组件可以通过connect来获取这个store对
 ```
 Redux和Mobx异同
 1. Redux操作复杂，模板代码多，Mobx操作简单
-2. Redux基于不可变数据，而Mobx是observable的
-3. Redux是单一数据源，Mobx可以是多数据源
+2. Redux是单一数据源，Mobx可以是多数据源
+3. Redux基于不可变数据，支持时间旅行，而Mobx从始至终都是一份引用
+4. Redux是通过dispatch来广播action，通过Provider和connect来获取store。当数据发生变化时，会触发一个全局的diff，导致使用了connect获取state的组件都会重渲染，所以需要用reselect这个库来对传进去的state做缓存
+   而Mobx是observable响应式的，可以进行一个精确的更新。它重写了render方法，当数据发生变化时，使用了这个数据的组件会自动调用forceUpdate进行一个重渲染
 ```
 
 

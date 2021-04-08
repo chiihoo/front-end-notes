@@ -4,6 +4,8 @@
 //   // ...
 // }
 class Scheduler {
+  // ——————————————————————————————————————————————————————————
+  // 方法1
   constructor() {
     this.taskList = []
     this.count = 0
@@ -23,6 +25,28 @@ class Scheduler {
     }
     return res
   }
+
+  // ——————————————————————————————————————————————————————————
+  // 方法2
+  add2(promiseCreator) {
+    // 先将四个add同步加到taskList中
+    console.log('xx')
+    this.taskList.push(promiseCreator)
+    this.next()
+  }
+  next() {
+    // 通过每次从taskList队头取任务，以及用最大并行数max计数，来达到调度
+    while (this.count < this.max && this.taskList.length > 0) {
+      this.count++
+      let callback = this.taskList.shift()
+      callback().then(() => {
+        this.count--
+        this.next()
+      })
+    }
+  }
+
+  // ——————————————————————————————————————————————————————————
   // add(promiseCreator) {
   //   return new Promise(resolve => {
   //     // 先将四个add同步加到taskList中

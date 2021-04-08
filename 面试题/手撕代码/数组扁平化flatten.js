@@ -28,6 +28,7 @@ function flattenDeep1(arr) {
   arr.forEach(item => {
     if (Array.isArray(item)) {
       res = res.concat(flattenDeep1(item)) // 这里 res= 必须写
+      // res.push(...flattenDeep1(item))
     } else {
       res.push(item)
     }

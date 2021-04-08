@@ -223,7 +223,7 @@ function heapSort(arr) {
     let left = 2 * index + 1
     let right = 2 * index + 2
     let maxIndex = index // 暂定为父结点最大
-    // 这里只是选中任意一个比父结点大的子结点
+    // 这里只是选中任意一个比父结点大的子结点，只不过这种写法会选中子结点中更大的那个
     // 这里是大根堆，求升序的。如果要小根堆，只需要 arr[left] < arr[maxIndex] 与 arr[right] < arr[maxIndex] 即可
     if (left < heapSize && arr[left] > arr[maxIndex]) {
       maxIndex = left

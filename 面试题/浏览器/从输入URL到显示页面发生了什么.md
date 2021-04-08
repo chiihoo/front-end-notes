@@ -25,6 +25,8 @@
    4. 如果还是找不到，本地DNS服务器就会去根域名服务器进行查询。根域名服务器收到请求，会返回对应的顶级域名服务器的地址，之后本地DNS服务器向顶级域名服务器查询，顶级域名服务器收到请求，又会返回二级域服务器的地址，直到最精确的那台DNS，得到查询结果，最后返回给客户端。
 
       *比如查询 `www.im.qq.com`，简略描述 DNS 的过程就是，先查询 `com`这个域名的DNS服务器有哪些，然后选一个继续查询`qq`这个子域名的DNS服务器有哪些，再选一个继续查询`im`这个子域名的DNS服务器有哪些，`www`不是域名，查询结束，将查询到的IP地址返回给客户端。*
+      
+      ![](https://img-blog.csdnimg.cn/20200417172638686.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzkxNDYwNA==,size_16,color_FFFFFF,t_70)
 
 4. **建立TCP连接**
 

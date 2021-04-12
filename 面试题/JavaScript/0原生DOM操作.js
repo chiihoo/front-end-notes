@@ -15,5 +15,12 @@ for (let i = 0; i < 5; i++) {
 let text = document.createTextNode('文本结点')
 ul.appendChild(text)
 
+ul.append('文本')
+// append可以传入多个节点或字符串
+// append只能传一个节点，不能传字符串，但是可以用createTextNode创建文本节点代替
+
+ul.innerHTML = '<li>5</li>'
+ul.innerText = '666'
+
 ul.insertBefore(fragment, text) // 把fragment添加到text结点前面
 ul.removeChild(ul.childNodes[0])

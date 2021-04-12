@@ -4,7 +4,6 @@
 // eventBus.off：订阅者取消注册，参数为事件名、回调函数，将对应事件的对应回调函数删除
 // eventBus.emit：发布者发布消息，参数为事件名、数据data，效果为将对应事件的所有回调函数执行，参数即为发布的数据data
 
-
 // 事件总线
 class EventChannel {
   subs = {} // subjects = {'event1': [fn11, fn12], 'event2': [fn21, fn22, f23]}
@@ -32,6 +31,7 @@ class EventChannel {
       } else {
         this.subs[event].length = 0
       }
+      // this.subs[event] = this.subs[event].filter(item => item === fn)
     }
   }
   // 发布者发布消息，执行订阅事件

@@ -91,11 +91,41 @@ const loadUrls1 = (urls, max, callback) => {
 
 // 必须引入callback，不然是拿不到值的
 let result
-loadUrls(urls, 5, res => {
-  result = res
-  console.log('result', result)
-})
+// loadUrls(urls, 5, res => {
+//   result = res
+//   console.log('result', result)
+// })
 // loadUrls1(urls, 5, res => {
 //   result = res
 //   console.log('result', result)
 // })
+
+// ————————————————————————————————————————————————————————
+// Promise的写法
+const loadUrls11 = (urls, max = 5) => {
+  return new Promise(resolve => {
+    let i = 0 // 已发出请求的索引
+    let count = 0 // 已完成请求的索引
+    let res = []
+    function send() {
+      // 有请求，有通道
+      while (i < urls.length && max > 0) {
+        max-- // 占用通道
+        loadUrl(urls[i++]).then(result => {
+          max++ // 释放通道
+          count++ // count是用来判断请求是否全部完成的，不能用i来判断，因为i是只要发出了请求，不管完成与否，都会+1
+          res.push(result) // 注意这里的顺序不是按照执行顺序来的，具体怎样映射，我还没搞清，具体要参考一下Promise.all的实现
+          // console.log(i, count, res)
+          if (count === urls.length) {
+            resolve(res)
+          } else {
+            send() // 在一个请求完成后，需要手动调用send，如果上述while语句不是写在send函数中，max到达0后，就不会继续执行了
+          }
+        })
+      }
+    }
+    send()
+  })
+}
+
+loadUrls11(urls, 5).then(res => console.log(res))

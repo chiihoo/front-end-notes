@@ -18,7 +18,7 @@ url:    http://www.foo.com
 
 
 
-实现跨域的方法：`JSONP`、`CORS`、`postMessage`、`Nginx`配置反向代理
+实现跨域的方法：`JSONP`、`CORS`、`postMessage`、`Nginx`配置反向代理、`WebSocket`
 
 
 

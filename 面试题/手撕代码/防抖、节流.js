@@ -1,3 +1,6 @@
+// 防抖的判断条件为timer不为null，符合则清除定时器。定时器是在判断的外面
+// 节流的判断条件为timer===null，定时器是在判断里面，调用func并把timer置为null，不需要清空定时器
+
 // 防抖
 // 非立即执行版，等待duration后才执行第一次func()
 function debounce1(func, duration) {

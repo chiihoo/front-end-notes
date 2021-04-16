@@ -8,7 +8,10 @@ let images = document.querySelectorAll('img')
 const lazyload = () => {
   let count = 0
   for (let i = count; i < images.length; i++) {
-    if (images[i] === 'default.png' && images[i].getBoundingClientRect().top < window.innerHeight) {
+    if (
+      images[i].src === 'default.png' &&
+      images[i].getBoundingClientRect().top < window.innerHeight
+    ) {
       images[i].src = images[i].getAttribute('data-src')
       count++
     }

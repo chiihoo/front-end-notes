@@ -10,8 +10,14 @@
 function foo() {
   console.log(this.a)
 }
-let a = 2
+var a = 2 // var或者不写都会把a绑定到window上
 foo() // 2
+// ————————————————————————————
+function foo() {
+  console.log(this.a)
+}
+let a = 2
+foo() // undefined
 ```
 
 2. **隐式绑定**

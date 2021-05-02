@@ -95,11 +95,13 @@ function createContext(defaultValue){
 
 
 
+// 这里用发布订阅模式的作用是什么呢？
+// 只要用到了传下去的value的组件，也就是Consumer组件，都会注册一个函数 value => setState({value}) 到发布订阅中心
+// 当最上层的value发生了改变的时候，就会触发Provider组件的componentDidUpdate钩子，进而触发emit调用注册的函数，使得每个Consumer组件都更新它的state为最新的value
+// 也就是说这里的发布订阅中心，是为了让状态发生更新时，所有Consumer组件能更新相应状态
 
-
-
-
-
+// 而这里是结合createContext(defaultValue)来使用的，这个函数里面会生成Provider和Consumer组件
+// 其中传进去的值直接就保存在Consumer组件的state里面，用Consumer组件来中转传递value
 
 
 

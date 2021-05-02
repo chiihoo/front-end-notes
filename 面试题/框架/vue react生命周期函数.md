@@ -104,7 +104,7 @@ beforeMount             onBeforeMount
 mounted                 onMounted
 
 beforeUpdate            onBeforeUpdate
-updated             	  onUpdated
+updated             	onUpdated
 
 activated
 deactivated

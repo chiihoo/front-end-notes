@@ -239,9 +239,10 @@ function heapSort(arr) {
   }
 
   // 创建大根堆
-  // 怎么创建呢？从最后一个结点的父结点开始，往前遍历，调用headAdjust。其中最后一个结点的父结点的索引为Math.floor(arr.length / 2)
+  // 怎么创建呢？从最后一个结点的父结点开始（最后一个非叶子结点），往前遍历，调用headAdjust。
+  // 这里最后一个结点的父结点的索引是Math.floor(arr.length / 2) - 1
   // 而headAdjust函数是从遍历的那个结点开始向下搜索，如果子结点比父结点大，则将其中一个比父结点大的子结点与父结点互换位置，再向下搜索
-  for (let i = Math.floor(arr.length / 2); i >= 0; i--) {
+  for (let i = Math.floor(arr.length / 2) - 1; i >= 0; i--) {
     heapAdjust(i, arr.length)
   }
 

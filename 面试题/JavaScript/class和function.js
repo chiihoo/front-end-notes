@@ -14,7 +14,7 @@ class Person1 {
     console.log(2, this)
   }
 
-  // 原型方法，等同于函数里的P.prototype.f3，f3不会写到实例里面，没有显示的绑定this
+  // 原型方法，等同于函数里的P.prototype.f2，f2不会写到实例里面，没有显示的绑定this
   f3() {
     console.log(3, this)
   }
@@ -51,7 +51,7 @@ function Person2(value) {
   //   console.log('xxx')
   // }
 }
-// 原型方法，跟class里的f2(){}一样
+// 原型方法，跟class里的f3(){}一样
 Person2.prototype.f2 = function () {
   console.log(2, this)
 }

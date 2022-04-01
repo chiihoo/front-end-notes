@@ -7,7 +7,7 @@ class Promise {
     this.status = 'pending'
     this.value
     // 当 resolve在异步函数比如setTimeout中执行，then时state还是pending等待状态。
-    // 并且同一个Promise可以附加多个then，比如 p.then(v=>console.log(1)); p.then(v=>console.log(2))，
+    // 并且同一个Promise可以附加多个then，比如 p.then(v=>console.log(1)); p.then(v=>console.log(2))，所以需要用数组存，而不是直接赋值
     // 这就需要把后续多个操作存起来，并且由于不知道Promise操作是否成功，成功和失败的操作都需要存到数组中，并在改变状态时遍历调用
     this.resolveQueue = []
     this.rejectQueue = []

@@ -57,9 +57,9 @@ Promise.prototype.then = function (onResolved, onRejected) {
   return new Promise((resolve, reject) => {
     let resolvePromise = () => {
       // 为什么外面要包一层setTimeout？
-      // new Promise(resolve=>{setTimeout(resolve(1),1000)}).then().then()的执行过程是先执行then,再执行resolve
+      // new Promise(resolve=>{setTimeout(resolve(1),1000)}).then()的执行过程是先执行then,再执行resolve
       // 如果new Promise(resolve=>resolve(1))里面传入的是一个不包含异步操作的函数，resolve就会先于then执行
-      // 正确的操作应该是then全部执行完，把函数存到对应的queue中去，再执行new Promise(resolve=>resolve(1))的resolve函数
+      // 要保持一致，无论resolve是同步或异步执行，都将resolve的执行放到then后面
       setTimeout(() => {
         try {
           let x = onResolved(self.value) // 差别在这 onResolved()

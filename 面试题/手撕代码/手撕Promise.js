@@ -9,7 +9,9 @@ class MyPromise {
       if (this.status === 'pending') {
         this.status = 'fulfilled'
         this.value = value
-        this.resolveQueue.forEach(fn => fn()) // 异步任务执行中的状态是pending，需要先将then传的函数参数都存起来，等异步任务完成再一个个执行
+        // 异步任务执行中的状态是pending，需要先将then传的函数参数都存起来
+        // 如果同一个Promise有多个then，就需要用数组存，等异步任务完成后再一个个执行
+        this.resolveQueue.forEach(fn => fn())
       }
     }
     const reject = err => {
@@ -39,7 +41,10 @@ class MyPromise {
 
     return new MyPromise((resolve, reject) => {
       if (this.status === 'fulfilled') {
-        // 这里应该加个setTimeout让resolve的执行顺序跑到then后面
+        // 为什么外面要包一层setTimeout？
+        // new Promise(resolve=>{setTimeout(resolve(1),1000)}).then()的执行过程是先执行then,再执行resolve
+        // 如果new Promise(resolve=>resolve(1))里面传入的是一个不包含异步操作的函数，resolve就会先于then执行
+        // 要保持一致，无论resolve是同步或异步执行，都将resolve的执行放到then后面
         setTimeout(() => {
           try {
             let x = onFulFilled(this.value)
@@ -128,6 +133,11 @@ p.then(value => {
   .then(value => {
     console.log(value)
   })
+
+// p.then(value => {
+//   console.log(value + 2)
+//   // return value + 2
+// })
 
 // new MyPromise(resolve => resolve(8))
 //   .then()

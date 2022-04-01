@@ -32,7 +32,11 @@ class Promise {
         }
       }, 0)
     }
-    executor(resolve, reject)
+    try {
+      executor(resolve, reject)
+    } catch (err) {
+      reject(err)
+    }
   }
   // 写在constructor里面的this方法是实例方法，每次生成一个新的实例，实例方法都会不一样
   // 写在constructor外面的方法是挂载在prototype上的原型方法，可以被所有实例共享

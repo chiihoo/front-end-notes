@@ -140,3 +140,13 @@ jwt鉴权是把token放localStorage中，每次登陆都在axio request拦截器
 
 `axios.interceptors.response.use(res => res.data, err => {if (err.response.status === 401) {route.push('/login')}})`
 
+
+
+
+
+登录鉴权，首先是用户登录，后台会返回一串token，之后前端拿到token存到localStorage里面，之后在axios的request拦截器里面每次发送请求都给请求头的Authorization字段加'Bearer '+token。
+
+权限控制首先是路由的控制，现在vue router的配置项routes里面，所有需要登录状态的路由都需要在meta属性里面添加一个字段，比如requireAuth: true，在beforeEach钩子里面判断是否存在这个字段，如果存在就是需要登录，之后再看是否有登录的token，如果没有的话就跳到登录界面，next('/login')，否则直接next()。
+
+但是这样还是有问题，如果token失效，还是会跳转过去，所以还需要接口层面的权限控制，在axios的response拦截器，如果状态码是401未登录状态，也跳转到登录页面。
+

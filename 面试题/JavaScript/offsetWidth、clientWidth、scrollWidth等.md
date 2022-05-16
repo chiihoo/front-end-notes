@@ -41,25 +41,26 @@ scrollRef.current.scrollTop + scrollRef.current.offsetHeight + 5 >=scrollRef.cur
 
 因为touch事件拿到的这些数据计算不会恰巧相等，所以就用不等来消除误差。
 
-![image](https://user-gold-cdn.xitu.io/2018/4/1/16280300d2cbc0ad?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+![image](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/1/168a81d009fbe55a~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp)
 
-![image](https://user-gold-cdn.xitu.io/2018/10/19/16689fc91c1a208c?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+![image](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/1/168a81d5f2b9a610~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp)
 
 ---
 
 **offsetLeft、offsetTop** 是盒子与**最近定位父级元素**的左边界与顶部的距离，不包括 border
 **clientLeft、clientTop**的用法与 offsetLeft **截然不同**，它表示盒子的左边框与顶部边框 **border** 的宽度
 **style.left** 是带有单位的字符串，并且可写
-![image](https://user-gold-cdn.xitu.io/2018/4/1/162804163d195550?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+![image](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/4/1/162804163d195550~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp)
 
-![image](https://user-gold-cdn.xitu.io/2018/10/19/16689fc940840f4b?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
-![image](https://user-gold-cdn.xitu.io/2018/10/19/16689fc91e35358e?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+
+
+![image](https://img-blog.csdnimg.cn/e1986c3935a44fb6931e6ca75ac54b38.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5bCP6IuPKMK677mDwrrCoCk=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center)
 
 ---
 
 **scrollTop、scrollLeft、scrollWidth、scrollHeight**
 
-![image](https://user-gold-cdn.xitu.io/2018/4/1/1628055d0479d7c5?imageslim)
+![image](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/4/1/1628055d0479d7c5~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp)
 
 ---
 
@@ -71,4 +72,4 @@ event.pageX  是目标点距离 document 最左上角的 X 轴坐标
 event.pageY 是目标点距离 document 最左上角的 Y 轴坐标
 
 **touchstart 和 touchmove 都可以 e.touches[0].clientX，touchend 则不可以**
-![image](https://user-gold-cdn.xitu.io/2018/4/1/1628064e83bb382a?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+![image](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/4/1/1628064e83bb382a~tplv-t2oaga2asx-zoom-in-crop-mark:1304:0:0:0.awebp)

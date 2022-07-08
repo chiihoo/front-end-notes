@@ -1,0 +1,86 @@
+<!-- 一个正方形div中分两个等宽div，两个div中分别画两个半圆，先通过rotate，把这两个半圆旋转到对方的div中，通过overflow: hidden进行隐藏
+右边div的半圆此时在左侧div隐藏，只需要设置动画效果  0%：在初始位置， 50%，100%：在旋转了180度的位置
+左侧div的半圆此时在右侧div隐藏，设置动画效果  0%，50%：在初始位置， 100%：在旋转了180度的位置 -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .circle-process {
+        width: 300px;
+        height: 300px;
+        background-color: skyblue;
+        display: flex;
+      }
+      .left-side {
+        width: 150px;
+        background-color: rgb(169, 218, 179);
+        overflow: hidden;
+      }
+
+      .left-circle {
+        width: 150px;
+        height: 300px;
+        border: 10px rgb(110, 161, 82) solid;
+        border-right: 0;
+        box-sizing: border-box;
+        border-radius: 150px 0 0 150px;
+        transform-origin: 100% 50%;
+        transform: rotate(180deg);
+        animation: circle-left 5s linear infinite;
+      }
+
+      .right-side {
+        width: 150px;
+        background-color: rgb(201, 215, 158);
+        overflow: hidden;
+      }
+
+      .right-circle {
+        width: 150px;
+        height: 300px;
+        border: 10px rgb(106, 177, 197) solid;
+        border-left: 0;
+        box-sizing: border-box;
+        border-radius: 0 150px 150px 0;
+        transform-origin: 0% 50%;
+        transform: rotate(180deg);
+        animation: circle-right 5s linear infinite;
+      }
+
+      @keyframes circle-right {
+        0% {
+          transform: rotate(180deg);
+        }
+        50%,
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes circle-left {
+        0%,
+        50% {
+          transform: rotate(180deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="circle-process">
+      <div class="left-side">
+        <div class="left-circle"></div>
+      </div>
+      <div class="right-side">
+        <div class="right-circle"></div>
+      </div>
+    </div>
+  </body>
+</html>
